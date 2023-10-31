@@ -8,12 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var dbDocuments = DBDocuments()
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, word!")
+            NavigationView {
+                List {
+                    ForEach(dbDocuments.users) { user in
+                        Text(user.name)
+                    }
+                }.navigationBarTitle("Users")
+            }
+            Spacer()
+            NavigationView {
+                List {
+                    ForEach(dbDocuments.posts) { post in
+                        Text(post.description)
+                    }
+                }.navigationBarTitle("Posts")
+            }
         }
         .padding()
     }
