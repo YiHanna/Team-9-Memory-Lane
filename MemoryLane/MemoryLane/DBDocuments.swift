@@ -34,7 +34,7 @@ class DBDocuments: ObservableObject {
               try? document.data(as: User.self)
             } ?? []
         }
-        
+
         store.collection("post").addSnapshotListener { querySnapshot, error in
             if let error = error {
               print("Error getting post: \(error.localizedDescription)")
@@ -46,4 +46,14 @@ class DBDocuments: ObservableObject {
             } ?? []
         }
     }
+  
+  func createUser(data : [String:Any]){
+    store.collection("user").addDocument(data: data) { error in
+      if let error = error {
+          print("Error creating user: \(error)")
+      } else {
+          print("User created")
+      }
+  }
+  }
 }

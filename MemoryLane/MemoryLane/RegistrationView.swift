@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+var dbDocuments = DBDocuments()
+
 struct RegistrationView: View {
   @State var username = ""
   @State var name = ""
@@ -22,7 +24,7 @@ struct RegistrationView: View {
   var body: some View {
     NavigationView {
       if isEmailPasswordComplete {
-        RegistrationViewUserInfo(username: $username, name: $name, schools: $schools, hometown: $hometown, current_city: $current_city)
+        RegistrationViewUserInfo(username: $username, name: $name, schools: $schools, hometown: $hometown, current_city: $current_city, email: $email, password: $password)
       } else {
         RegistrationViewInit(email: $email, password: $password, passwordConfirmation: $passwordConfirmation, isComplete: $isEmailPasswordComplete)
       }
@@ -31,7 +33,6 @@ struct RegistrationView: View {
 }
 
 struct RegistrationViewInit: View {
-//  @ObservedObject var dbDocuments = DBDocuments()
   @Binding var email: String
   @Binding var password: String
   @Binding var passwordConfirmation: String
@@ -81,6 +82,10 @@ struct RegistrationViewUserInfo: View {
   @Binding var schools:[String]
   @Binding var hometown: String
   @Binding var current_city: String
+  @Binding var email: String
+  @Binding var password: String
+  
+  @State private var isUserCreated = false
   
   var body: some View {
     VStack {
@@ -115,15 +120,27 @@ struct RegistrationViewUserInfo: View {
           .cornerRadius(10)
       }
       .padding(.top)
+      .background(NavigationLink("", destination: HomeView(), isActive: $isUserCreated))
     }
   }
   func registerUser() {
+    dbDocuments.createUser(data: [
+      "username": username,
+      "current_city": username,
+      "email": email,
+      "hometown": hometown,
+      "name": name,
+      "password": password,
+      "friends": [],
+      "schools": []
+    ])
+    
+    isUserCreated = true
   }
 }
 
-
-struct RegistrationView_Preview: PreviewProvider {
-  static var previews: some View {
-    RegistrationView()
-  }
+struct RegistrationView_Previews: PreviewProvider {
+    static var previews: some View {
+        RegistrationView()
+    }
 }
