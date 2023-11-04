@@ -120,7 +120,7 @@ struct RegistrationViewUserInfo: View {
           .cornerRadius(10)
       }
       .padding(.top)
-      .background(NavigationLink("", destination: HomeView(), isActive: $isUserCreated))
+      .background(NavigationLink("", destination: AppView(), isActive: $isUserCreated))
     }
   }
   func registerUser() {
@@ -132,7 +132,12 @@ struct RegistrationViewUserInfo: View {
       "name": name,
       "password": password,
       "friends": [],
-      "schools": []
+      "schools": [
+        "elementary_school": "",
+        "middle_school": "",
+        "high_school": "",
+        "university": ""
+      ]
     ])
     
     isUserCreated = true

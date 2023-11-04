@@ -10,6 +10,9 @@ import Foundation
 import Combine
 import Firebase
 import FirebaseFirestore
+import FirebaseFirestoreSwift
+import FirebaseStorage
+import UIKit
 
 
 class DBDocuments: ObservableObject {
@@ -17,6 +20,7 @@ class DBDocuments: ObservableObject {
   
     @Published var users : [User] = []
     @Published var posts : [Post] = []
+    @Published var currUser : DocumentReference?
     private let store = Firestore.firestore()
   
     init() {
@@ -47,13 +51,75 @@ class DBDocuments: ObservableObject {
         }
     }
   
-  func createUser(data : [String:Any]){
-    store.collection("user").addDocument(data: data) { error in
-      if let error = error {
-          print("Error creating user: \(error)")
-      } else {
-          print("User created")
+      func createUser(data : [String:Any]){
+          let reference: DocumentReference? = store.collection("user").addDocument(data: data) { error in
+              if let error = error {
+                  print("Error adding document: \(error)")
+              }
+          }
+          if let ref = reference{
+              print("Document added with ID: \(ref.documentID)")
+              currUser = ref
+          }
       }
-  }
-  }
+      
+      func getUserName(user_ref: DocumentReference, completion: @escaping (String?) -> Void) {
+          user_ref.getDocument { (document, error) in
+              if let error = error {
+                  print("Error fetching document: \(error)")
+                  completion(nil)  // Call completion with nil
+              } else if let document = document, document.exists {
+                  let tmp = try? document.data(as: User.self)
+                  if let user = tmp {
+                      completion(user.name)  // Call completion with user name
+                  } else {
+                      completion(nil)  // Call completion with nil
+                  }
+              } else {
+                  print("Document does not exist")
+                  completion(nil)  // Call completion with nil
+              }
+          }
+      }
+    
+    func createPost(data : [String:Any]){
+        store.collection("post").addDocument(data: data){ error in
+            if let error = error {
+                print("Error adding document: \(error)")
+            } else {
+                print("Post created!")
+            }
+        }
+    }
+    
+    func uploadImage(_ image: UIImage, completion: @escaping (_ url: URL?) -> Void) {
+        // Convert the UIImage to Data
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else {
+            completion(nil)
+            return
+        }
+        
+        // Define the storage reference
+        let storageRef = Storage.storage().reference().child("images/\(UUID().uuidString).jpg")
+
+        // Upload the image data to Firebase Storage
+        storageRef.putData(imageData, metadata: nil) { (metadata, error) in
+            if error != nil {
+                print("Error uploading image to Firebase Storage: \(error!.localizedDescription)")
+                completion(nil)
+                return
+            }
+
+            // Get the download URL for the uploaded image
+            storageRef.downloadURL { (url, error) in
+                guard let downloadURL = url else {
+                    print("An error occurred while getting the download URL: \(error!.localizedDescription)")
+                    completion(nil)
+                    return
+                }
+                completion(downloadURL)
+            }
+        }
+    }
+
 }
