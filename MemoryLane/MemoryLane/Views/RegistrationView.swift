@@ -137,7 +137,8 @@ struct RegistrationViewUserInfo: View {
         "middle_school": "",
         "high_school": "",
         "university": ""
-      ]
+      ],
+      "posts_liked": []
     ])
     
     isUserCreated = true

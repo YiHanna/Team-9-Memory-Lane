@@ -63,7 +63,7 @@ class DBDocuments: ObservableObject {
           }
       }
       
-      func getUserName(user_ref: DocumentReference, completion: @escaping (String?) -> Void) {
+    func getUserName(user_ref: DocumentReference, completion: @escaping (String?) -> Void) {
           user_ref.getDocument { (document, error) in
               if let error = error {
                   print("Error fetching document: \(error)")
@@ -89,6 +89,86 @@ class DBDocuments: ObservableObject {
             } else {
                 print("Post created!")
             }
+        }
+    }
+    
+    func likePost(post:Post){
+        if let id = post.id{
+            let ref = store.collection("post").document(id)
+            
+            ref.updateData(["num_likes": post.num_likes + 1]) { error in
+                if let error = error {
+                    print("Error updating document: \(error)")
+                } else {
+                    print("Number of post likes successfully updated: \(post.num_likes + 1)")
+                }
+            }
+            
+            // add post to the user's liked posts array
+            if let user = currUser {
+                
+                user.updateData([
+                    "posts_liked": FieldValue.arrayUnion([id])
+                ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Post successfully added to user's liked posts array")
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func unlikePost(post:Post){
+        if let id = post.id{
+            let ref = store.collection("post").document(id)
+            
+            ref.updateData(["num_likes": post.num_likes - 1]) { error in
+                if let error = error {
+                    print("Error updating document: \(error)")
+                } else {
+                    print("Number of post likes successfully updated: \(post.num_likes - 1)")
+                }
+            }
+            
+            // remove post from the user's liked posts array
+            if let user = currUser {
+                
+                user.updateData([
+                    "posts_liked": FieldValue.arrayRemove([id])
+                ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Post successfully removed from user's liked posts array")
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func checkUserLikes(id:String, completion: @escaping (Bool?) -> Void){
+        if let usr = currUser {
+            usr.getDocument { (document, error) in
+                if let error = error {
+                    print("Error fetching document: \(error)")
+                    completion(nil)
+                } else if let document = document, document.exists {
+                    let tmp = try? document.data(as: User.self)
+                    if let user = tmp {
+                        completion(user.posts_liked.contains(id))  // Call completion with user name
+                    } else {
+                        completion(nil)
+                    }
+                } else {
+                    print("Document does not exist")
+                    completion(nil)
+                }
+            }
+            
         }
     }
     

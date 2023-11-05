@@ -21,6 +21,7 @@ struct User: Identifiable, Codable {
     var hometown: String
     var current_city: String
     var friends: [DocumentReference]
+    var posts_liked: [String]
     
     // MARK: Codable
     enum CodingKeys: String, CodingKey {
@@ -33,5 +34,6 @@ struct User: Identifiable, Codable {
         case hometown
         case current_city
         case friends
+        case posts_liked
     }
 }

@@ -13,6 +13,7 @@ struct PostRowView: View {
     var post : Post
     @State private var userName: String?
     @State private var location: String?
+    @State private var userLiked: Bool?
   
     var body: some View {
         ZStack{
@@ -25,7 +26,6 @@ struct PostRowView: View {
                 .edgesIgnoringSafeArea(.all)
             }else{
                 Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
-//                    .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
             }
             VStack {
@@ -45,15 +45,31 @@ struct PostRowView: View {
                         Text(post.description).foregroundColor(Color.white)
                     }
                     VStack{
-                        Button(action: {}) {
-                            Image(systemName: "heart").foregroundColor(.white)
+                        if let liked = userLiked{
+                            if liked{
+                                Button(action: {
+                                    dbDocuments.unlikePost(post: post)
+                                    checkUserLikes()
+                                }) {
+                                    Image(systemName: "heart.fill").foregroundColor(.white)
+                                }
+                            }else{
+                                Button(action: {
+                                    dbDocuments.likePost(post: post)
+                                    checkUserLikes()
+                                }) {
+                                    Image(systemName: "heart").foregroundColor(.white)
+                                }
+                            }
                         }
+                        
                     }.padding()
                 }
             }.padding()
             
         }.onAppear {
             fetchUserName()
+            checkUserLikes()
             post.getLocation { locationString in
               location = locationString
             }
@@ -65,6 +81,14 @@ struct PostRowView: View {
           userName = fetchedName
           print("username fetched: \(userName)")
       }
+    }
+    
+    private func checkUserLikes(){
+        if let id = post.id{
+            dbDocuments.checkUserLikes(id: id){res in
+                userLiked = res
+            }
+        }
     }
 }
 
