@@ -13,9 +13,10 @@ struct LoginView: View {
   @State var username = ""
   @State var password = ""
   @State var isLoggedIn = false
+  @State var user: User? = nil
   var body: some View {
     if isLoggedIn {
-      AppView()
+      AppView(user: user)
     } else {
       NavigationView {
         VStack() {
@@ -51,9 +52,10 @@ struct LoginView: View {
   }
   func userLogin(username:String, password:String) {
 //    var user = dbDocuments.getUserByUsername(username: username)
-    if let user = dbDocuments.getUserByUsername(username: username) {
-      if user.password == password {
+    if let dbuser = dbDocuments.getUserByUsername(username: username) {
+      if dbuser.password == password {
         isLoggedIn = true
+        user = dbuser
         print("\(username) logged in")
       } else {
         print("incorrect password")

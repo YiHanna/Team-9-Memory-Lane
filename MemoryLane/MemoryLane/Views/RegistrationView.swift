@@ -85,6 +85,8 @@ struct RegistrationViewUserInfo: View {
   @Binding var email: String
   @Binding var password: String
   
+  @State var user: User? = nil
+  
   @State private var isUserCreated = false
   
   var body: some View {
@@ -120,7 +122,7 @@ struct RegistrationViewUserInfo: View {
           .cornerRadius(10)
       }
       .padding(.top)
-      .background(NavigationLink("", destination: AppView(), isActive: $isUserCreated))
+      .background(NavigationLink("", destination: AppView(user: user), isActive: $isUserCreated))
     }
   }
   func registerUser() {
@@ -141,6 +143,7 @@ struct RegistrationViewUserInfo: View {
       "posts_liked": []
     ])
     
+    user = dbDocuments.getUserByUsername(username: username)
     isUserCreated = true
   }
 }

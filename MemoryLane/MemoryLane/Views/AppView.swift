@@ -8,30 +8,31 @@
 import SwiftUI
 
 struct AppView: View {
-    var isLoggedIn = true
-    var dbDocuments = DBDocuments()
-    var body: some View {
-      if isLoggedIn {
-        TabView {
-          HomeView().tabItem {
-            Image(systemName: "house")
-            Text("Home")
-          }
-          ProfileView().tabItem {
-            Image(systemName: "person.crop.circle")
-            Text("Profile")
-          }
+  var user: User?
+  @State var isLoggedIn = true
+  var dbDocuments = DBDocuments()
+  var body: some View {
+    if isLoggedIn {
+      TabView {
+        HomeView().tabItem {
+          Image(systemName: "house")
+          Text("Home")
         }
-        .environmentObject(dbDocuments)
-        .navigationBarBackButtonHidden(true)
-      } else {
-        LoginView().environmentObject(dbDocuments)
+        ProfileView(user: user).tabItem {
+          Image(systemName: "person.crop.circle")
+          Text("Profile")
+        }
       }
+      .environmentObject(dbDocuments)
+      .navigationBarBackButtonHidden(true)
+    } else {
+      LoginView().environmentObject(dbDocuments)
     }
+  }
 }
 
-struct AppView_Previews: PreviewProvider {
-    static var previews: some View {
-        AppView()
-    }
-}
+//struct AppView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AppView()
+//    }
+//}
