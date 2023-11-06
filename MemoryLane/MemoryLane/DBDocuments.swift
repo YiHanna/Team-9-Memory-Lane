@@ -89,6 +89,35 @@ class DBDocuments: ObservableObject {
       }
       return nil
     }
+  
+  func getUserPosts(user_id: String?, completion: @escaping ([Post]?) -> Void) {
+    if let uid = user_id {
+      let documentPath = "user/\(uid)"
+      let documentReference = store.document(documentPath)
+      let postsRef = store.collection("post").whereField("user_id", isEqualTo: documentReference)
+      
+      postsRef.getDocuments { (querySnapshot, error) in
+        if let error = error {
+          // Handle the error
+          print("Error getting posts: \(error.localizedDescription)")
+          completion(nil)
+        } else {
+          var result: [Post] = []
+          
+          for document in querySnapshot!.documents {
+            if let post = try? document.data(as: Post.self) {
+              result.append(post)
+              print("append")
+            }
+          }
+          print(result.count)
+          completion(result)
+        }
+      }
+    } else {
+      completion(nil)
+    }
+  }
     
     func createPost(data : [String:Any]){
         store.collection("post").addDocument(data: data){ error in

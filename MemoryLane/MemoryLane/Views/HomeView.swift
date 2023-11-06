@@ -11,11 +11,11 @@ struct HomeView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
     var body: some View {
       NavigationView {
-          List {
-              ForEach(dbDocuments.posts) { post in
-                PostRowView(post: post)
-              }
-          }
+        List {
+            ForEach(dbDocuments.posts) { post in
+              PostRowView(post: post)
+            }
+        }
           .navigationBarTitle("Posts")
           .navigationBarItems(trailing:
             NavigationLink(destination: AddPostView()) {
@@ -23,7 +23,7 @@ struct HomeView: View {
             }.environmentObject(dbDocuments)
           )
       }
-      .navigationBarBackButtonHidden(true)
+//      .navigationBarBackButtonHidden(true)
       
     }
 }
