@@ -1,0 +1,71 @@
+//
+//  LoginView.swift
+//  MemoryLane
+//
+//  Created by Hanna Luo on 11/5/23.
+//
+
+import Foundation
+import SwiftUI
+
+struct LoginView: View {
+  @EnvironmentObject var dbDocuments: DBDocuments
+  @State var username = ""
+  @State var password = ""
+  @State var isLoggedIn = false
+  var body: some View {
+    if isLoggedIn {
+      AppView()
+    } else {
+      NavigationView {
+        VStack() {
+          Text("Memory Lane")
+            .font(.largeTitle)
+            .padding(.bottom)
+          Text("Username")
+            .padding(.top)
+          TextField("Enter Username", text: $username)
+            .padding([.leading, .bottom, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+          Text("Password")
+          SecureField("Enter Password", text: $password)
+            .padding([.leading, .bottom, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+            NavigationLink(destination: RegistrationView()) {
+              Text("New User? Register Here ->")
+          }
+          Button(action: {
+            userLogin(username: username, password: password)
+          }) {
+            Text("Login")
+          }.foregroundColor(.white)
+            .padding()
+            .background(Color.blue)
+            .cornerRadius(10)
+            .padding(.top)
+        }
+      }
+    }
+  }
+  func userLogin(username:String, password:String) {
+//    var user = dbDocuments.getUserByUsername(username: username)
+    if let user = dbDocuments.getUserByUsername(username: username) {
+      if user.password == password {
+        isLoggedIn = true
+        print("\(username) logged in")
+      } else {
+        print("incorrect password")
+      }
+    } else {
+      print("incorrect username")
+    }
+  }
+}
+
+struct LoginView_Preview: PreviewProvider {
+    static var previews: some View {
+        LoginView()
+    }
+}

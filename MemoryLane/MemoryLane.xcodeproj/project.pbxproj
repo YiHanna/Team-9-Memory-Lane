@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D6BE9F7B2AF773DD0036A191 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BE9F7A2AF773DD0036A191 /* LoginView.swift */; };
 		DF0E69642AF5685000DA222B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DF0E69632AF5685000DA222B /* FirebaseStorage */; };
 		DF50ECBB2AF295A700614805 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF50ECBA2AF295A700614805 /* RegistrationView.swift */; };
 		DF50ECBD2AF2B4AF00614805 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF50ECBC2AF2B4AE00614805 /* HomeView.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D6BE9F7A2AF773DD0036A191 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DF50ECBA2AF295A700614805 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		DF50ECBC2AF2B4AE00614805 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		DF8CDAB62AF4242E003CEDB2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				DF8CDAC02AF44E58003CEDB2 /* ImagePicker.swift */,
 				DF8CDAC22AF44E83003CEDB2 /* ImagePickerCordinator.swift */,
 				DF9CC3182AF4A0E40013EA95 /* AddPostView.swift */,
+				D6BE9F7A2AF773DD0036A191 /* LoginView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				DFC2F9DA2AF1C3B000BE7707 /* User.swift in Sources */,
 				DFC2F9A02AF1AAD900BE7707 /* MemoryLaneApp.swift in Sources */,
 				DF8CDABB2AF42A25003CEDB2 /* PostRowView.swift in Sources */,
+				D6BE9F7B2AF773DD0036A191 /* LoginView.swift in Sources */,
 				DF8CDAC32AF44E83003CEDB2 /* ImagePickerCordinator.swift in Sources */,
 				DF8CDAC12AF44E58003CEDB2 /* ImagePicker.swift in Sources */,
 				DF9CC3192AF4A0E40013EA95 /* AddPostView.swift in Sources */,

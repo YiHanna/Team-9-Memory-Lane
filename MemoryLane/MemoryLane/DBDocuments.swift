@@ -81,6 +81,14 @@ class DBDocuments: ObservableObject {
               }
           }
       }
+    func getUserByUsername(username: String) -> User? {
+      for user in users {
+        if user.username == username {
+          return user
+        }
+      }
+      return nil
+    }
     
     func createPost(data : [String:Any]){
         store.collection("post").addDocument(data: data){ error in

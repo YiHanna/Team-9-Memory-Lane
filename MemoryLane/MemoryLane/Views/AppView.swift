@@ -8,20 +8,25 @@
 import SwiftUI
 
 struct AppView: View {
+    var isLoggedIn = true
     var dbDocuments = DBDocuments()
     var body: some View {
+      if isLoggedIn {
         TabView {
-            HomeView().tabItem {
-                Image(systemName: "house")
-                Text("Home")
-            }
-            ProfileView().tabItem {
-                Image(systemName: "person.crop.circle")
-                Text("Profile")
-            }
+          HomeView().tabItem {
+            Image(systemName: "house")
+            Text("Home")
+          }
+          ProfileView().tabItem {
+            Image(systemName: "person.crop.circle")
+            Text("Profile")
+          }
         }
         .environmentObject(dbDocuments)
         .navigationBarBackButtonHidden(true)
+      } else {
+        LoginView().environmentObject(dbDocuments)
+      }
     }
 }
 
