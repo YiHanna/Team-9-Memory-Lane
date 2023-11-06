@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-var dbDocuments = DBDocuments()
-
 struct RegistrationView: View {
   @State var username = ""
   @State var name = ""
@@ -125,7 +123,8 @@ struct RegistrationViewUserInfo: View {
       .background(NavigationLink("", destination: AppView(user: user), isActive: $isUserCreated))
     }
   }
-  func registerUser() {
+    
+  private func registerUser() {
     dbDocuments.createUser(data: [
       "username": username,
       "current_city": username,

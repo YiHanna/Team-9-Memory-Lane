@@ -57,6 +57,8 @@ struct LoginView: View {
         isLoggedIn = true
         user = dbuser
         print("\(username) logged in")
+        dbDocuments.setCurrUser(user_id: dbuser.id)
+        print("current user is: \(dbDocuments.currUser)")
       } else {
         print("incorrect password")
       }
