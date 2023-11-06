@@ -8,10 +8,12 @@
 import SwiftUI
 import CoreData
 
+var dbDocuments = DBDocuments()
+
 struct ContentView: View {
-  var body: some View {
-    LoginView().environmentObject(dbDocuments)
-  }
+    var body: some View {
+        LoginView().environmentObject(dbDocuments)
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {

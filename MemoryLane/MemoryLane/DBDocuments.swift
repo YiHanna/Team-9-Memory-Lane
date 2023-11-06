@@ -100,6 +100,13 @@ class DBDocuments: ObservableObject {
         }
     }
     
+    func setCurrUser(user_id : String?){
+        if let id = user_id{
+            currUser = store.collection("user").document(id)
+            print("current user set")
+        }
+    }
+    
     func likePost(post:Post){
         if let id = post.id{
             let ref = store.collection("post").document(id)
