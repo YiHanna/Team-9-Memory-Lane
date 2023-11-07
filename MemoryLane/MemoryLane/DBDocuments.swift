@@ -81,7 +81,8 @@ class DBDocuments: ObservableObject {
               }
           }
       }
-    func getUserByUsername(username: String) -> User? {
+
+  func getUserByUsername(username: String) -> User? {
       for user in users {
         if user.username == username {
           return user
@@ -118,6 +119,30 @@ class DBDocuments: ObservableObject {
       completion(nil)
     }
   }
+  
+    func getUserByRef(user_ref: DocumentReference, completion: @escaping (User?) -> Void) {
+        user_ref.getDocument { (document, error) in
+            if let error = error {
+                print("Error fetching User: \(error)")
+                completion(nil)  // Call completion with nil
+            } else if let document = document, document.exists {
+                let tmp = try? document.data(as: User.self)
+                if let user = tmp {
+                    completion(user)  // Call completion with user name
+                } else {
+                    completion(nil)  // Call completion with nil
+                }
+            } else {
+                print("User does not exist")
+                completion(nil)  // Call completion with nil
+            }
+        }
+    }
+    
+    func getUserById(id : String) -> DocumentReference {
+        let ref = store.collection("user").document(id)
+        return ref
+    }
     
     func createPost(data : [String:Any]){
         store.collection("post").addDocument(data: data){ error in
