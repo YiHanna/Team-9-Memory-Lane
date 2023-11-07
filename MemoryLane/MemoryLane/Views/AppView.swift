@@ -22,9 +22,9 @@ struct AppView: View {
           Image(systemName: "person.crop.circle")
           Text("Profile")
         }
-//        FriendsView().tabItem {
-//            Text("Friends")
-//        }
+        FriendsView().tabItem {
+            Text("Friends")
+        }
       }
       .environmentObject(dbDocuments)
       .navigationBarBackButtonHidden(true)
