@@ -9,8 +9,8 @@ import SwiftUI
 
 struct OtherUserProfileView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
-    var otherUser: User
-    var currUser: User
+    @State var otherUser: User
+    @State var currUser: User
     @State private var posts: [Post] = []
     @State private var isFriend: Bool = false
   
@@ -106,10 +106,40 @@ struct OtherUserProfileView: View {
       }
      .padding()
      .onAppear{
-       getPosts()
-       checkFriendStatus()
+       // Must fetch from DB again as a work-around to complex list object binding
+       getBothUsersFromDB() { _ in
+         getPosts()
+         checkFriendStatus()
+       }
      }
     }
+  
+  private func getBothUsersFromDB(completion: @escaping (Bool) -> Void) {
+    getUserFromDB(id: currUser.id!) { user in
+      if let user = user {
+        currUser = user
+        getUserFromDB(id: otherUser.id!) { user2 in
+          if let user2 = user2 {
+            otherUser = user2
+            completion(true)
+          }
+        }
+      }
+    }
+    completion(false)
+  }
+  
+  private func getUserFromDB(id: String, completion: @escaping (User?) -> Void) {
+    let ref = dbDocuments.getUserById(id: id)
+    if ref != nil {
+      dbDocuments.getUserByRef(user_ref: ref!) { user in
+        if let user = user {
+          completion(user)
+        }
+      }
+    }
+    completion(nil)
+  }
   
   private func getPosts() {
     dbDocuments.getUserPosts(user_id: otherUser.id){ fetchedPosts in
