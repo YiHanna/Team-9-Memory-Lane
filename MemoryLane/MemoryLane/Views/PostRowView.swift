@@ -73,6 +73,7 @@ struct PostRowView: View {
             post.getLocation { locationString in
               location = locationString
             }
+            print("PostRowView Appear")
         }
     }
   

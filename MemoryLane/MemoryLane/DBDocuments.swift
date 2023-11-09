@@ -139,9 +139,57 @@ class DBDocuments: ObservableObject {
         }
     }
     
-    func getUserById(id : String) -> DocumentReference {
-        let ref = store.collection("user").document(id)
-        return ref
+    func getUserById(id : String?) -> DocumentReference? {
+        if id == nil {
+            return nil
+        } else {
+            let ref = store.collection("user").document(id!)
+            return ref
+        }
+    }
+  
+    func getAllUsers(completion: @escaping ([User]) -> Void) {
+        let dispatchGroup = DispatchGroup()
+
+        var users: [User] = []
+      
+        store.collection("user").getDocuments() { (querySnapshot, error) in
+            if let error = error {
+                print("Error getting user documents: \(error)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let documentReference = document.reference
+                    dispatchGroup.enter()
+
+                    self.getUserByRef(user_ref: documentReference) { user in
+                        if user != nil {
+                            users.append(user!)
+                        } else {
+                        }
+                      dispatchGroup.leave()
+
+                    }
+                }
+              // Notify the dispatch group when all users are fetched
+              dispatchGroup.notify(queue: .main) {
+              // Call the completion with the users array
+              completion(users)
+              }
+            }
+        }
+        completion(users)
+    }
+  
+    func getFriends(user: User) -> [User] {
+      var friends: [User] = []
+      for f in user.friends {
+          dbDocuments.getUserByRef(user_ref: f) { friend in
+              if let friend = friend {
+                  friends.append(friend)
+              }
+          }
+      }
+      return friends
     }
     
     func createPost(data : [String:Any]){
@@ -239,6 +287,54 @@ class DBDocuments: ObservableObject {
             }
             
         }
+    }
+  
+  
+    func addFriend(user: User, friend: User, completion: @escaping (Bool) -> Void) {
+        let user_ref = getUserById(id: user.id)
+        let friend_ref = getUserById(id: friend.id)
+        if user_ref != nil && friend_ref != nil {
+            user_ref!.updateData([
+                "friends": FieldValue.arrayUnion([friend_ref!])
+            ])
+            friend_ref!.updateData([
+                "friends": FieldValue.arrayUnion([user_ref!])
+            ])
+            completion(true)
+        } else {
+            print("User or friend does not exist")
+            completion(false)
+        }
+    }
+  
+    func removeFriend(user: User, friend: User, completion: @escaping (Bool) -> Void) {
+        let user_ref = getUserById(id: user.id)
+        let friend_ref = getUserById(id: friend.id)
+        if user_ref != nil && friend_ref != nil {
+            user_ref!.updateData([
+                "friends": FieldValue.arrayRemove([friend_ref!])
+            ])
+            friend_ref!.updateData([
+                "friends": FieldValue.arrayRemove([user_ref!])
+            ])
+            completion(true)
+        } else {
+            print("User or friend does not exist")
+            completion(false)
+        }
+    }
+  
+    func checkFriendStatus(user: User, possibleFriend: User, completion: @escaping (Bool) -> Void) {
+      for f in user.friends {
+          dbDocuments.getUserByRef(user_ref: f) { friend in
+            if let friend = friend {
+              if friend.id == possibleFriend.id {
+                completion(true)
+              }
+              }
+          }
+      }
+      completion(false)
     }
     
     func uploadImage(_ image: UIImage, completion: @escaping (_ url: URL?) -> Void) {

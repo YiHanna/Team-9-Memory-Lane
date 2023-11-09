@@ -22,7 +22,7 @@ struct AppView: View {
           Image(systemName: "person.crop.circle")
           Text("Profile")
         }
-        FriendsView().tabItem {
+        FriendsView(user: user).tabItem {
             Text("Friends")
         }
       }

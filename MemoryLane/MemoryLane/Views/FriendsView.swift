@@ -13,7 +13,10 @@ import Firebase
 struct FriendsView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
     @State private var selectedTab = 0
+    var user: User?
     var body: some View {
+      
+      if let u = user {
         VStack {
             // Top Menu for Tab Selection
             Picker(selection: $selectedTab, label: Text("")) {
@@ -25,16 +28,22 @@ struct FriendsView: View {
             
             // Tab Content
             TabView(selection: $selectedTab) {
-              FriendsListView(user: dbDocuments.users[0])
+              FriendsListView(user: u)
+                  .environmentObject(dbDocuments)
                   .tag(0)
-              RecommendationsView(user: dbDocuments.users[0])
+              RecommendationsView(user: u)
+                  .environmentObject(dbDocuments)
                   .tag(1)
             }
         }
+      } else {
+        LoginView().environmentObject(dbDocuments)
+      }
     }
 }
 
 struct FriendsListView: View {
+    @EnvironmentObject var dbDocuments: DBDocuments
     var user: User
     @State private var friends: [User] = []
 
@@ -44,45 +53,25 @@ struct FriendsListView: View {
                 Text("No friends")
             } else {
                 List(friends, id: \.id) { friend in
-                    NavigationLink(destination: UserDetailView(user: friend)) {
+                  NavigationLink(destination: OtherUserProfileView(otherUser: friend, currUser: user).environmentObject(dbDocuments)) {
                         Text(friend.name)
                     }
                 }
             }
         }
         .onAppear {
-            fetchFriends() { fetchedFriends  in
+          fetchFriends(user: user) { fetchedFriends in
               friends = fetchedFriends
-            }
-        }
-    }
-
-    // Function to fetch the user's friends
-    func fetchFriends(completion: @escaping ([User]) -> Void) {
-        // Create a dispatch group to wait for all friend fetches to complete
-        let group = DispatchGroup()
-
-        var friends: [User] = []
-
-        for f in user.friends {
-            group.enter()
-            dbDocuments.getUserByRef(user_ref: f) { friend in
-                if let friend = friend {
-                    friends.append(friend)
-                }
-                group.leave()
-            }
-        }
-
-        group.notify(queue: .main) {
-            completion(friends)
+          }
         }
     }
 }
 
 struct RecommendationsView: View {
+    @EnvironmentObject var dbDocuments: DBDocuments
     var user: User
     @State private var recs: [User] = []
+    @State private var friends: [User] = []
 
     var body: some View {
         VStack {
@@ -90,45 +79,66 @@ struct RecommendationsView: View {
                 Text("No recommendations")
             } else {
                 List(recs, id: \.id) { rec in
-                    NavigationLink(destination: UserDetailView(user: rec)) {
+                  NavigationLink(destination: OtherUserProfileView(otherUser: rec, currUser: user).environmentObject(dbDocuments)) {
                         Text(rec.name)
                     }
                 }
             }
         }
         .onAppear {
-            fetchRecs() { fetchedRecs  in
-              recs = fetchedRecs
+            friends = []
+            recs = []
+            fetchFriends(user: user) { fetchedFriends in
+                friends = fetchedFriends
+            }
+            fetchRecs() { fetchedRecs in
+                recs = fetchedRecs
             }
         }
     }
     
-    // Function to fetch friend recommendations for the user
+    // Function to populate friend recommendations for the user
+    // TODO: Currently, this is a basic level of recommendation (any user on the app which is not me or my friend). In the next iteration, the recommendation algorithm should be more advanced (i.e. users who went to the same school as me)
     func fetchRecs(completion: @escaping ([User]) -> Void) {
-        // Create a dispatch group to wait for all friend fetches to complete
-        let group = DispatchGroup()
-
-        var friends: [User] = []
-
-        // TODO: Fix this to find all users who go to same school or hometown
-        for f in user.friends {
-            group.enter()
-            dbDocuments.getUserByRef(user_ref: f) { friend in
-                if let friend = friend {
-                    friends.append(friend)
-                }
-                group.leave()
+      dbDocuments.getAllUsers() { users in
+        for u in users {
+          if !friends.contains(where: { friend in
+            return friend.id == u.id
+          }) {
+            if u.id != user.id {
+              recs.append(u)
             }
+          }
+          completion(recs)
         }
-
-        group.notify(queue: .main) {
-            completion(friends)
-        }
+      }
     }
 }
 
-struct FriendsView_Previews: PreviewProvider {
-    static var previews: some View {
-        FriendsView()
+// Function to fetch the user's friends
+func fetchFriends(user: User, completion: @escaping ([User]) -> Void) {
+    // Create a dispatch group to wait for all friend fetches to complete
+    let group = DispatchGroup()
+
+    var friends: [User] = []
+
+    for f in user.friends {
+        group.enter()
+        dbDocuments.getUserByRef(user_ref: f) { friend in
+            if let friend = friend {
+                friends.append(friend)
+            }
+            group.leave()
+        }
+    }
+
+    group.notify(queue: .main) {
+        completion(friends)
     }
 }
+
+//struct FriendsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        FriendsView()
+//    }
+//}
