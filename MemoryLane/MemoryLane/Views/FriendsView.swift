@@ -8,8 +8,6 @@
 import SwiftUI
 import Firebase
 
-// TODO: get currently signed-in user instead of dbDocuments.users[0]
-
 struct FriendsView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
     @State private var selectedTab = 0

@@ -23,7 +23,8 @@ struct AppView: View {
           Text("Profile")
         }
         FriendsView(user: user, friends: []).tabItem {
-            Text("Friends")
+          Image(systemName: "person.2")
+          Text("Friends")
         }
       }
       .environmentObject(dbDocuments)
