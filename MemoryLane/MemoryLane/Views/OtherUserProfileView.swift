@@ -139,11 +139,7 @@ struct OtherUserProfileView: View {
   
   private func checkFriendStatus() {
     dbDocuments.checkFriendStatus(user: currUser, possibleFriend: otherUser) { res in
-      if res {
-        isFriend = res
-      } else {
-        print("Error getting user document")
-      }
+      isFriend = res
     }
   }
   

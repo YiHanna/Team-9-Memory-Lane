@@ -108,10 +108,8 @@ class DBDocuments: ObservableObject {
           for document in querySnapshot!.documents {
             if let post = try? document.data(as: Post.self) {
               result.append(post)
-              print("append")
             }
           }
-          print(result.count)
           completion(result)
         }
       }
@@ -191,6 +189,53 @@ class DBDocuments: ObservableObject {
       }
       return friends
     }
+  
+  func getFriendReferencesFromDB(user: User, completion: @escaping ([DocumentReference]?) -> Void) {
+    let user_ref = self.getUserById(id: user.id)
+    if let user_ref = user_ref {
+      user_ref.getDocument { (document, error) in
+        if let error = error {
+          print("Error getting user document: \(error)")
+          completion(nil)
+          return
+        }
+        
+        if let document = document, document.exists {
+          if let references = document.get("friends") as? [DocumentReference] {
+            completion(references)
+          } else {
+            completion(nil) // The field is not an array of document references
+          }
+        } else {
+          print("User document does not exist")
+          completion(nil) // User document doesn't exist
+        }
+      }
+    }
+  }
+  
+  func getFriendsFromDB(user: User, completion: @escaping ([User]?) -> Void) {
+      var friends: [User] = []
+      self.getFriendReferencesFromDB(user: user) { references in
+          if let references = references {
+              let dispatchGroup = DispatchGroup()
+              for ref in references {
+                  dispatchGroup.enter()
+                  self.getUserByRef(user_ref: ref) { u in
+                      if let u = u {
+                          friends.append(u)
+                      }
+                      dispatchGroup.leave()
+                  }
+              }
+              dispatchGroup.notify(queue: .main) {
+                  completion(friends)
+              }
+          } else {
+              completion(nil)
+          }
+      }
+  }
     
     func createPost(data : [String:Any]){
         store.collection("post").addDocument(data: data){ error in

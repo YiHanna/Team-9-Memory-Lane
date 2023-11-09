@@ -14,6 +14,7 @@ struct FriendsView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
     @State private var selectedTab = 0
     var user: User?
+    @State var friends: [User]
     var body: some View {
       
       if let u = user {
@@ -28,13 +29,20 @@ struct FriendsView: View {
             
             // Tab Content
             TabView(selection: $selectedTab) {
-              FriendsListView(user: u)
+              FriendsListView(user: u, friends: $friends)
                   .environmentObject(dbDocuments)
                   .tag(0)
-              RecommendationsView(user: u)
+              RecommendationsView(user: u, friends: $friends)
                   .environmentObject(dbDocuments)
                   .tag(1)
             }
+        }
+        .onAppear {
+          dbDocuments.getFriendsFromDB(user: u) { res in
+            if let f = res {
+              friends = f
+            }
+          }
         }
       } else {
         LoginView().environmentObject(dbDocuments)
@@ -45,14 +53,14 @@ struct FriendsView: View {
 struct FriendsListView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
     var user: User
-    @State private var friends: [User] = []
+    @Binding var friends: [User]
 
     var body: some View {
         VStack {
             if friends.isEmpty {
                 Text("No friends")
             } else {
-                List(friends, id: \.id) { friend in
+                List(friends) { friend in
                   NavigationLink(destination: OtherUserProfileView(otherUser: friend, currUser: user).environmentObject(dbDocuments)) {
                         Text(friend.name)
                     }
@@ -60,8 +68,10 @@ struct FriendsListView: View {
             }
         }
         .onAppear {
-          fetchFriends(user: user) { fetchedFriends in
-              friends = fetchedFriends
+          dbDocuments.getFriendsFromDB(user: user) { res in
+            if let f = res {
+              friends = f
+            }
           }
         }
     }
@@ -71,14 +81,14 @@ struct RecommendationsView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
     var user: User
     @State private var recs: [User] = []
-    @State private var friends: [User] = []
+    @Binding var friends: [User]
 
     var body: some View {
         VStack {
             if recs.isEmpty {
                 Text("No recommendations")
             } else {
-                List(recs, id: \.id) { rec in
+                List(recs) { rec in
                   NavigationLink(destination: OtherUserProfileView(otherUser: rec, currUser: user).environmentObject(dbDocuments)) {
                         Text(rec.name)
                     }
@@ -88,11 +98,13 @@ struct RecommendationsView: View {
         .onAppear {
             friends = []
             recs = []
-            fetchFriends(user: user) { fetchedFriends in
-                friends = fetchedFriends
-            }
-            fetchRecs() { fetchedRecs in
-                recs = fetchedRecs
+            dbDocuments.getFriendsFromDB(user: user) { res in
+              if let f = res {
+                friends = f
+                fetchRecs() { fetchedRecs in
+                    recs = fetchedRecs
+                }
+              }
             }
         }
     }

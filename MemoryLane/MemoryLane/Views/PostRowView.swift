@@ -73,14 +73,12 @@ struct PostRowView: View {
             post.getLocation { locationString in
               location = locationString
             }
-            print("PostRowView Appear")
         }
     }
   
     private func fetchUserName() {
       dbDocuments.getUserName(user_ref: post.user_id) { (fetchedName) in
           userName = fetchedName
-          print("username fetched: \(userName)")
       }
     }
     
