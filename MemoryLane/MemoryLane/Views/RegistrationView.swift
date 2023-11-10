@@ -13,7 +13,6 @@ struct RegistrationView: View {
   @State var email = ""
   @State var password = ""
   @State var passwordConfirmation = ""
-  @State var schools:[String] = []
   @State var hometown = ""
   @State var current_city = ""
   
@@ -22,7 +21,7 @@ struct RegistrationView: View {
   var body: some View {
     NavigationView {
       if isEmailPasswordComplete {
-        RegistrationViewUserInfo(username: $username, name: $name, schools: $schools, hometown: $hometown, current_city: $current_city, email: $email, password: $password)
+        RegistrationViewUserInfo(username: $username, name: $name, email: $email, password: $password, hometown: $hometown, current_city: $current_city)
       } else {
         RegistrationViewInit(email: $email, password: $password, passwordConfirmation: $passwordConfirmation, isComplete: $isEmailPasswordComplete)
       }
@@ -70,18 +69,22 @@ struct RegistrationViewInit: View {
         .cornerRadius(10)
         .padding(.top)
       }
-    }
+    }.navigationBarBackButtonHidden(true)
   }
 }
 
 struct RegistrationViewUserInfo: View {
   @Binding var username: String
   @Binding var name: String
-  @Binding var schools:[String]
-  @Binding var hometown: String
-  @Binding var current_city: String
   @Binding var email: String
   @Binding var password: String
+  @Binding var hometown: String
+  @Binding var current_city: String
+  
+  @State var e_school: String = ""
+  @State var m_school: String = ""
+  @State var h_school: String = ""
+  @State var university: String = ""
   
   @State var user: User? = nil
   
@@ -89,28 +92,66 @@ struct RegistrationViewUserInfo: View {
   
   var body: some View {
     VStack {
-      Text("A little bit about you")
-        .font(.title3)
-        .fontWeight(.heavy)
-      Text("Help us help you find your old connections.")
-        .font(.body)
-        .multilineTextAlignment(.center)
-        .padding(.all, 5.0)
+      VStack{
+        Text("A little bit about you")
+          .font(.title3)
+          .fontWeight(.heavy)
+        Text("Help us help you find your old connections.")
+          .font(.body)
+          .multilineTextAlignment(.center)
+          .padding(.all, 5.0)
+        
+        Text("Name")
+          .multilineTextAlignment(.leading)
+        TextField("Enter your name", text: $name)
+          .padding([.leading, .trailing])
+          .textFieldStyle(RoundedBorderTextFieldStyle())
+        
+        Text("Username")
+          .multilineTextAlignment(.leading)
+        TextField("Enter your name", text: $username)
+          .padding([.leading, .trailing])
+          .textFieldStyle(RoundedBorderTextFieldStyle())
+        
+        Text("Hometown")
+          .multilineTextAlignment(.leading)
+        TextField("Enter your hometown", text: $hometown)
+          .padding([.leading, .trailing])
+          .textFieldStyle(RoundedBorderTextFieldStyle())
+      }
       
-      Text("Name")
-        .multilineTextAlignment(.leading)
-        .padding(.top)
-      TextField("Enter your name", text: $name)
-        .padding([.leading, .bottom, .trailing])
-        .textFieldStyle(RoundedBorderTextFieldStyle())
-      
-      Text("Username")
-        .multilineTextAlignment(.leading)
-        .padding(.top)
-      TextField("Enter your name", text: $username)
-        .padding([.leading, .bottom, .trailing])
-        .textFieldStyle(RoundedBorderTextFieldStyle())
-
+      VStack{
+        Text("Elementary School")
+            .multilineTextAlignment(.leading)
+            .padding(.top)
+        TextField("Enter your elementary school", text: $e_school)
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+        Text("Middle School")
+            .multilineTextAlignment(.leading)
+        TextField("Enter your middle school", text: $m_school)
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+        Text("High School")
+            .multilineTextAlignment(.leading)
+        TextField("Enter your high school", text: $h_school)
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+        Text("University")
+            .multilineTextAlignment(.leading)
+        TextField("Enter your university", text: $university)
+            .padding([.leading,.trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+        Text("Current City")
+            .multilineTextAlignment(.leading)
+        TextField("Enter your current city", text: $current_city)
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+      }
       
       Button(action: registerUser) {
         Text("Register")
@@ -127,22 +168,24 @@ struct RegistrationViewUserInfo: View {
   private func registerUser() {
     dbDocuments.createUser(data: [
       "username": username,
-      "current_city": username,
+      "current_city": current_city,
       "email": email,
       "hometown": hometown,
       "name": name,
       "password": password,
       "friends": [],
       "schools": [
-        "elementary_school": "",
-        "middle_school": "",
-        "high_school": "",
-        "university": ""
+        "elementary_school": e_school,
+        "middle_school": m_school,
+        "high_school": h_school,
+        "university": university
       ],
       "posts_liked": []
     ])
     
-    user = dbDocuments.getUserByUsername(username: username)
+    dbDocuments.getCurrUser(){usr in
+       user = usr
+    }
     isUserCreated = true
   }
 }

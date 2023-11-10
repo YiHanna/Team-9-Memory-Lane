@@ -18,13 +18,13 @@ struct AppView: View {
           Image(systemName: "house")
           Text("Home")
         }
-        ProfileView(user: user).tabItem {
-          Image(systemName: "person.crop.circle")
-          Text("Profile")
-        }
         FriendsView(user: user, friends: []).tabItem {
           Image(systemName: "person.2")
           Text("Friends")
+        }
+        ProfileView(user: user).tabItem {
+            Image(systemName: "person.crop.circle")
+            Text("Profile")
         }
       }
       .environmentObject(dbDocuments)

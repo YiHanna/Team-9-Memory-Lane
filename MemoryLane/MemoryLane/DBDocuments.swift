@@ -68,17 +68,19 @@ class DBDocuments: ObservableObject {
               if let error = error {
                   print("Error fetching document: \(error)")
                   completion(nil)  // Call completion with nil
-              } else if let document = document, document.exists {
+              } else if let document = document {
                   let tmp = try? document.data(as: User.self)
                   if let user = tmp {
                       completion(user.name)  // Call completion with user name
                   } else {
-                      completion(nil)  // Call completion with nil
+                      print("Document does not exist \(user_ref), \(document)")
+                      completion(nil) 
                   }
-              } else {
-                  print("Document does not exist")
-                  completion(nil)  // Call completion with nil
               }
+//            else {
+//                  print("Document does not exist \(user_ref), \(document)")
+//                  completion(nil)  // Call completion with nil
+//              }
           }
       }
 
@@ -253,6 +255,16 @@ class DBDocuments: ObservableObject {
             print("current user set")
         }
     }
+  
+    func getCurrUser(completion: @escaping (User?) -> Void){
+         if let user_ref = currUser{
+             getUserByRef(user_ref: user_ref){ user in
+                 return completion(user)
+             }
+         }
+         completion(nil)
+     }
+
     
     func likePost(post:Post){
         if let id = post.id{
