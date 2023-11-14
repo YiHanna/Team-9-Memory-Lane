@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 import CoreLocation
 
 
-struct Post: Identifiable, Codable {
+struct Post: Identifiable, Codable, Comparable {
     // MARK: Fields
     @DocumentID var id: String?
     var user_id: DocumentReference
@@ -56,5 +56,9 @@ struct Post: Identifiable, Codable {
               completion("")
           }
       }
+  }
+  
+  static func < (lhs: Post, rhs: Post) -> Bool {
+    return (lhs.date.dateValue()) < (rhs.date.dateValue())
   }
 }

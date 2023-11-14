@@ -97,10 +97,10 @@ struct UserProfileView: View {
      }
     }
   private func getPosts() {
-    
     dbDocuments.getUserPosts(user_id: user.id){ (fetchedPosts) in
       if let p = fetchedPosts {
         posts = p
+        posts.sort()
         print("user posts fetched")
         print(posts.count)
       } else {

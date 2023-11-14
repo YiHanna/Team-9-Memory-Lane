@@ -93,33 +93,6 @@ class DBDocuments: ObservableObject {
       return nil
     }
   
-  func getUserPosts(user_id: String?, completion: @escaping ([Post]?) -> Void) {
-    if let uid = user_id {
-      let documentPath = "user/\(uid)"
-      let documentReference = store.document(documentPath)
-      let postsRef = store.collection("post").whereField("user_id", isEqualTo: documentReference)
-      
-      postsRef.getDocuments { (querySnapshot, error) in
-        if let error = error {
-          // Handle the error
-          print("Error getting posts: \(error.localizedDescription)")
-          completion(nil)
-        } else {
-          var result: [Post] = []
-          
-          for document in querySnapshot!.documents {
-            if let post = try? document.data(as: Post.self) {
-              result.append(post)
-            }
-          }
-          completion(result)
-        }
-      }
-    } else {
-      completion(nil)
-    }
-  }
-  
     func getUserByRef(user_ref: DocumentReference, completion: @escaping (User?) -> Void) {
         user_ref.getDocument { (document, error) in
             if let error = error {
@@ -264,6 +237,53 @@ class DBDocuments: ObservableObject {
          }
          completion(nil)
      }
+  
+  func getUserPosts(user_id: String?, completion: @escaping ([Post]?) -> Void) {
+    if let uid = user_id {
+      let documentPath = "user/\(uid)"
+      let documentReference = store.document(documentPath)
+      let postsRef = store.collection("post").whereField("user_id", isEqualTo: documentReference)
+      
+      postsRef.getDocuments { (querySnapshot, error) in
+        if let error = error {
+          // Handle the error
+          print("Error getting posts: \(error.localizedDescription)")
+          completion(nil)
+        } else {
+          var result: [Post] = []
+          
+          for document in querySnapshot!.documents {
+            if let post = try? document.data(as: Post.self) {
+              result.append(post)
+            }
+          }
+          completion(result)
+        }
+      }
+    } else {
+      completion(nil)
+    }
+  }
+  
+  func getHomepagePosts(completion: @escaping ([Post]?) -> Void) {
+    let postsRef = store.collection("post")
+    postsRef.getDocuments { (querySnapshot, error) in
+      if let error = error {
+        // Handle the error
+        print("Error getting posts: \(error.localizedDescription)")
+        completion(nil)
+      } else {
+        var result: [Post] = []
+        
+        for document in querySnapshot!.documents {
+          if let post = try? document.data(as: Post.self) {
+            result.append(post)
+          }
+        }
+        completion(result)
+      }
+    }
+  }
 
     
     func likePost(post:Post){

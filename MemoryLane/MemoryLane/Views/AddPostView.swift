@@ -82,7 +82,7 @@ struct AddPostView: View {
             .background(
                 NavigationLink("", destination: HomeView(), isActive: $isPostCreated)
             )
-        }.navigationBarBackButtonHidden(true)
+        }.navigationBarBackButtonHidden(false)
     }
         
     
