@@ -28,11 +28,13 @@ struct LoginView: View {
           TextField("Enter Username", text: $username)
             .padding([.leading, .bottom, .trailing])
             .textFieldStyle(RoundedBorderTextFieldStyle())
+            .autocapitalization(.none)
           
           Text("Password")
           SecureField("Enter Password", text: $password)
             .padding([.leading, .bottom, .trailing])
             .textFieldStyle(RoundedBorderTextFieldStyle())
+            .autocapitalization(.none)
           
             NavigationLink(destination: RegistrationView()) {
               Text("New User? Register Here ->")
@@ -46,6 +48,7 @@ struct LoginView: View {
             .background(Color.blue)
             .cornerRadius(10)
             .padding(.top)
+            .disabled(username.isEmpty || password.isEmpty)
         }
       }
     }

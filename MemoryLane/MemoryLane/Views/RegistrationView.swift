@@ -23,14 +23,14 @@ struct RegistrationView: View {
       if isEmailPasswordComplete {
         RegistrationViewUserInfo(username: $username, name: $name, email: $email, password: $password, hometown: $hometown, current_city: $current_city)
       } else {
-        RegistrationViewInit(email: $email, password: $password, passwordConfirmation: $passwordConfirmation, isComplete: $isEmailPasswordComplete)
+        RegistrationViewInit(username: $username, password: $password, passwordConfirmation: $passwordConfirmation, isComplete: $isEmailPasswordComplete)
       }
-    }
+    }.navigationBarBackButtonHidden(true)
   }
 }
 
 struct RegistrationViewInit: View {
-  @Binding var email: String
+  @Binding var username: String
   @Binding var password: String
   @Binding var passwordConfirmation: String
   @Binding var isComplete: Bool
@@ -46,17 +46,43 @@ struct RegistrationViewInit: View {
           .multilineTextAlignment(.center)
           .padding(.all, 5.0)
         
-        TextField("Enter Email", text: $email)
+        HStack{
+          Text("Username")
+            .multilineTextAlignment(.leading)
+          Text("*")
+            .foregroundColor(Color.red)
+            .multilineTextAlignment(.leading)
+        }
+        TextField("Enter Username", text: $username)
           .padding([.top, .leading, .trailing])
           .textFieldStyle(RoundedBorderTextFieldStyle())
+          .autocapitalization(.none)
         
+        HStack{
+          Text("Password")
+            .multilineTextAlignment(.leading)
+          Text("*")
+            .foregroundColor(Color.red)
+            .multilineTextAlignment(.leading)
+        }
+          .multilineTextAlignment(.leading)
         SecureField("Enter Password", text: $password)
           .padding([.top, .leading, .trailing])
           .textFieldStyle(RoundedBorderTextFieldStyle())
+          .autocapitalization(.none)
         
+        HStack{
+          Text("Confirm Password")
+            .multilineTextAlignment(.leading)
+          Text("*")
+            .foregroundColor(Color.red)
+            .multilineTextAlignment(.leading)
+        }
+          .multilineTextAlignment(.leading)
         SecureField("Confirm Password", text: $passwordConfirmation)
           .padding([.top, .leading, .trailing])
           .textFieldStyle(RoundedBorderTextFieldStyle())
+          .autocapitalization(.none)
         
         Button(action: {
                 isComplete = true
@@ -68,8 +94,17 @@ struct RegistrationViewInit: View {
         .background(Color.blue)
         .cornerRadius(10)
         .padding(.top)
+        .disabled(username.isEmpty || password.isEmpty || passwordConfirmation.isEmpty || (password != passwordConfirmation) || !usernameValid())
       }
     }.navigationBarBackButtonHidden(true)
+  }
+  private func usernameValid() -> Bool {
+    let check = dbDocuments.getUserByUsername(username: username)
+    if check != nil {
+      print("username exists")
+      return false
+    }
+    return true
   }
 }
 
@@ -101,17 +136,31 @@ struct RegistrationViewUserInfo: View {
           .multilineTextAlignment(.center)
           .padding(.all, 5.0)
         
-        Text("Name")
+        HStack{
+          Text("Name")
+            .multilineTextAlignment(.leading)
+          Text("*")
+            .foregroundColor(Color.red)
+            .multilineTextAlignment(.leading)
+        }
           .multilineTextAlignment(.leading)
         TextField("Enter your name", text: $name)
           .padding([.leading, .trailing])
           .textFieldStyle(RoundedBorderTextFieldStyle())
+          .autocapitalization(.words)
         
-        Text("Username")
+        HStack{
+          Text("Email")
+            .multilineTextAlignment(.leading)
+          Text("*")
+            .foregroundColor(Color.red)
+            .multilineTextAlignment(.leading)
+        }
           .multilineTextAlignment(.leading)
-        TextField("Enter your name", text: $username)
+        TextField("Enter your email", text: $email)
           .padding([.leading, .trailing])
           .textFieldStyle(RoundedBorderTextFieldStyle())
+          .autocapitalization(.none)
         
         Text("Hometown")
           .multilineTextAlignment(.leading)
@@ -162,6 +211,7 @@ struct RegistrationViewUserInfo: View {
       }
       .padding(.top)
       .background(NavigationLink("", destination: AppView(user: user), isActive: $isUserCreated))
+      .disabled(name.isEmpty || email.isEmpty)
     }
   }
     
