@@ -62,6 +62,11 @@ class DBDocuments: ObservableObject {
               currUser = ref
           }
       }
+  
+  func updateUser(id: String, data : [String:Any]) {
+    let ref = store.collection("user").document(id)
+    ref.updateData(data)
+  }
       
     func getUserName(user_ref: DocumentReference, completion: @escaping (String?) -> Void) {
           user_ref.getDocument { (document, error) in

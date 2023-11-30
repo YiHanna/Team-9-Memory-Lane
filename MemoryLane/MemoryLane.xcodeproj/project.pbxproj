@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7A9621B72AFADD9900DCE835 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9621B62AFADD9900DCE835 /* FriendsView.swift */; };
 		7A9621B92AFADDF500DCE835 /* OtherUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9621B82AFADDF500DCE835 /* OtherUserProfileView.swift */; };
+		D651CE182B1569E3009F14F9 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D651CE172B1569E3009F14F9 /* ProfileEditView.swift */; };
 		D6BE9F7B2AF773DD0036A191 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BE9F7A2AF773DD0036A191 /* LoginView.swift */; };
 		DF0E69642AF5685000DA222B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DF0E69632AF5685000DA222B /* FirebaseStorage */; };
 		DF50ECBB2AF295A700614805 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF50ECBA2AF295A700614805 /* RegistrationView.swift */; };
@@ -60,6 +61,7 @@
 /* Begin PBXFileReference section */
 		7A9621B62AFADD9900DCE835 /* FriendsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		7A9621B82AFADDF500DCE835 /* OtherUserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUserProfileView.swift; sourceTree = "<group>"; };
+		D651CE172B1569E3009F14F9 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		D6BE9F7A2AF773DD0036A191 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DF50ECBA2AF295A700614805 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		DF50ECBC2AF2B4AE00614805 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -129,16 +131,17 @@
 		DF8CDAB52AF42382003CEDB2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DF8CDAB82AF424DA003CEDB2 /* AppView.swift */,
 				DFC2F9A12AF1AAD900BE7707 /* ContentView.swift */,
 				DF50ECBA2AF295A700614805 /* RegistrationView.swift */,
-				DF50ECBC2AF2B4AE00614805 /* HomeView.swift */,
+				D651CE172B1569E3009F14F9 /* ProfileEditView.swift */,
 				DF8CDAB62AF4242E003CEDB2 /* ProfileView.swift */,
-				DF8CDAB82AF424DA003CEDB2 /* AppView.swift */,
+				DF50ECBC2AF2B4AE00614805 /* HomeView.swift */,
 				DF8CDABA2AF42A25003CEDB2 /* PostRowView.swift */,
 				DF8CDABE2AF44E40003CEDB2 /* PhotoCaptureView.swift */,
 				DF8CDAC02AF44E58003CEDB2 /* ImagePicker.swift */,
-				7A9621B62AFADD9900DCE835 /* FriendsView.swift */,
 				DF8CDAC22AF44E83003CEDB2 /* ImagePickerCordinator.swift */,
+				7A9621B62AFADD9900DCE835 /* FriendsView.swift */,
 				DF9CC3182AF4A0E40013EA95 /* AddPostView.swift */,
 				D6BE9F7A2AF773DD0036A191 /* LoginView.swift */,
 				7A9621B82AFADDF500DCE835 /* OtherUserProfileView.swift */,
@@ -375,6 +378,7 @@
 				D6BE9F7B2AF773DD0036A191 /* LoginView.swift in Sources */,
 				DF8CDAC32AF44E83003CEDB2 /* ImagePickerCordinator.swift in Sources */,
 				DF8CDAC12AF44E58003CEDB2 /* ImagePicker.swift in Sources */,
+				D651CE182B1569E3009F14F9 /* ProfileEditView.swift in Sources */,
 				7A9621B72AFADD9900DCE835 /* FriendsView.swift in Sources */,
 				DF9CC3192AF4A0E40013EA95 /* AddPostView.swift in Sources */,
 				DFC2F9DF2AF1C42500BE7707 /* DBDocuments.swift in Sources */,
