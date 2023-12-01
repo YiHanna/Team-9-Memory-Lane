@@ -37,66 +37,93 @@ struct RegistrationViewInit: View {
   
   var body: some View {
     NavigationView {
-      VStack {
-        Text("Sign up for Memory Lane")
-          .font(.title3)
-          .fontWeight(.heavy)
-        Text("Create an account and travel down memory lane with friends from yesterday, today, and tomorrow.")
-          .font(.body)
-          .multilineTextAlignment(.center)
-          .padding(.all, 5.0)
+      ZStack {
+        LinearGradient(
+          stops: [
+            Gradient.Stop(color: Color(red: 0.9, green: 0.89, blue: 0.86).opacity(0.82), location: 0.00),
+            Gradient.Stop(color: Color(red: 0.66, green: 0.62, blue: 0.57), location: 1.00),
+          ],
+          startPoint: UnitPoint(x: 0.5, y: -0.77),
+          endPoint: UnitPoint(x: 0.5, y: 0.74)
+        )
+        .edgesIgnoringSafeArea(.all)
         
-        HStack{
-          Text("Username")
-            .multilineTextAlignment(.leading)
-          Text("*")
-            .foregroundColor(Color.red)
-            .multilineTextAlignment(.leading)
-        }
-        TextField("Enter Username", text: $username)
-          .padding([.top, .leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .autocapitalization(.none)
-        
-        HStack{
-          Text("Password")
-            .multilineTextAlignment(.leading)
-          Text("*")
-            .foregroundColor(Color.red)
-            .multilineTextAlignment(.leading)
-        }
-          .multilineTextAlignment(.leading)
-        SecureField("Enter Password", text: $password)
-          .padding([.top, .leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .autocapitalization(.none)
-        
-        HStack{
-          Text("Confirm Password")
-            .multilineTextAlignment(.leading)
-          Text("*")
-            .foregroundColor(Color.red)
-            .multilineTextAlignment(.leading)
-        }
-          .multilineTextAlignment(.leading)
-        SecureField("Confirm Password", text: $passwordConfirmation)
-          .padding([.top, .leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .autocapitalization(.none)
-        
-        Button(action: {
-                isComplete = true
-            }) {
-                Text("Next")
+        VStack {
+          Image("logo")
+          
+          Text("Sign up for Memory Lane")
+            .font(.system(size: 20))
+            .bold()
+            .multilineTextAlignment(.center)
+            .foregroundColor(.white)
+            .frame(width: 300, height: 25, alignment: .top)
+          
+          Text("Create an account and travel down memory lane with friends from yesterday, today, and tomorrow.")
+            .font(.system(size: 16))
+            .italic()
+            .multilineTextAlignment(.center)
+            .foregroundColor(.white)
+            .frame(width: 330, alignment: .top)
+          
+          Group {
+            ZStack {
+              RoundedRectangle(cornerRadius: 10)
+                .stroke(.white, lineWidth: 2)
+                .frame(width: 330, height: 40)
+                .foregroundColor(.white)
+                .background(.clear)
+              
+              TextField("Username", text: $username)
+                .padding([.leading, .trailing])
+                .autocapitalization(.none)
+                .offset(x: 30)
+                .foregroundColor(.white)
             }
-        .foregroundColor(.white)
-        .padding()
-        .background(Color.blue)
-        .cornerRadius(10)
-        .padding(.top)
-        .disabled(username.isEmpty || password.isEmpty || passwordConfirmation.isEmpty || (password != passwordConfirmation) || !usernameValid())
+            
+            ZStack {
+              RoundedRectangle(cornerRadius: 10)
+                .stroke(.white, lineWidth: 2)
+                .frame(width: 330, height: 40)
+                .foregroundColor(.white)
+                .background(.clear)
+              
+              SecureField("Password", text: $password)
+                .padding([.leading, .trailing])
+                .autocapitalization(.none)
+                .offset(x: 30)
+                .foregroundColor(.white)
+            }
+            
+            ZStack {
+              RoundedRectangle(cornerRadius: 10)
+                .stroke(.white, lineWidth: 2)
+                .frame(width: 330, height: 40)
+                .foregroundColor(.white)
+                .background(.clear)
+              
+              SecureField("Confirm Password", text: $passwordConfirmation)
+                .padding([.leading, .trailing])
+                .autocapitalization(.none)
+                .offset(x: 30)
+                .foregroundColor(.white)
+            }
+          }
+          
+          Button(action: {
+            isComplete = true
+          }) {
+            Text("Next")
+          }
+          .foregroundColor(Color(red: 0.66, green: 0.62, blue: 0.57))
+          .padding()
+          .background(.white)
+          .cornerRadius(10)
+          .padding(.top)
+          .disabled(username.isEmpty || password.isEmpty || passwordConfirmation.isEmpty || (password != passwordConfirmation) || !usernameValid())
+        }
       }
-    }.navigationBarBackButtonHidden(true)
+    }
+    .navigationBarBackButtonHidden(true)
   }
   private func usernameValid() -> Bool {
     let check = dbDocuments.getUserByUsername(username: username)
@@ -126,92 +153,168 @@ struct RegistrationViewUserInfo: View {
   @State private var isUserCreated = false
   
   var body: some View {
-    VStack {
-      VStack{
-        Text("A little bit about you")
-          .font(.title3)
-          .fontWeight(.heavy)
-        Text("Help us help you find your old connections.")
-          .font(.body)
-          .multilineTextAlignment(.center)
-          .padding(.all, 5.0)
-        
-        HStack{
-          Text("Name")
-            .multilineTextAlignment(.leading)
-          Text("*")
-            .foregroundColor(Color.red)
-            .multilineTextAlignment(.leading)
-        }
-          .multilineTextAlignment(.leading)
-        TextField("Enter your name", text: $name)
-          .padding([.leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .autocapitalization(.words)
-        
-        HStack{
-          Text("Email")
-            .multilineTextAlignment(.leading)
-          Text("*")
-            .foregroundColor(Color.red)
-            .multilineTextAlignment(.leading)
-        }
-          .multilineTextAlignment(.leading)
-        TextField("Enter your email", text: $email)
-          .padding([.leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .autocapitalization(.none)
-        
-        Text("Hometown")
-          .multilineTextAlignment(.leading)
-        TextField("Enter your hometown", text: $hometown)
-          .padding([.leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-      }
+    ZStack {
+      LinearGradient(
+        stops: [
+          Gradient.Stop(color: Color(red: 0.9, green: 0.89, blue: 0.86).opacity(0.82), location: 0.00),
+          Gradient.Stop(color: Color(red: 0.66, green: 0.62, blue: 0.57), location: 1.00),
+        ],
+        startPoint: UnitPoint(x: 0.5, y: -0.77),
+        endPoint: UnitPoint(x: 0.5, y: 0.74)
+      )
+      .edgesIgnoringSafeArea(.all)
       
-      VStack{
-        Text("Elementary School")
-            .multilineTextAlignment(.leading)
-            .padding(.top)
-        TextField("Enter your elementary school", text: $e_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
+      VStack {
+        Image("logo")
           
-        Text("Middle School")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your middle school", text: $m_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
+        Group {
+          Text("A little bit about you")
+            .font(.system(size: 20))
+            .bold()
+            .multilineTextAlignment(.center)
+            .foregroundColor(.white)
+            .frame(width: 300, height: 25, alignment: .top)
+            
+          Text("Help us help you find your old connections.")
+            .font(.system(size: 16))
+            .italic()
+            .multilineTextAlignment(.center)
+            .foregroundColor(.white)
+            .frame(width: 330, alignment: .top)
           
-        Text("High School")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your high school", text: $h_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
+          ZStack {
+            RoundedRectangle(cornerRadius: 10)
+              .stroke(.white, lineWidth: 2)
+              .frame(width: 330, height: 40)
+              .foregroundColor(.white)
+              .background(.clear)
+            
+            TextField("Name", text: $name)
+              .padding([.leading, .trailing])
+              .autocapitalization(.words)
+              .offset(x: 30)
+              .foregroundColor(.white)
+          }
           
-        Text("University")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your university", text: $university)
-            .padding([.leading,.trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
+          ZStack {
+            RoundedRectangle(cornerRadius: 10)
+              .stroke(.white, lineWidth: 2)
+              .frame(width: 330, height: 40)
+              .foregroundColor(.white)
+              .background(.clear)
+            
+            TextField("Email", text: $email)
+              .padding([.leading, .trailing])
+              .autocapitalization(.none)
+              .offset(x: 30)
+              .foregroundColor(.white)
+          }
           
-        Text("Current City")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your current city", text: $current_city)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
+          ZStack {
+            RoundedRectangle(cornerRadius: 10)
+              .stroke(.white, lineWidth: 2)
+              .frame(width: 330, height: 40)
+              .foregroundColor(.white)
+              .background(.clear)
+            
+            TextField("Hometown", text: $hometown)
+              .padding([.leading, .trailing])
+              .autocapitalization(.words)
+              .offset(x: 30)
+              .foregroundColor(.white)
+          }
+        }
+          
+        Group {
+          Text("The following fields are optional but recommended for the best experience.")
+            .font(.system(size: 14))
+            .multilineTextAlignment(.center)
+            .foregroundColor(.white)
+            .frame(width: 330, alignment: .top)
+            .padding([.top])
+          
+          ZStack {
+            RoundedRectangle(cornerRadius: 10)
+              .stroke(.white, lineWidth: 2)
+              .frame(width: 330, height: 40)
+              .foregroundColor(.white)
+              .background(.clear)
+            
+            TextField("Your elementary school", text: $e_school)
+              .padding([.leading, .trailing])
+              .autocapitalization(.words)
+              .offset(x: 30)
+              .foregroundColor(.white)
+          }
+          
+          ZStack {
+            RoundedRectangle(cornerRadius: 10)
+              .stroke(.white, lineWidth: 2)
+              .frame(width: 330, height: 40)
+              .foregroundColor(.white)
+              .background(.clear)
+            
+            TextField("Your middle school", text: $m_school)
+              .padding([.leading, .trailing])
+              .autocapitalization(.words)
+              .offset(x: 30)
+              .foregroundColor(.white)
+          }
+          
+          ZStack {
+            RoundedRectangle(cornerRadius: 10)
+              .stroke(.white, lineWidth: 2)
+              .frame(width: 330, height: 40)
+              .foregroundColor(.white)
+              .background(.clear)
+            
+            TextField("Your high school", text: $h_school)
+              .padding([.leading, .trailing])
+              .autocapitalization(.words)
+              .offset(x: 30)
+              .foregroundColor(.white)
+          }
+          
+          ZStack {
+            RoundedRectangle(cornerRadius: 10)
+              .stroke(.white, lineWidth: 2)
+              .frame(width: 330, height: 40)
+              .foregroundColor(.white)
+              .background(.clear)
+            
+            TextField("Your university", text: $university)
+              .padding([.leading, .trailing])
+              .autocapitalization(.words)
+              .offset(x: 30)
+              .foregroundColor(.white)
+          }
+          
+          ZStack {
+            RoundedRectangle(cornerRadius: 10)
+              .stroke(.white, lineWidth: 2)
+              .frame(width: 330, height: 40)
+              .foregroundColor(.white)
+              .background(.clear)
+            
+            TextField("Your current city", text: $current_city)
+              .padding([.leading, .trailing])
+              .autocapitalization(.words)
+              .offset(x: 30)
+              .foregroundColor(.white)
+          }
+        }
+        
+        Button(action: registerUser) {
+          Text("Register")
+        }
+        .foregroundColor(Color(red: 0.66, green: 0.62, blue: 0.57))
+        .padding()
+        .background(.white)
+        .cornerRadius(10)
+        .padding(.top)
+        .background(NavigationLink("", destination: AppView(user: user), isActive: $isUserCreated))
+        .disabled(name.isEmpty || email.isEmpty || !isEmail(email))
       }
-      
-      Button(action: registerUser) {
-        Text("Register")
-          .foregroundColor(.white)
-          .padding()
-          .background(Color.blue)
-          .cornerRadius(10)
-      }
-      .padding(.top)
-      .background(NavigationLink("", destination: AppView(user: user), isActive: $isUserCreated))
-      .disabled(name.isEmpty || email.isEmpty || !isEmail(email))
     }
   }
     
