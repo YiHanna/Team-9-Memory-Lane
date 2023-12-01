@@ -19,36 +19,71 @@ struct LoginView: View {
       AppView(user: user)
     } else {
       NavigationView {
-        VStack() {
-          Text("Memory Lane")
-            .font(.largeTitle)
-            .padding(.bottom)
-          Text("Username")
-            .padding(.top)
-          TextField("Enter Username", text: $username)
-            .padding([.leading, .bottom, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .autocapitalization(.none)
+        ZStack {
+          LinearGradient(
+            stops: [
+              Gradient.Stop(color: Color.gradientLight, location: 0.00),
+              Gradient.Stop(color: Color.gradientDark, location: 1.00),
+            ],
+            startPoint: UnitPoint(x: 0.5, y: -0.77),
+            endPoint: UnitPoint(x: 0.5, y: 0.74)
+          )
+          .edgesIgnoringSafeArea(.all)
           
-          Text("Password")
-          SecureField("Enter Password", text: $password)
-            .padding([.leading, .bottom, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .autocapitalization(.none)
-          
+          VStack() {
+            Image("logo")
+            
+            Text("Memory Lane")
+              .font(.system(size: 20))
+              .bold()
+              .multilineTextAlignment(.center)
+              .foregroundColor(.white)
+              .frame(width: 300, height: 25, alignment: .top)
+              .padding(.bottom)
+            
+            ZStack {
+              RoundedRectangle(cornerRadius: 10)
+                .stroke(.white, lineWidth: 2)
+                .frame(width: 330, height: 40)
+                .background(.clear)
+              
+              TextField("Username", text: $username)
+                .padding([.leading, .trailing])
+                .autocapitalization(.none)
+                .offset(x: 30)
+                .foregroundColor(.white)
+            }
+            
+            ZStack {
+              RoundedRectangle(cornerRadius: 10)
+                .stroke(.white, lineWidth: 2)
+                .frame(width: 330, height: 40)
+                .background(.clear)
+              
+              SecureField("Password", text: $password)
+                .padding([.leading, .trailing])
+                .autocapitalization(.none)
+                .offset(x: 30)
+                .foregroundColor(.white)
+            }
+            
+            Button(action: {
+              userLogin(username: username, password: password)
+            }) {
+              Text("Login")
+            }.foregroundColor(Color.greyTan)
+              .padding()
+              .background(.white)
+              .cornerRadius(10)
+              .padding(.top)
+              .disabled(username.isEmpty || password.isEmpty)
+            
             NavigationLink(destination: RegistrationView()) {
-              Text("New User? Register Here ->")
+              Text("Don't have an account? Create one here")
+                .foregroundColor(.white)
+                .padding(.top)
+            }
           }
-          Button(action: {
-            userLogin(username: username, password: password)
-          }) {
-            Text("Login")
-          }.foregroundColor(.white)
-            .padding()
-            .background(Color.blue)
-            .cornerRadius(10)
-            .padding(.top)
-            .disabled(username.isEmpty || password.isEmpty)
         }
       }
     }

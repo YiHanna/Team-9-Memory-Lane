@@ -40,8 +40,8 @@ struct RegistrationViewInit: View {
       ZStack {
         LinearGradient(
           stops: [
-            Gradient.Stop(color: Color(red: 0.9, green: 0.89, blue: 0.86).opacity(0.82), location: 0.00),
-            Gradient.Stop(color: Color(red: 0.66, green: 0.62, blue: 0.57), location: 1.00),
+            Gradient.Stop(color: Color.gradientLight, location: 0.00),
+            Gradient.Stop(color: Color.gradientDark, location: 1.00),
           ],
           startPoint: UnitPoint(x: 0.5, y: -0.77),
           endPoint: UnitPoint(x: 0.5, y: 0.74)
@@ -114,7 +114,7 @@ struct RegistrationViewInit: View {
           }) {
             Text("Next")
           }
-          .foregroundColor(Color(red: 0.66, green: 0.62, blue: 0.57))
+          .foregroundColor(Color.greyTan)
           .padding()
           .background(.white)
           .cornerRadius(10)
@@ -156,8 +156,8 @@ struct RegistrationViewUserInfo: View {
     ZStack {
       LinearGradient(
         stops: [
-          Gradient.Stop(color: Color(red: 0.9, green: 0.89, blue: 0.86).opacity(0.82), location: 0.00),
-          Gradient.Stop(color: Color(red: 0.66, green: 0.62, blue: 0.57), location: 1.00),
+          Gradient.Stop(color: Color.gradientLight, location: 0.00),
+          Gradient.Stop(color: Color.gradientDark, location: 1.00),
         ],
         startPoint: UnitPoint(x: 0.5, y: -0.77),
         endPoint: UnitPoint(x: 0.5, y: 0.74)
@@ -307,7 +307,7 @@ struct RegistrationViewUserInfo: View {
         Button(action: registerUser) {
           Text("Register")
         }
-        .foregroundColor(Color(red: 0.66, green: 0.62, blue: 0.57))
+        .foregroundColor(Color.greyTan)
         .padding()
         .background(.white)
         .cornerRadius(10)
