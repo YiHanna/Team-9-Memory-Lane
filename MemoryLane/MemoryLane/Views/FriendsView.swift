@@ -77,6 +77,7 @@ struct FriendsListView: View {
 
 struct RecommendationsView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
+    @ObservedObject var viewModel = ViewModel()
     var user: User
     @State private var recs: [User] = []
     @Binding var friends: [User]
@@ -89,17 +90,18 @@ struct RecommendationsView: View {
                 List(recs) { rec in
                   NavigationLink(destination: OtherUserProfileView(otherUser: rec, currUser: user).environmentObject(dbDocuments)) {
                         Text(rec.name)
+                        Text("similarity score: " + String((viewModel.getSimilarityScore(user, rec) * 100).rounded() / 100)).font(.caption)
+                          .foregroundColor(.gray)
                     }
                 }
             }
         }
         .onAppear {
             friends = []
-            recs = []
             dbDocuments.getFriendsFromDB(user: user) { res in
               if let f = res {
                 friends = f
-                fetchRecs() { fetchedRecs in
+                viewModel.fetchRecs(friends: friends, user: user, recs: recs) { fetchedRecs in
                     recs = fetchedRecs
                 }
               }
@@ -107,22 +109,7 @@ struct RecommendationsView: View {
         }
     }
     
-    // Function to populate friend recommendations for the user
-    // TODO: Currently, this is a basic level of recommendation (any user on the app which is not me or my friend). In the next iteration, the recommendation algorithm should be more advanced (i.e. users who went to the same school as me)
-    func fetchRecs(completion: @escaping ([User]) -> Void) {
-      dbDocuments.getAllUsers() { users in
-        for u in users {
-          if !friends.contains(where: { friend in
-            return friend.id == u.id
-          }) {
-            if u.id != user.id {
-              recs.append(u)
-            }
-          }
-          completion(recs)
-        }
-      }
-    }
+    
 }
 
 // Function to fetch the user's friends

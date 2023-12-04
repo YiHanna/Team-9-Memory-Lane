@@ -71,4 +71,46 @@ class ViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             }
         }
     }
+    
+    // Function to populate friend recommendations for the user
+    // TODO: Currently, this is a basic level of recommendation (any user on the app which is not me or my friend). In the next iteration, the recommendation algorithm should be more advanced (i.e. users who went to the same school as me)
+    func fetchRecs(friends: [User], user: User, recs: [User], completion: @escaping ([User]) -> Void) {
+        var scores: [(User, Double)] = []
+        dbDocuments.getAllUsers() { users in
+            for u in users {
+                
+                if !friends.contains(where: { friend in
+                    return friend.id == u.id
+                }) {
+                    if u.id != user.id {
+                        scores.append((u, self.getSimilarityScore(u, user)))
+                    }
+                }
+              
+            }
+            
+            completion(scores.sorted(by: { $0.1 > $1.1 }).prefix(5).map { $0.0 })
+        }
+    }
+    
+    func getSimilarityScore(_ u: User, _ user: User) -> Double {
+        let schoolSimilarity = self.calculateSchoolSimilarity(u, user)
+        let hometownSimilarity = self.calculateHometownSimilarity(u, user)
+        let currentCitySimilarity = self.calculateCurrentCitySimilarity(u, user)
+        
+        return (schoolSimilarity + hometownSimilarity + currentCitySimilarity) / 3
+    }
+    
+    func calculateSchoolSimilarity(_ user1: User, _ user2: User) -> Double {
+        let commonSchools = Set(user1.schools.values).intersection(Set(user2.schools.values))
+        return Double(commonSchools.count) / Double(max(user1.schools.count, user2.schools.count))
+    }
+    
+    func calculateHometownSimilarity(_ user1: User, _ user2: User) -> Double {
+        return user1.hometown == user2.hometown ? 1.0 : 0.0
+    }
+    
+    func calculateCurrentCitySimilarity(_ user1: User, _ user2: User) -> Double {
+        return user1.current_city == user2.current_city ? 1.0 : 0.0
+    }
 }

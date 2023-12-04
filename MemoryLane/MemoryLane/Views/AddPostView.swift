@@ -11,6 +11,7 @@ import Firebase
 import FirebaseFirestore
 
 struct AddPostView: View {
+    var showPrompt : Bool
     @State var showImagePicker: Bool = false
     @State var image: UIImage? = nil
   
@@ -32,6 +33,11 @@ struct AddPostView: View {
     var body: some View {
         NavigationView{
             VStack{
+                if showPrompt{
+                    if let p = dbDocuments.currPrompt{
+                        Text(p.text)
+                    }
+                }
                 displayImage?.resizable().scaledToFit().padding()
                 Button(action: {
                     self.showImagePicker = true
@@ -125,6 +131,6 @@ struct AddPostView: View {
 
 struct AddPostView_Previews: PreviewProvider {
     static var previews: some View {
-        AddPostView()
+        AddPostView(showPrompt: false)
     }
 }

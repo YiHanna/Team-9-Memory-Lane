@@ -20,7 +20,9 @@ class DBDocuments: ObservableObject {
   
     @Published var users : [User] = []
     @Published var posts : [Post] = []
+    @Published var prompts : [Prompt] = []
     @Published var currUser : DocumentReference?
+    @Published var currPrompt : Prompt?
     private let store = Firestore.firestore()
   
     init() {
@@ -49,7 +51,36 @@ class DBDocuments: ObservableObject {
               try? document.data(as: Post.self)
             } ?? []
         }
+        
+        store.collection("prompt").addSnapshotListener { querySnapshot, error in
+            if let error = error {
+              print("Error getting post: \(error.localizedDescription)")
+              return
+            }
+
+            self.prompts = querySnapshot?.documents.compactMap { document in
+              try? document.data(as: Prompt.self)
+            } ?? []
+            
+            for p in self.prompts {
+                if p.on{
+                    self.currPrompt = p
+                }
+            }
+        }
     }
+    
+    func removePostFromDB(_ post: Post){
+        let ref = store.collection("post").document(post.id!)
+        ref.delete { error in
+            if let error = error {
+                print("Error removing post: \(error)")
+            } else {
+                print("Post successfully removed!")
+            }
+        }
+    }
+    
   
       func createUser(data : [String:Any]){
           let reference: DocumentReference? = store.collection("user").addDocument(data: data) { error in

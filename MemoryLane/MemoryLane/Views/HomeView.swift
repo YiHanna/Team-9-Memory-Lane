@@ -10,14 +10,23 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
     @State var posts: [Post] = []
+    @State private var prompt : String = "What was one of your childhood Halloween costumes?"
     var body: some View {
         NavigationView {
             VStack{
                 Spacer()
-                VStack{
-                    Text("Today's Prompt")
-                    Text("What was one of your childhood Halloween costumes?")
-                }.background(Color(red: 0.949, green: 0.941, blue: 0.925, opacity: 1.0))
+                NavigationLink(destination: AddPostView(showPrompt: true)) {
+                    VStack{
+                        Text("Today's Prompt")
+                        if let p = dbDocuments.currPrompt{
+                            Text(p.text)
+                        }else{
+                            Text(prompt)
+                        }
+                    }.background(Color(red: 0.949, green: 0.941, blue: 0.925, opacity: 1.0))
+                }.environmentObject(dbDocuments)
+                
+                
                 List {
                     ForEach(posts) { post in
                       PostRowView(post: post)
@@ -25,7 +34,7 @@ struct HomeView: View {
                 }
                 .navigationBarTitle("Posts")
                 .navigationBarItems(trailing:
-                  NavigationLink(destination: AddPostView()) {
+                  NavigationLink(destination: AddPostView(showPrompt: false)) {
                       Image(systemName: "plus")
                   }.environmentObject(dbDocuments)
                 )

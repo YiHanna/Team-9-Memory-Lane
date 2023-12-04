@@ -89,7 +89,7 @@ struct UserProfileView: View {
           List {
             ForEach(posts) { post in
               PostRowView(post: post)
-            }
+            }.onDelete(perform: deletePost)
           }
         }
         .navigationBarTitle("Profile")
@@ -110,6 +110,20 @@ struct UserProfileView: View {
       LoginView()
     }
   }
+    
+    private func deletePost(at offsets: IndexSet){
+        let postsToDelete = offsets.map { posts[$0] }
+        
+        for post in postsToDelete {
+            print("Deleting post: \(post)")
+            
+            dbDocuments.removePostFromDB(post)
+        }
+        
+        posts.remove(atOffsets: offsets)
+    }
+    
+    
   private func getPosts() {
     dbDocuments.getUserPosts(user_id: user.id){ (fetchedPosts) in
       if let p = fetchedPosts {
