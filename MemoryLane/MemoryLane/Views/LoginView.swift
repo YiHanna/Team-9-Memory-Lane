@@ -71,7 +71,7 @@ struct LoginView: View {
               userLogin(username: username, password: password)
             }) {
               Text("Login")
-            }.foregroundColor(Color.greyTan)
+            }.foregroundColor(Color.taupe)
               .padding()
               .background(.white)
               .cornerRadius(10)
@@ -80,6 +80,7 @@ struct LoginView: View {
             
             NavigationLink(destination: RegistrationView()) {
               Text("Don't have an account? Create one here")
+                .font(.system(size: 14))
                 .foregroundColor(.white)
                 .padding(.top)
             }
@@ -115,8 +116,8 @@ struct LoginView: View {
 //    }
 }
 
-struct LoginView_Preview: PreviewProvider {
-    static var previews: some View {
-        LoginView()
-    }
-}
+//struct LoginView_Preview: PreviewProvider {
+//    static var previews: some View {
+//        LoginView()
+//    }
+//}

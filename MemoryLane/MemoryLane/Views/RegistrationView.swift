@@ -59,7 +59,7 @@ struct RegistrationViewInit: View {
             .frame(width: 300, height: 25, alignment: .top)
           
           Text("Create an account and travel down memory lane with friends from yesterday, today, and tomorrow.")
-            .font(.system(size: 16))
+            .font(.system(size: 14))
             .italic()
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
@@ -114,7 +114,7 @@ struct RegistrationViewInit: View {
           }) {
             Text("Next")
           }
-          .foregroundColor(Color.greyTan)
+          .foregroundColor(Color.taupe)
           .padding()
           .background(.white)
           .cornerRadius(10)
@@ -176,7 +176,7 @@ struct RegistrationViewUserInfo: View {
             .frame(width: 300, height: 25, alignment: .top)
             
           Text("Help us help you find your old connections.")
-            .font(.system(size: 16))
+            .font(.system(size: 14))
             .italic()
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
@@ -307,7 +307,7 @@ struct RegistrationViewUserInfo: View {
         Button(action: registerUser) {
           Text("Register")
         }
-        .foregroundColor(Color.greyTan)
+        .foregroundColor(Color.taupe)
         .padding()
         .background(.white)
         .cornerRadius(10)
@@ -353,8 +353,8 @@ struct RegistrationViewUserInfo: View {
   }
 }
 
-struct RegistrationView_Previews: PreviewProvider {
-    static var previews: some View {
-        RegistrationView()
-    }
-}
+//struct RegistrationView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RegistrationView()
+//    }
+//}
