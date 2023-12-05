@@ -58,79 +58,96 @@ struct ProfileEditView: View {
   }
     
   var body: some View {
-    VStack {
+    ScrollView {
       VStack{
-        HStack{
-          Text("Name")
-            .multilineTextAlignment(.leading)
-          Text("*")
-            .foregroundColor(Color.red)
-            .multilineTextAlignment(.leading)
-        }
-          .multilineTextAlignment(.leading)
-        TextField("Enter your name", text: $name)
-          .padding([.leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .autocapitalization(.words)
+        Spacer()
         
-        HStack{
-          Text("Email")
-            .multilineTextAlignment(.leading)
-          Text("*")
-            .foregroundColor(Color.red)
-            .multilineTextAlignment(.leading)
+        Group {
+          HStack{
+            Text("Name")
+            Text("*")
+              .foregroundColor(Color.red)
+          }
+          .font(.system(size: 14))
+          .frame(maxWidth: .infinity, alignment: .leading)
+          
+          TextField("Enter your name", text: $name)
+            .font(.system(size: 14))
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .autocapitalization(.words)
+          
+          HStack{
+            Text("Email")
+            Text("*")
+              .foregroundColor(Color.red)
+          }
+          .font(.system(size: 14))
+          .frame(maxWidth: .infinity, alignment: .leading)
+          
+          TextField("Enter your email", text: $email)
+            .font(.system(size: 14))
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .autocapitalization(.none)
+          
+          Text("Hometown")
+            .font(.system(size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+          
+          TextField("Enter your hometown", text: $hometown)
+            .font(.system(size: 14))
+            .textFieldStyle(RoundedBorderTextFieldStyle())
         }
-          .multilineTextAlignment(.leading)
-        TextField("Enter your email", text: $email)
-          .padding([.leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .autocapitalization(.none)
         
-        Text("Hometown")
-          .multilineTextAlignment(.leading)
-        TextField("Enter your hometown", text: $hometown)
-          .padding([.leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
+        VStack{
+          Text("Elementary School")
+            .font(.system(size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+          
+          TextField("Enter your elementary school", text: $e_school)
+            .font(.system(size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+          Text("Middle School")
+            .font(.system(size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+          
+          TextField("Enter your middle school", text: $m_school)
+            .font(.system(size: 14))
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+          Text("High School")
+            .font(.system(size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+          
+          TextField("Enter your high school", text: $h_school)
+            .font(.system(size: 14))
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+          Text("University")
+            .font(.system(size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+          
+          TextField("Enter your university", text: $university)
+            .font(.system(size: 14))
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+          Text("Current City")
+            .font(.system(size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+          
+          TextField("Enter your current city", text: $current_city)
+            .font(.system(size: 14))
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+        }
       }
-      
-      VStack{
-        Text("Elementary School")
-            .multilineTextAlignment(.leading)
-            .padding(.top)
-        TextField("Enter your elementary school", text: $e_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-          
-        Text("Middle School")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your middle school", text: $m_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-          
-        Text("High School")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your high school", text: $h_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-          
-        Text("University")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your university", text: $university)
-            .padding([.leading,.trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-          
-        Text("Current City")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your current city", text: $current_city)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-      }
+      .padding(.horizontal, 15)
       
       Button(action: updateUser) {
         Text("Update")
           .foregroundColor(.white)
           .padding()
-          .background(Color.blue)
+          .background(Color.taupe)
           .cornerRadius(10)
       }
       .padding(.top)
@@ -167,12 +184,12 @@ struct ProfileEditView: View {
   }
 }
 
-struct ProfileEditView_Preview: PreviewProvider {
-    static var previews: some View {
-      if let user1 = dbDocuments.getUserByUsername(username: "user1") {
-        ProfileEditView(user: user1)
-      } else {
-        RegistrationView()
-      }
-    }
-}
+//struct ProfileEditView_Preview: PreviewProvider {
+//    static var previews: some View {
+//      if let user1 = dbDocuments.getUserByUsername(username: "user1") {
+//        ProfileEditView(user: user1)
+//      } else {
+//        RegistrationView()
+//      }
+//    }
+//}
