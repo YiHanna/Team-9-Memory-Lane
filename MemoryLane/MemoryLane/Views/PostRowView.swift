@@ -24,7 +24,7 @@ struct PostRowView: View {
                     Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
                 }
                 .edgesIgnoringSafeArea(.all)
-            }else{
+            } else{
                 Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
                     .edgesIgnoringSafeArea(.all)
             }
