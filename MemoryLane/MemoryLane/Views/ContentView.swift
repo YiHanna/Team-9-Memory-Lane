@@ -19,7 +19,7 @@ extension Color {
     Color(red: 0.44314, green: 0.23922, blue: 0)
   }
   
-  static var greyTan: Color {
+  static var taupe: Color {
     Color(red: 0.66, green: 0.62, blue: 0.57)
   }
   
@@ -38,8 +38,8 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}

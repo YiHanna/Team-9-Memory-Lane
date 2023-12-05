@@ -71,7 +71,9 @@ struct ProfileEditView: View {
   var body: some View {
     ScrollView {
       VStack{
-        VStack{
+        Spacer()
+        
+        Group {
           HStack{
             Text("Name")
               .multilineTextAlignment(.leading)
@@ -79,9 +81,11 @@ struct ProfileEditView: View {
               .foregroundColor(Color.red)
               .multilineTextAlignment(.leading)
           }
-          .multilineTextAlignment(.leading)
+          .font(.system(size: 14))
+          .frame(maxWidth: .infinity, alignment: .leading)
+          
           TextField("Enter your name", text: $name)
-            .padding([.leading, .trailing])
+            .font(.system(size: 14))
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .autocapitalization(.words)
           
@@ -92,16 +96,20 @@ struct ProfileEditView: View {
               .foregroundColor(Color.red)
               .multilineTextAlignment(.leading)
           }
-          .multilineTextAlignment(.leading)
+          .font(.system(size: 14))
+          .frame(maxWidth: .infinity, alignment: .leading)
+          
           TextField("Enter your email", text: $email)
-            .padding([.leading, .trailing])
+            .font(.system(size: 14))
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .autocapitalization(.none)
           
           Text("Hometown")
-            .multilineTextAlignment(.leading)
+            .font(.system(size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
+          
           TextField("Enter your hometown", text: $hometown)
-            .padding([.leading, .trailing])
+            .font(.system(size: 14))
             .textFieldStyle(RoundedBorderTextFieldStyle())
         }
         
@@ -271,12 +279,12 @@ struct ProfileEditView: View {
   }
 }
 
-struct ProfileEditView_Preview: PreviewProvider {
-    static var previews: some View {
-      if let user1 = dbDocuments.getUserByUsername(username: "user1") {
-        ProfileEditView(user: user1)
-      } else {
-        RegistrationView()
-      }
-    }
-}
+//struct ProfileEditView_Preview: PreviewProvider {
+//    static var previews: some View {
+//      if let user1 = dbDocuments.getUserByUsername(username: "user1") {
+//        ProfileEditView(user: user1)
+//      } else {
+//        RegistrationView()
+//      }
+//    }
+//}
