@@ -76,51 +76,55 @@ struct ProfileEditView: View {
         Group {
           HStack{
             Text("Name")
-              .multilineTextAlignment(.leading)
             Text("*")
               .foregroundColor(Color.red)
-              .multilineTextAlignment(.leading)
           }
           .font(.system(size: 14))
           .frame(maxWidth: .infinity, alignment: .leading)
-          
+
           TextField("Enter your name", text: $name)
             .font(.system(size: 14))
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .autocapitalization(.words)
-          
+
           HStack{
             Text("Email")
-              .multilineTextAlignment(.leading)
             Text("*")
               .foregroundColor(Color.red)
-              .multilineTextAlignment(.leading)
           }
           .font(.system(size: 14))
           .frame(maxWidth: .infinity, alignment: .leading)
-          
+
           TextField("Enter your email", text: $email)
             .font(.system(size: 14))
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .autocapitalization(.none)
-          
+
           Text("Hometown")
             .font(.system(size: 14))
             .frame(maxWidth: .infinity, alignment: .leading)
-          
+
           TextField("Enter your hometown", text: $hometown)
             .font(.system(size: 14))
             .textFieldStyle(RoundedBorderTextFieldStyle())
         }
         
         VStack{
-          VStack {
+          VStack{
             Text("Elementary School")
-              .multilineTextAlignment(.leading)
-              .padding(.top)
-            TextField("Enter your elementary school", text: $e_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
+              .font(.system(size: 14))
+              .frame(maxWidth: .infinity, alignment: .leading)
+
+            TextField("Enter your elementary school", text: Binding(
+              get: { e_school },
+              set: {
+                e_school = $0
+                eViewModel.searchQuery = $0
+              }
+            ))
+              .font(.system(size: 14))
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .textFieldStyle(RoundedBorderTextFieldStyle())
             
             if (eViewModel.showLocationResults && !eViewModel.searchResults.isEmpty){
               List(eViewModel.searchResults, id: \.title) { result in
@@ -141,16 +145,16 @@ struct ProfileEditView: View {
           
           VStack{
             Text("Middle School")
-              .multilineTextAlignment(.leading)
+              .font(.system(size: 14))
+              .frame(maxWidth: .infinity, alignment: .leading)
             TextField("Enter your middle school", text: Binding(
               get: { m_school },
               set: {
                 m_school = $0
                 mViewModel.searchQuery = $0
               }
-            ))
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
+            )).font(.system(size: 14))
+              .textFieldStyle(RoundedBorderTextFieldStyle())
             if (mViewModel.showLocationResults && !mViewModel.searchResults.isEmpty) {
               List(mViewModel.searchResults, id: \.title) { result in
                 Text(result.title).onTapGesture {
@@ -170,7 +174,8 @@ struct ProfileEditView: View {
           
           VStack{
             Text("High School")
-              .multilineTextAlignment(.leading)
+              .font(.system(size: 14))
+              .frame(maxWidth: .infinity, alignment: .leading)
             TextField("Enter your high school", text: Binding(
               get: { h_school },
               set: {
@@ -178,7 +183,7 @@ struct ProfileEditView: View {
                 hViewModel.searchQuery = $0
               }
             ))
-            .padding([.leading, .trailing])
+            .font(.system(size: 14))
             .textFieldStyle(RoundedBorderTextFieldStyle())
             if (hViewModel.showLocationResults && !hViewModel.searchResults.isEmpty) {
               List(hViewModel.searchResults, id: \.title) { result in
@@ -199,7 +204,8 @@ struct ProfileEditView: View {
           
           VStack{
           Text("University")
-            .multilineTextAlignment(.leading)
+              .font(.system(size: 14))
+              .frame(maxWidth: .infinity, alignment: .leading)
           TextField("Enter your university", text: Binding(
                           get: { university },
                           set: {
@@ -207,7 +213,7 @@ struct ProfileEditView: View {
                             uViewModel.searchQuery = $0
                           }
                       ))
-            .padding()
+            .font(.system(size: 14))
             .textFieldStyle(RoundedBorderTextFieldStyle())
           
             if (uViewModel.showLocationResults && !uViewModel.searchResults.isEmpty) {
@@ -228,26 +234,24 @@ struct ProfileEditView: View {
           }
           
           Text("Current City")
-            .multilineTextAlignment(.leading)
+            .font(.system(size: 14))
+            .frame(maxWidth: .infinity, alignment: .leading)
           TextField("Enter your current city", text: $current_city)
-            .padding([.leading, .trailing])
+            .font(.system(size: 14))
             .textFieldStyle(RoundedBorderTextFieldStyle())
-        }.onChange(of: e_school) { _ in
-          // Update the search results based on the current text
-          eViewModel.searchQuery = e_school
-      }
+        }
         
         Button(action: updateUser) {
           Text("Update")
             .foregroundColor(.white)
             .padding()
-            .background(Color.blue)
+            .background(Color.taupe)
             .cornerRadius(10)
         }
         .padding(.top)
         .background(NavigationLink("", destination: ProfileView(user: user)))
         .disabled(name.isEmpty || email.isEmpty || !isEmail(email))
-      }
+      }.padding(.horizontal, 15)
     }
   }
     
@@ -272,7 +276,6 @@ struct ProfileEditView: View {
       if string.count > 100 {
           return false
       }
-//      let emailFormat = "(?:[\\p{L}0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[\\p{L}0-9!#$%\\&'*+/=?\\^_`{|}" + "~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\" + "x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[\\p{L}0-9](?:[a-" + "z0-9-]*[\\p{L}0-9])?\\.)+[\\p{L}0-9](?:[\\p{L}0-9-]*[\\p{L}0-9])?|\\[(?:(?:25[0-5" + "]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-" + "9][0-9]?|[\\p{L}0-9-]*[\\p{L}0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21" + "-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
       let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
       let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
       return emailPredicate.evaluate(with: string)
