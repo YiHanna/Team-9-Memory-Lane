@@ -157,21 +157,32 @@ struct UserProfileView: View {
                 .padding(.top, 15)
                 .padding([.leading, .trailing], 15)
               
-              ForEach(Array(postsDict.sorted(by: { $0.key > $1.key })), id: \.key) { year, postsInYear in
-                VStack {
-                  Text(String(year))
-                    .font(.system(size: 20))
-                    .bold()
-                    .foregroundColor(Color.brown)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, 5)
-                  
-                  ForEach(postsInYear) { post in
-                    PostRowView(post: post)
-                      .frame(width: 360)
-                  }.onDelete(perform: deletePost)
+              if posts.isEmpty {
+                Text("Nothing to see here.")
+                  .font(.system(size: 14))
+                  .foregroundColor(Color.taupe)
+                  .padding(.top, 5)
+              } else {
+                ForEach(Array(postsDict.sorted(by: { $0.key > $1.key })), id: \.key) { year, postsInYear in
+                  VStack {
+                    Text(String(year))
+                      .font(.system(size: 20))
+                      .bold()
+                      .foregroundColor(Color.brown)
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                      .padding(.top, 5)
+                    
+                    ForEach(postsInYear) { post in
+                      PostRowView(post: post)
+                        .frame(width: 360)
+                    }.onDelete(perform: deletePost)
+                  }
+                  .padding(.horizontal, 15)
                 }
-                .padding(.horizontal, 15)
+                Text("End of memory lane. Add memories for more!")
+                  .font(.system(size: 14))
+                  .foregroundColor(Color.taupe)
+                  .padding(.top, 5)
               }
             }
             .padding()
