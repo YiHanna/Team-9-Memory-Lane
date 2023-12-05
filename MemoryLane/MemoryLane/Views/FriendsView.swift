@@ -77,7 +77,7 @@ struct FriendsListView: View {
 
 struct RecommendationsView: View {
     @EnvironmentObject var dbDocuments: DBDocuments
-    @ObservedObject var viewModel = ViewModel()
+    @ObservedObject var viewModel = LocationViewModel()
     var user: User
     @State private var recs: [User] = []
     @Binding var friends: [User]

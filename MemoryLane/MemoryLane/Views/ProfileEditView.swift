@@ -25,6 +25,15 @@ struct ProfileEditView: View {
   @State var m_school: String = ""
   @State var h_school: String = ""
   @State var university: String = ""
+  
+  @Environment(\.defaultMinListRowHeight) var minRowHeight
+  @State private var isShowingUni: Bool = false
+  
+  @ObservedObject var eViewModel = ESchoolViewModel()
+  @ObservedObject var mViewModel = MSchoolViewModel()
+  @ObservedObject var hViewModel = HSchoolViewModel()
+  @ObservedObject var uViewModel = UniViewModel()
+  
   init(user: User) {
     _user = State(initialValue: user)
     _isEmailPasswordComplete = State(initialValue: false)
@@ -47,6 +56,7 @@ struct ProfileEditView: View {
     }
     if let hschool = user.schools["high_school"] {
       _h_school = State(initialValue: hschool)
+      hViewModel.searchQuery = hschool
     } else {
       _h_school = State(initialValue: "")
     }
@@ -55,87 +65,181 @@ struct ProfileEditView: View {
     } else {
       _university = State(initialValue: "")
     }
+    hViewModel.showLocationResults = false
   }
     
   var body: some View {
-    VStack {
+    ScrollView {
       VStack{
-        HStack{
-          Text("Name")
+        VStack{
+          HStack{
+            Text("Name")
+              .multilineTextAlignment(.leading)
+            Text("*")
+              .foregroundColor(Color.red)
+              .multilineTextAlignment(.leading)
+          }
+          .multilineTextAlignment(.leading)
+          TextField("Enter your name", text: $name)
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .autocapitalization(.words)
+          
+          HStack{
+            Text("Email")
+              .multilineTextAlignment(.leading)
+            Text("*")
+              .foregroundColor(Color.red)
+              .multilineTextAlignment(.leading)
+          }
+          .multilineTextAlignment(.leading)
+          TextField("Enter your email", text: $email)
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .autocapitalization(.none)
+          
+          Text("Hometown")
             .multilineTextAlignment(.leading)
-          Text("*")
-            .foregroundColor(Color.red)
-            .multilineTextAlignment(.leading)
+          TextField("Enter your hometown", text: $hometown)
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
         }
-          .multilineTextAlignment(.leading)
-        TextField("Enter your name", text: $name)
-          .padding([.leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .autocapitalization(.words)
         
-        HStack{
-          Text("Email")
+        VStack{
+          VStack {
+            Text("Elementary School")
+              .multilineTextAlignment(.leading)
+              .padding(.top)
+            TextField("Enter your elementary school", text: $e_school)
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            
+            if (eViewModel.showLocationResults && !eViewModel.searchResults.isEmpty){
+              List(eViewModel.searchResults, id: \.title) { result in
+                Text(result.title).onTapGesture {
+                  eViewModel.selectLocation(result)
+                  e_school = result.title
+                }
+              }
+              .listStyle(PlainListStyle())
+              .background(Color.white)
+              .cornerRadius(10)
+              .padding()
+              .zIndex(1)
+              .frame(minHeight: minRowHeight * 10)
+            }
+            Spacer()
+          }
+          
+          VStack{
+            Text("Middle School")
+              .multilineTextAlignment(.leading)
+            TextField("Enter your middle school", text: Binding(
+              get: { m_school },
+              set: {
+                m_school = $0
+                mViewModel.searchQuery = $0
+              }
+            ))
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            if (mViewModel.showLocationResults && !mViewModel.searchResults.isEmpty) {
+              List(mViewModel.searchResults, id: \.title) { result in
+                Text(result.title).onTapGesture {
+                  mViewModel.selectLocation(result)
+                  m_school = result.title
+                }
+              }
+              .listStyle(PlainListStyle())
+              .background(Color.white)
+              .cornerRadius(10)
+              .padding()
+              .zIndex(1)
+              .frame(minHeight: minRowHeight * 10)
+            }
+            Spacer()
+          }
+          
+          VStack{
+            Text("High School")
+              .multilineTextAlignment(.leading)
+            TextField("Enter your high school", text: Binding(
+              get: { h_school },
+              set: {
+                h_school = $0
+                hViewModel.searchQuery = $0
+              }
+            ))
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            if (hViewModel.showLocationResults && !hViewModel.searchResults.isEmpty) {
+              List(hViewModel.searchResults, id: \.title) { result in
+                Text(result.title).onTapGesture {
+                  hViewModel.selectLocation(result)
+                  h_school = result.title
+                }
+              }
+              .listStyle(PlainListStyle())
+              .background(Color.white)
+              .cornerRadius(10)
+              .padding()
+              .zIndex(1)
+              .frame(minHeight: minRowHeight * 10)
+            }
+            Spacer()
+          }
+          
+          VStack{
+          Text("University")
             .multilineTextAlignment(.leading)
-          Text("*")
-            .foregroundColor(Color.red)
+          TextField("Enter your university", text: Binding(
+                          get: { university },
+                          set: {
+                            university = $0
+                            uViewModel.searchQuery = $0
+                          }
+                      ))
+            .padding()
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+          
+            if (uViewModel.showLocationResults && !uViewModel.searchResults.isEmpty) {
+              List(uViewModel.searchResults, id: \.title) { result in
+                Text(result.title).onTapGesture {
+                  uViewModel.selectLocation(result)
+                  university = result.title
+                }
+              }
+              .listStyle(PlainListStyle())
+              .background(Color.white)
+              .cornerRadius(10)
+              .padding()
+              .zIndex(1)
+              .frame(minHeight: minRowHeight * 10)
+            }
+            Spacer()
+          }
+          
+          Text("Current City")
             .multilineTextAlignment(.leading)
+          TextField("Enter your current city", text: $current_city)
+            .padding([.leading, .trailing])
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+        }.onChange(of: e_school) { _ in
+          // Update the search results based on the current text
+          eViewModel.searchQuery = e_school
+      }
+        
+        Button(action: updateUser) {
+          Text("Update")
+            .foregroundColor(.white)
+            .padding()
+            .background(Color.blue)
+            .cornerRadius(10)
         }
-          .multilineTextAlignment(.leading)
-        TextField("Enter your email", text: $email)
-          .padding([.leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
-          .autocapitalization(.none)
-        
-        Text("Hometown")
-          .multilineTextAlignment(.leading)
-        TextField("Enter your hometown", text: $hometown)
-          .padding([.leading, .trailing])
-          .textFieldStyle(RoundedBorderTextFieldStyle())
+        .padding(.top)
+        .background(NavigationLink("", destination: ProfileView(user: user)))
+        .disabled(name.isEmpty || email.isEmpty || !isEmail(email))
       }
-      
-      VStack{
-        Text("Elementary School")
-            .multilineTextAlignment(.leading)
-            .padding(.top)
-        TextField("Enter your elementary school", text: $e_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-          
-        Text("Middle School")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your middle school", text: $m_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-          
-        Text("High School")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your high school", text: $h_school)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-          
-        Text("University")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your university", text: $university)
-            .padding([.leading,.trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-          
-        Text("Current City")
-            .multilineTextAlignment(.leading)
-        TextField("Enter your current city", text: $current_city)
-            .padding([.leading, .trailing])
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-      }
-      
-      Button(action: updateUser) {
-        Text("Update")
-          .foregroundColor(.white)
-          .padding()
-          .background(Color.blue)
-          .cornerRadius(10)
-      }
-      .padding(.top)
-      .background(NavigationLink("", destination: ProfileView(user: user)))
-      .disabled(name.isEmpty || email.isEmpty || !isEmail(email))
     }
   }
     

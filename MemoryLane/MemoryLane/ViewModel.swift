@@ -13,10 +13,10 @@ import CoreLocation
 import Firebase
 
 
-class ViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
+class LocationViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     @Published var searchResults: [MKLocalSearchCompletion] = []
     @Published var searchQuery: String = ""
-    @Published var showLocationResults: Bool = true
+    @Published var showLocationResults: Bool = false
     
     private var cancellable: AnyCancellable?
     private var completer: MKLocalSearchCompleter
@@ -33,6 +33,7 @@ class ViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             .sink { query in
                 self.searchForLocations(query)
             }
+      showLocationResults = false
     }
     
     private func searchForLocations(_ query: String) {
@@ -112,5 +113,33 @@ class ViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
     func calculateCurrentCitySimilarity(_ user1: User, _ user2: User) -> Double {
         return user1.current_city == user2.current_city ? 1.0 : 0.0
+    }
+}
+
+class ESchoolViewModel: LocationViewModel {
+    override func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college")}
+
+    }
+}
+
+class MSchoolViewModel: LocationViewModel {
+    override func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college")}
+
+    }
+}
+
+class HSchoolViewModel: LocationViewModel {
+    override func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college")}
+
+    }
+}
+
+class UniViewModel: LocationViewModel {
+    override func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college")}
+
     }
 }

@@ -73,7 +73,7 @@
 		DF8CDAC02AF44E58003CEDB2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		DF8CDAC22AF44E83003CEDB2 /* ImagePickerCordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCordinator.swift; sourceTree = "<group>"; };
 		DF9CC3162AF49DBB0013EA95 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		DF9CC3182AF4A0E40013EA95 /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
+		DF9CC3182AF4A0E40013EA95 /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; usesTabs = 0; };
 		DFC2F99C2AF1AAD800BE7707 /* MemoryLane.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoryLane.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFC2F99F2AF1AAD900BE7707 /* MemoryLaneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryLaneApp.swift; sourceTree = "<group>"; };
 		DFC2F9A12AF1AAD900BE7707 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
