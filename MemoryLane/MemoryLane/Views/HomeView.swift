@@ -29,7 +29,9 @@ struct HomeView: View {
                 
                 List {
                     ForEach(posts) { post in
-                      PostRowView(post: post)
+                      NavigationLink(destination: PostView(post: post)) {
+                        PostRowView(post: post)
+                      }.environmentObject(dbDocuments)
                     }
                 }
                 .navigationBarTitle("Posts")

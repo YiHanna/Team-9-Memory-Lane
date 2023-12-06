@@ -1,13 +1,14 @@
 //
-//  PostRowView.swift
+//  PostView.swift
 //  MemoryLane
 //
-//  Created by Cindy Chen on 11/2/23.
+//  Created by Hanna Luo on 12/6/23.
 //
 
+import Foundation
 import SwiftUI
 
-struct PostRowView: View {
+struct PostView: View {
     @State private var image: UIImage? = nil
     
     var post : Post
@@ -44,19 +45,26 @@ struct PostRowView: View {
                         }
                         Text(post.description).foregroundColor(Color.white)
                     }
-                    Button(action: {
-                      toggleLikePost(post: post)
-                      checkUserLikes()
-                     }) {
-                       if let liked = userLiked {
-                           Image(systemName: liked ? "heart.fill" : "heart")
-                               .foregroundColor(.white)
-                       }
-                     }
-                     .buttonStyle(.bordered)
-                     .foregroundColor(Color.clear)
-                     .padding()
-                     .zIndex(1)
+                    VStack{
+                        if let liked = userLiked{
+                            if liked{
+                                Button(action: {
+                                    dbDocuments.unlikePost(post: post)
+                                    checkUserLikes()
+                                }) {
+                                    Image(systemName: "heart.fill").foregroundColor(.white)
+                                }
+                            }else{
+                                Button(action: {
+                                    dbDocuments.likePost(post: post)
+                                    checkUserLikes()
+                                }) {
+                                    Image(systemName: "heart").foregroundColor(.white)
+                                }
+                            }
+                        }
+                        
+                    }.padding()
                 }
             }.padding()
             
@@ -68,16 +76,6 @@ struct PostRowView: View {
             }
         }
     }
-  
-  private func toggleLikePost(post: Post) {
-    if let liked = userLiked {
-      if liked {
-        dbDocuments.unlikePost(post: post)
-      } else {
-        dbDocuments.likePost(post: post)
-      }
-    }
-  }
   
     private func fetchUserName() {
       dbDocuments.getUserName(user_ref: post.user_id) { (fetchedName) in
@@ -93,9 +91,3 @@ struct PostRowView: View {
         }
     }
 }
-
-//struct PostRowView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PostRowView()
-//    }
-//}

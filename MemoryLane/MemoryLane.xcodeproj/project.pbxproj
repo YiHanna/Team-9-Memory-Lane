@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7A9621B72AFADD9900DCE835 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9621B62AFADD9900DCE835 /* FriendsView.swift */; };
 		7A9621B92AFADDF500DCE835 /* OtherUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9621B82AFADDF500DCE835 /* OtherUserProfileView.swift */; };
+		D63083FD2B20DE4700BE7AB4 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63083FC2B20DE4700BE7AB4 /* PostView.swift */; };
 		D6BE9F7B2AF773DD0036A191 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BE9F7A2AF773DD0036A191 /* LoginView.swift */; };
 		DF075F5A2AFF3EF300AF521D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DF075F592AFF3EF300AF521D /* FirebaseFirestore */; };
 		DF075F5C2AFF3EFA00AF521D /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DF075F5B2AFF3EFA00AF521D /* FirebaseFirestoreSwift */; };
@@ -62,6 +63,7 @@
 /* Begin PBXFileReference section */
 		7A9621B62AFADD9900DCE835 /* FriendsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		7A9621B82AFADDF500DCE835 /* OtherUserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUserProfileView.swift; sourceTree = "<group>"; };
+		D63083FC2B20DE4700BE7AB4 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		D6BE9F7A2AF773DD0036A191 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DF347E132B1D720F00DD80BF /* ProfileEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		DF50ECBA2AF295A700614805 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 				DF8CDAB62AF4242E003CEDB2 /* ProfileView.swift */,
 				DF8CDAB82AF424DA003CEDB2 /* AppView.swift */,
 				DF8CDABA2AF42A25003CEDB2 /* PostRowView.swift */,
+				D63083FC2B20DE4700BE7AB4 /* PostView.swift */,
 				DF8CDABE2AF44E40003CEDB2 /* PhotoCaptureView.swift */,
 				DF8CDAC02AF44E58003CEDB2 /* ImagePicker.swift */,
 				7A9621B62AFADD9900DCE835 /* FriendsView.swift */,
@@ -379,6 +382,7 @@
 				DFC2F9DD2AF1C40400BE7707 /* Post.swift in Sources */,
 				DFC2F9DA2AF1C3B000BE7707 /* User.swift in Sources */,
 				DFC2F9A02AF1AAD900BE7707 /* MemoryLaneApp.swift in Sources */,
+				D63083FD2B20DE4700BE7AB4 /* PostView.swift in Sources */,
 				DF8CDABB2AF42A25003CEDB2 /* PostRowView.swift in Sources */,
 				D6BE9F7B2AF773DD0036A191 /* LoginView.swift in Sources */,
 				DF8CDAC32AF44E83003CEDB2 /* ImagePickerCordinator.swift in Sources */,
