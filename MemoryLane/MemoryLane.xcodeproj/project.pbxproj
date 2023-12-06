@@ -10,6 +10,8 @@
 		7A9621B72AFADD9900DCE835 /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9621B62AFADD9900DCE835 /* FriendsView.swift */; };
 		7A9621B92AFADDF500DCE835 /* OtherUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9621B82AFADDF500DCE835 /* OtherUserProfileView.swift */; };
 		D63083FD2B20DE4700BE7AB4 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63083FC2B20DE4700BE7AB4 /* PostView.swift */; };
+		D63083FF2B20F75500BE7AB4 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63083FE2B20F75500BE7AB4 /* Comment.swift */; };
+		D63084012B211E6300BE7AB4 /* CommentRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63084002B211E6300BE7AB4 /* CommentRowView.swift */; };
 		D6BE9F7B2AF773DD0036A191 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BE9F7A2AF773DD0036A191 /* LoginView.swift */; };
 		DF075F5A2AFF3EF300AF521D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DF075F592AFF3EF300AF521D /* FirebaseFirestore */; };
 		DF075F5C2AFF3EFA00AF521D /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DF075F5B2AFF3EFA00AF521D /* FirebaseFirestoreSwift */; };
@@ -64,6 +66,8 @@
 		7A9621B62AFADD9900DCE835 /* FriendsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
 		7A9621B82AFADDF500DCE835 /* OtherUserProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUserProfileView.swift; sourceTree = "<group>"; };
 		D63083FC2B20DE4700BE7AB4 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
+		D63083FE2B20F75500BE7AB4 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		D63084002B211E6300BE7AB4 /* CommentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRowView.swift; sourceTree = "<group>"; };
 		D6BE9F7A2AF773DD0036A191 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DF347E132B1D720F00DD80BF /* ProfileEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		DF50ECBA2AF295A700614805 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 				DF8CDAB82AF424DA003CEDB2 /* AppView.swift */,
 				DF8CDABA2AF42A25003CEDB2 /* PostRowView.swift */,
 				D63083FC2B20DE4700BE7AB4 /* PostView.swift */,
+				D63084002B211E6300BE7AB4 /* CommentRowView.swift */,
 				DF8CDABE2AF44E40003CEDB2 /* PhotoCaptureView.swift */,
 				DF8CDAC02AF44E58003CEDB2 /* ImagePicker.swift */,
 				7A9621B62AFADD9900DCE835 /* FriendsView.swift */,
@@ -223,6 +228,7 @@
 				DFC2F9D92AF1C3B000BE7707 /* User.swift */,
 				DFC2F9DC2AF1C40400BE7707 /* Post.swift */,
 				DFD1D7052B1C2F1E00B3E5F8 /* Prompt.swift */,
+				D63083FE2B20F75500BE7AB4 /* Comment.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -387,6 +393,8 @@
 				D6BE9F7B2AF773DD0036A191 /* LoginView.swift in Sources */,
 				DF8CDAC32AF44E83003CEDB2 /* ImagePickerCordinator.swift in Sources */,
 				DF8CDAC12AF44E58003CEDB2 /* ImagePicker.swift in Sources */,
+				D63084012B211E6300BE7AB4 /* CommentRowView.swift in Sources */,
+				D63083FF2B20F75500BE7AB4 /* Comment.swift in Sources */,
 				7A9621B72AFADD9900DCE835 /* FriendsView.swift in Sources */,
 				DF9CC3192AF4A0E40013EA95 /* AddPostView.swift in Sources */,
 				DFC2F9DF2AF1C42500BE7707 /* DBDocuments.swift in Sources */,

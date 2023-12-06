@@ -107,7 +107,7 @@ struct AddPostView: View {
         var data : [String: Any] = [
             "date": Timestamp(date: selectedDate),
             "description": description,
-            "num_likes": 0
+            "num_likes": 0,
         ]
         
         if let user = dbDocuments.currUser {

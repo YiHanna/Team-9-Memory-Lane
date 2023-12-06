@@ -64,6 +64,14 @@ struct Post: Identifiable, Codable, Comparable {
       }
   }
   
+  func comment(text: String) {
+    dbDocuments.commentPost(post: self, comment: text)
+  }
+  
+  static func == (lhs: Post, rhs: Post) -> Bool {
+    lhs.date == rhs.date
+  }
+  
   static func < (lhs: Post, rhs: Post) -> Bool {
     return (lhs.date.dateValue()) < (rhs.date.dateValue())
   }

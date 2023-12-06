@@ -328,7 +328,6 @@ class DBDocuments: ObservableObject {
     }
   }
 
-    
     func likePost(post:Post){
         if let id = post.id{
             let ref = store.collection("post").document(id)
@@ -386,6 +385,61 @@ class DBDocuments: ObservableObject {
             
         }
     }
+  
+  func commentPost(post:Post, comment:String){
+      if let id = post.id{
+          let ref = store.collection("post").document(id)
+          // remove post from the user's liked posts array
+          if let user = currUser {
+            let postPath = "post/\(id)"
+            let postReference = store.document(postPath)
+              var data = [
+                "post_id": postReference,
+                "user_id": user,
+                "time": Date.now,
+                "text": comment
+              ] as [String : Any]
+              store.collection("comment").addDocument(data: data){ error in
+                  if let error = error {
+                      print("Error adding document: \(error)")
+                  } else {
+                      print("Comment created!")
+                  }
+              }
+            }else {
+              print("1")
+            }
+          }else{
+            print("2")
+          }
+      }
+  
+  func getPostComments(post_id: String?, completion: @escaping ([Comment]?) -> Void) {
+    if let uid = post_id {
+      let documentPath = "post/\(uid)"
+      let documentReference = store.document(documentPath)
+      let commentRef = store.collection("comment").whereField("post_id", isEqualTo: documentReference)
+      
+      commentRef.getDocuments { (querySnapshot, error) in
+        if let error = error {
+          // Handle the error
+          print("Error getting comments: \(error.localizedDescription)")
+          completion(nil)
+        } else {
+          var result: [Comment] = []
+          
+          for document in querySnapshot!.documents {
+            if let comment = try? document.data(as: Comment.self) {
+              result.append(comment)
+            }
+          }
+          completion(result)
+        }
+      }
+    } else {
+      completion(nil)
+    }
+  }
     
     func checkUserLikes(id:String, completion: @escaping (Bool?) -> Void){
         if let usr = currUser {
