@@ -32,12 +32,24 @@ struct UserProfileView: View {
           
           ScrollView {
             VStack {
-              //         profileImage
-              //             .resizable()
-              //             .aspectRatio(contentMode: .fit)
-              //             .frame(width: 100, height: 100)
-              //             .clipShape(Circle())
-              //             .padding()
+              if let photoUrl = user.photo{
+                AsyncImage(url: URL(string: photoUrl)) { image in
+                  image.resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .padding()
+                } placeholder: {
+                  Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
+                }
+                .edgesIgnoringSafeArea(.all)
+              } else {
+                Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
+                    .edgesIgnoringSafeArea(.all)
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                    .padding()
+            }
               
               Text(user.name)
                 .font(.system(size: 20))
@@ -199,6 +211,7 @@ struct UserProfileView: View {
     let us = dbDocuments.getUserByUsername(username: user.username)
     if let u = us {
       user = u
+      print(u.photo)
     } else {
       LoginView()
     }

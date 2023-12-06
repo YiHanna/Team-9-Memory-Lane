@@ -96,7 +96,14 @@ class DBDocuments: ObservableObject {
   
   func updateUser(id: String, data : [String:Any]) {
     let ref = store.collection("user").document(id)
-    ref.updateData(data)
+    ref.updateData(data){ error in
+      if let error = error {
+          print("Error updating document: \(error)")
+      } else {
+          print("Document successfully updated")
+          print(data["photo"])
+      }
+    }
   }
       
     func getUserName(user_ref: DocumentReference, completion: @escaping (String?) -> Void) {

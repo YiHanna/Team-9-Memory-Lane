@@ -118,28 +118,28 @@ class LocationViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDeleg
 
 class ESchoolViewModel: LocationViewModel {
     override func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college")}
+      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college") || $0.title.lowercased().contains("academy") || $0.title.lowercased().contains("institute")}
 
     }
 }
 
 class MSchoolViewModel: LocationViewModel {
     override func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college")}
+      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college") || $0.title.lowercased().contains("academy") || $0.title.lowercased().contains("institute")}
 
     }
 }
 
 class HSchoolViewModel: LocationViewModel {
     override func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college")}
+      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college") || $0.title.lowercased().contains("academy") || $0.title.lowercased().contains("institute")}
 
     }
 }
 
 class UniViewModel: LocationViewModel {
     override func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college")}
+      searchResults = completer.results.filter { $0.title.lowercased().contains("school") || $0.title.lowercased().contains("university") || $0.title.lowercased().contains("college") || $0.title.lowercased().contains("academy") || $0.title.lowercased().contains("institute")}
 
     }
 }

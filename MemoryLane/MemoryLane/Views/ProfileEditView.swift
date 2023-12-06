@@ -18,8 +18,11 @@ struct ProfileEditView: View {
   @State var passwordConfirmation = ""
   @State var hometown = ""
   @State var current_city = ""
+  @State var photo: String?
   
+  @State var showImagePicker: Bool = false
   @State var isEmailPasswordComplete = false
+  @State var image: UIImage? = nil
   
   @State var e_school: String = ""
   @State var m_school: String = ""
@@ -44,6 +47,8 @@ struct ProfileEditView: View {
     _passwordConfirmation = State(initialValue: user.password)
     _hometown = State(initialValue: user.hometown)
     _current_city = State(initialValue: user.current_city)
+    _photo = State(initialValue: user.photo)
+    
     if let eleschool = user.schools["elementary_school"] {
       _e_school = State(initialValue: eleschool)
     } else {
@@ -72,6 +77,34 @@ struct ProfileEditView: View {
     ScrollView {
       VStack{
         Spacer()
+        Button(action: {
+          self.showImagePicker = true
+        }) {
+          if let picture = image {
+            Image(uiImage: picture).resizable()
+              .aspectRatio(contentMode: .fit)
+              .frame(width: 100, height: 100)
+              .clipShape(Circle())
+              .padding()
+          } else if let photoUrl = photo {
+            AsyncImage(url: URL(string: photoUrl)) { image in
+              image.resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 100)
+                .clipShape(Circle())
+                .padding()
+            } placeholder: {
+              Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
+            }
+            .edgesIgnoringSafeArea(.all)
+          } else {
+            Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
+              .edgesIgnoringSafeArea(.all)
+              .frame(width: 100, height: 100)
+              .clipShape(Circle())
+              .padding()
+          }
+        }
         
         Group {
           HStack{
@@ -252,11 +285,14 @@ struct ProfileEditView: View {
         .background(NavigationLink("", destination: ProfileView(user: user)))
         .disabled(name.isEmpty || email.isEmpty || !isEmail(email))
       }.padding(.horizontal, 15)
+        .fullScreenCover(isPresented: $showImagePicker) {
+          PhotoCaptureView(showImagePicker: self.$showImagePicker, image: self.$image)
+        }
     }
   }
     
   private func updateUser() {
-    dbDocuments.updateUser(id: user.id!, data: [
+    var newData:[String : Any] = [
       "username": username,
       "current_city": current_city,
       "email": email,
@@ -268,8 +304,23 @@ struct ProfileEditView: View {
         "middle_school": m_school,
         "high_school": h_school,
         "university": university
-      ]
-    ])
+      ],
+    ]
+    if let img = image {
+        dbDocuments.uploadImage(img) { (url) in
+            if let imageURL = url {
+                newData["photo"] = imageURL.absoluteString
+                print("Image URL: \(newData["photo"])")
+                dbDocuments.updateUser(id: user.id!, data: newData)
+            } else {
+                dbDocuments.updateUser(id: user.id!, data: newData)
+                print("Failed to upload the image.")
+            }
+        }
+    } else {
+        print("no profile image")
+        dbDocuments.updateUser(id: user.id!, data: newData)
+    }
   }
   
   private func isEmail(_ string: String) -> Bool {
@@ -281,6 +332,7 @@ struct ProfileEditView: View {
       return emailPredicate.evaluate(with: string)
   }
 }
+
 
 //struct ProfileEditView_Preview: PreviewProvider {
 //    static var previews: some View {
