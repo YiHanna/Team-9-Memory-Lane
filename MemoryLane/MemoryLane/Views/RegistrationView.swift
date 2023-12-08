@@ -119,19 +119,11 @@ struct RegistrationViewInit: View {
           .background(.white)
           .cornerRadius(10)
           .padding(.top)
-          .disabled(username.isEmpty || password.isEmpty || passwordConfirmation.isEmpty || (password != passwordConfirmation) || !usernameValid())
+          .disabled(username.isEmpty || password.isEmpty || passwordConfirmation.isEmpty || (password != passwordConfirmation) || password.count < 6)
         }
       }
     }
     .navigationBarBackButtonHidden(true)
-  }
-  private func usernameValid() -> Bool {
-    let check = dbDocuments.getUserByUsername(username: username)
-    if check != nil {
-      print("username exists")
-      return false
-    }
-    return true
   }
 }
 
@@ -347,7 +339,6 @@ struct RegistrationViewUserInfo: View {
       "email": email,
       "hometown": hometown,
       "name": name,
-      "password": password,
       "friends": [],
       "schools": [
         "elementary_school": e_school,
@@ -356,12 +347,12 @@ struct RegistrationViewUserInfo: View {
         "university": university
       ],
       "posts_liked": []
-    ])
-    
-    dbDocuments.getCurrUser(){usr in
-       user = usr
-    }
-    isUserCreated = true
+    ], password: password){result in
+        dbDocuments.getCurrUser(){usr in
+           user = usr
+        }
+        isUserCreated = true
+    }    
   }
   
   private func isEmail(_ string: String) -> Bool {

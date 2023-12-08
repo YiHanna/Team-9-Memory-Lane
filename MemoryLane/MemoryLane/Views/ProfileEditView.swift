@@ -43,8 +43,6 @@ struct ProfileEditView: View {
     _name = State(initialValue: user.name)
     _username = State(initialValue: user.username)
     _email = State(initialValue: user.email)
-    _password = State(initialValue: user.password)
-    _passwordConfirmation = State(initialValue: user.password)
     _hometown = State(initialValue: user.hometown)
     _current_city = State(initialValue: user.current_city)
     _photo = State(initialValue: user.photo)

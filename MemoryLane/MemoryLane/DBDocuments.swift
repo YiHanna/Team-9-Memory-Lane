@@ -12,6 +12,7 @@ import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
+import FirebaseAuth
 import UIKit
 
 
@@ -81,17 +82,39 @@ class DBDocuments: ObservableObject {
         }
     }
     
+    func userLogin(email: String, password: String, completion: @escaping (Result<AuthDataResult, Error>) -> Void){
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            if let error = error {
+                print("Error logging in: \(error)")
+                completion(.failure(error))
+            } else if let authResult = authResult {
+                completion(.success(authResult))
+            }
+        }
+    }
+    
   
-      func createUser(data : [String:Any]){
-          let reference: DocumentReference? = store.collection("user").addDocument(data: data) { error in
+    func createUser(data : [String:Any], password: String, completion: @escaping (String?) -> Void){
+          Auth.auth().createUser(withEmail: data["email"] as! String, password: password) { authResult, error in
               if let error = error {
-                  print("Error adding document: \(error)")
+                  print("Error creating user: \(error)")
+                  completion("Error creating user: \(error)")
+              } else {
+                  print("User was successfully created in firebase")
+                  
+                  let reference: DocumentReference? = self.store.collection("user").addDocument(data: data) { error in
+                      if let error = error {
+                          print("Error adding document: \(error)")
+                      }
+                  }
+                  if let ref = reference{
+                      print("Document added with ID: \(ref.documentID)")
+                      self.currUser = ref
+                      completion(nil)
+                  }
               }
           }
-          if let ref = reference{
-              print("Document added with ID: \(ref.documentID)")
-              currUser = ref
-          }
+          
       }
   
   func updateUser(id: String, data : [String:Any]) {
@@ -126,10 +149,19 @@ class DBDocuments: ObservableObject {
 //              }
           }
       }
-
   func getUserByUsername(username: String) -> User? {
-    for user in users {
-      if user.username == username {
+      for user in users {
+        if user.username == username {
+          return user
+        }
+      }
+      return nil
+  }
+    
+    
+  func getUserByEmail(email: String) -> User? {
+    for user in users {    
+      if user.email == email {
         return user
       }
     }

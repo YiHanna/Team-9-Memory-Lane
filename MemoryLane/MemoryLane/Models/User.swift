@@ -14,7 +14,6 @@ struct User: Identifiable, Codable {
     // MARK: Fields
     @DocumentID var id: String?
     var email: String
-    var password: String
     var name: String
     var username: String
     var schools: [String: String]
@@ -28,7 +27,6 @@ struct User: Identifiable, Codable {
     enum CodingKeys: String, CodingKey {
         case id
         case email
-        case password
         case name
         case username
         case schools

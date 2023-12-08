@@ -208,13 +208,23 @@ struct UserProfileView: View {
     }
   
   private func getUser() {
-    let us = dbDocuments.getUserByUsername(username: user.username)
-    if let u = us {
-      user = u
-      print(u.photo)
-    } else {
-      LoginView()
-    }
+      if let user_ref = dbDocuments.currUser{
+          dbDocuments.getUserByRef(user_ref: user_ref){result in
+              if let us = result{
+                  user = us
+              }else{
+                  LoginView()
+              }
+          }
+      }else {
+        LoginView()
+      }
+      
+//    let us = dbDocuments.getUserByUsername(username: user.username)
+//    if let u = us {
+//      user = u
+//      print(u.photo)
+//    }
   }
     
   private func deletePost(at offsets: IndexSet){
