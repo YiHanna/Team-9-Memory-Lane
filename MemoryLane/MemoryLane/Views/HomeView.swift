@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var dbDocuments: DBDocuments
-    @State var posts: [Post] = []
+    @ObservedObject var dbDocuments: DBDocuments
     @State private var prompt : String = "What was one of your childhood Halloween costumes?"
     var body: some View {
         NavigationView {
@@ -28,7 +27,7 @@ struct HomeView: View {
                 
                 
                 List {
-                    ForEach(posts) { post in
+                    ForEach(dbDocuments.posts) { post in
                       NavigationLink(destination: PostView(post: post)) {
                         PostRowView(post: post)
                       }.environmentObject(dbDocuments)
@@ -44,20 +43,7 @@ struct HomeView: View {
             
         }.navigationBarBackButtonHidden(true)
             .background(Color.red)
-            .onAppear{fetchPosts()}
     }
-  func fetchPosts() {
-    dbDocuments.getHomepagePosts(){ (fetchedPosts) in
-      if let p = fetchedPosts {
-        posts = p
-        posts.sort{$0 > $1}
-        print("user posts fetched")
-        print(posts.count)
-      } else {
-        print("failed to fetch user posts")
-      }
-    }
-  }
 }
 
 //struct HomeView_Previews: PreviewProvider {

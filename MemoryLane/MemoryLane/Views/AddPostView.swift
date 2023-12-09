@@ -95,7 +95,7 @@ struct AddPostView: View {
           }
           )
           .background(
-            NavigationLink("", destination: HomeView(), isActive: $isPostCreated)
+            NavigationLink("", destination: HomeView(dbDocuments: dbDocuments), isActive: $isPostCreated)
           )
         }.navigationBarBackButtonHidden(false)
       }
@@ -109,33 +109,27 @@ struct AddPostView: View {
             "description": description,
             "num_likes": 0,
         ]
-        
-        if let user = dbDocuments.currUser {
-            data["user_id"] = user
+         
+        viewModel.getGeoPoint(){ geoPoint in
+            data["location"] = geoPoint
             
-            viewModel.getGeoPoint(){ geoPoint in
-                data["location"] = geoPoint
-                
-                if let img = image {
-                    dbDocuments.uploadImage(img) { (url) in
-                        if let imageURL = url {
-                            data["photo"] = imageURL.absoluteString
-                            print("Image URL: \(imageURL.absoluteString)")
-                        } else {
-                            print("Failed to upload the image.")
-                        }
+            if let img = image {
+                dbDocuments.uploadImage(img) { (url) in
+                    if let imageURL = url {
+                        data["photo"] = imageURL.absoluteString
+                        print("Image URL: \(imageURL.absoluteString)")
+                    } else {
+                        print("Failed to upload the image.")
+                    }
 //                        print("data dict before creating post:")
 //                        print(data)
-                        
-                        dbDocuments.createPost(data: data)
-                    }
-                }else{
-                    print("creating post without picture")
+                    
                     dbDocuments.createPost(data: data)
                 }
+            }else{
+                print("creating post without picture")
+                dbDocuments.createPost(data: data)
             }
-        }else{
-            print("Failed to create post - user does not exist")
         }
     }
 }

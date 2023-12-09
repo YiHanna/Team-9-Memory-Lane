@@ -95,14 +95,12 @@ struct LoginView: View {
             switch result {
             case .success(_):
                 isLoggedIn = true
-                print("here")
                 if let dbuser = dbDocuments.getUserByEmail(email: email) {
                     user = dbuser
-                    dbDocuments.setCurrUser(user_id: dbuser.id)
+                    dbDocuments.setCurrUser(user: dbuser)
                     print("current user is: \(dbDocuments.currUser)")
                 }
             case .failure(let error):
-                // Handle error, maybe show an alert
                 print("log in error \(error)")
             }
         }

@@ -10,19 +10,19 @@ import SwiftUI
 struct AppView: View {
   var user: User?
   @State var isLoggedIn = true
-  var dbDocuments = DBDocuments()
+  @ObservedObject var dbDocuments = DBDocuments()
   var body: some View {
     if isLoggedIn {
       TabView {
-        HomeView().tabItem {
+        HomeView(dbDocuments: dbDocuments).tabItem {
           Image(systemName: "house")
           Text("Home")
         }
-        FriendsView(user: user, friends: []).tabItem {
+        FriendsView(user: user).tabItem {
           Image(systemName: "person.2")
           Text("Friends")
         }
-        ProfileView(user: user).tabItem {
+        ProfileView().tabItem {
             Image(systemName: "person.crop.circle")
             Text("Profile")
         }

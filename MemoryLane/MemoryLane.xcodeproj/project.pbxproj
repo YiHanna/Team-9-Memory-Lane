@@ -141,22 +141,22 @@
 		DF8CDAB52AF42382003CEDB2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DF347E132B1D720F00DD80BF /* ProfileEditView.swift */,
 				DFC2F9A12AF1AAD900BE7707 /* ContentView.swift */,
+				D6BE9F7A2AF773DD0036A191 /* LoginView.swift */,
 				DF50ECBA2AF295A700614805 /* RegistrationView.swift */,
-				DF50ECBC2AF2B4AE00614805 /* HomeView.swift */,
-				DF8CDAB62AF4242E003CEDB2 /* ProfileView.swift */,
 				DF8CDAB82AF424DA003CEDB2 /* AppView.swift */,
-				DF8CDABA2AF42A25003CEDB2 /* PostRowView.swift */,
+				DF50ECBC2AF2B4AE00614805 /* HomeView.swift */,
 				D63083FC2B20DE4700BE7AB4 /* PostView.swift */,
+				DF8CDABA2AF42A25003CEDB2 /* PostRowView.swift */,
+				DF9CC3182AF4A0E40013EA95 /* AddPostView.swift */,
 				D63084002B211E6300BE7AB4 /* CommentRowView.swift */,
+				7A9621B62AFADD9900DCE835 /* FriendsView.swift */,
+				DF8CDAB62AF4242E003CEDB2 /* ProfileView.swift */,
+				DF347E132B1D720F00DD80BF /* ProfileEditView.swift */,
+				7A9621B82AFADDF500DCE835 /* OtherUserProfileView.swift */,
 				DF8CDABE2AF44E40003CEDB2 /* PhotoCaptureView.swift */,
 				DF8CDAC02AF44E58003CEDB2 /* ImagePicker.swift */,
-				7A9621B62AFADD9900DCE835 /* FriendsView.swift */,
 				DF8CDAC22AF44E83003CEDB2 /* ImagePickerCordinator.swift */,
-				DF9CC3182AF4A0E40013EA95 /* AddPostView.swift */,
-				D6BE9F7A2AF773DD0036A191 /* LoginView.swift */,
-				7A9621B82AFADDF500DCE835 /* OtherUserProfileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -185,16 +185,16 @@
 		DFC2F99E2AF1AAD800BE7707 /* MemoryLane */ = {
 			isa = PBXGroup;
 			children = (
+				DFC2F9DE2AF1C42500BE7707 /* DBDocuments.swift */,
+				DF9CC3162AF49DBB0013EA95 /* ViewModel.swift */,
 				DF8CDAB52AF42382003CEDB2 /* Views */,
 				DFC2F9E32AF1E0B900BE7707 /* GoogleService-Info.plist */,
-				DFC2F9DE2AF1C42500BE7707 /* DBDocuments.swift */,
 				DFC2F9DB2AF1C3D300BE7707 /* Models */,
 				DFC2F99F2AF1AAD900BE7707 /* MemoryLaneApp.swift */,
 				DFC2F9A32AF1AAE600BE7707 /* Assets.xcassets */,
 				DFC2F9A82AF1AAE600BE7707 /* Persistence.swift */,
 				DFC2F9AA2AF1AAE600BE7707 /* MemoryLane.xcdatamodeld */,
 				DFC2F9A52AF1AAE600BE7707 /* Preview Content */,
-				DF9CC3162AF49DBB0013EA95 /* ViewModel.swift */,
 			);
 			path = MemoryLane;
 			sourceTree = "<group>";

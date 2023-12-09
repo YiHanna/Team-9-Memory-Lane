@@ -348,11 +348,9 @@ struct RegistrationViewUserInfo: View {
       ],
       "posts_liked": []
     ], password: password){result in
-        dbDocuments.getCurrUser(){usr in
-           user = usr
-        }
+        user = dbDocuments.currUser
         isUserCreated = true
-    }    
+    }
   }
   
   private func isEmail(_ string: String) -> Bool {

@@ -142,17 +142,11 @@ struct OtherUserProfileView: View {
   }
   
   private func getPosts() {
-    dbDocuments.getUserPosts(user_id: otherUser.id){ fetchedPosts in
-      if let p = fetchedPosts {
-        posts = p
-      } else {
-        print("failed to fetch user posts")
-      }
-    }
+      posts = dbDocuments.getUserPosts(user_id: otherUser.id)
   }
   
   private func addFriend() {
-    dbDocuments.addFriend(user: currUser, friend: otherUser) { res in
+    dbDocuments.addFriend(friend: otherUser) { res in
       if res {
         isFriend = true
       }
@@ -160,7 +154,7 @@ struct OtherUserProfileView: View {
   }
   
   private func removeFriend() {
-    dbDocuments.removeFriend(user: currUser, friend: otherUser) { res in
+    dbDocuments.removeFriend(friend: otherUser) { res in
       if res {
         isFriend = false
       }
@@ -168,9 +162,7 @@ struct OtherUserProfileView: View {
   }
   
   private func checkFriendStatus() {
-    dbDocuments.checkFriendStatus(user: currUser, possibleFriend: otherUser) { res in
-      isFriend = res
-    }
+      isFriend = dbDocuments.checkFriendStatus(user: currUser, possibleFriend: otherUser)
   }
   
 }

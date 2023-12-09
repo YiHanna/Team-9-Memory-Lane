@@ -280,7 +280,7 @@ struct ProfileEditView: View {
             .cornerRadius(10)
         }
         .padding(.top)
-        .background(NavigationLink("", destination: ProfileView(user: user)))
+        .background(NavigationLink("", destination: ProfileView()))
         .disabled(name.isEmpty || email.isEmpty || !isEmail(email))
       }.padding(.horizontal, 15)
         .fullScreenCover(isPresented: $showImagePicker) {

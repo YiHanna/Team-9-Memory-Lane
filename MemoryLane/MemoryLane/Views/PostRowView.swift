@@ -72,24 +72,20 @@ struct PostRowView: View {
   private func toggleLikePost(post: Post) {
     if let liked = userLiked {
       if liked {
-        dbDocuments.unlikePost(post: post)
+          dbDocuments.unlikePost(post_id: post.id!)
       } else {
-        dbDocuments.likePost(post: post)
+          dbDocuments.likePost(post_id: post.id!)
       }
     }
   }
   
     private func fetchUserName() {
-      dbDocuments.getUserName(user_ref: post.user_id) { (fetchedName) in
-          userName = fetchedName
-      }
+        userName = dbDocuments.getUserName(user_id: post.user_id.documentID)
     }
     
     private func checkUserLikes(){
         if let id = post.id{
-            dbDocuments.checkUserLikes(id: id){res in
-                userLiked = res
-            }
+            userLiked = dbDocuments.checkUserLikes(id: id)
         }
     }
 }

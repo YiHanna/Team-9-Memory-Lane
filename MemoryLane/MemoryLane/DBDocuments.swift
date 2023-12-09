@@ -22,8 +22,9 @@ class DBDocuments: ObservableObject {
     @Published var users : [User] = []
     @Published var posts : [Post] = []
     @Published var prompts : [Prompt] = []
-    @Published var currUser : DocumentReference?
+    @Published var currUser : User?
     @Published var currPrompt : Prompt?
+    @Published var friends: [User] = []
     private let store = Firestore.firestore()
   
     init() {
@@ -31,6 +32,7 @@ class DBDocuments: ObservableObject {
     }
 
     func get() {
+        // Get users from DB
         store.collection("user").addSnapshotListener { querySnapshot, error in
             if let error = error {
               print("Error getting user: \(error.localizedDescription)")
@@ -42,6 +44,7 @@ class DBDocuments: ObservableObject {
             } ?? []
         }
 
+        // Get posts from DB
         store.collection("post").addSnapshotListener { querySnapshot, error in
             if let error = error {
               print("Error getting post: \(error.localizedDescription)")
@@ -51,8 +54,11 @@ class DBDocuments: ObservableObject {
             self.posts = querySnapshot?.documents.compactMap { document in
               try? document.data(as: Post.self)
             } ?? []
+            
+            self.posts.sort{$0 > $1}
         }
         
+        // Get prompts from DB
         store.collection("prompt").addSnapshotListener { querySnapshot, error in
             if let error = error {
               print("Error getting post: \(error.localizedDescription)")
@@ -78,6 +84,9 @@ class DBDocuments: ObservableObject {
                 print("Error removing post: \(error)")
             } else {
                 print("Post successfully removed!")
+                
+                self.posts = self.posts.filter { $0.id != post.id }
+
             }
         }
     }
@@ -108,8 +117,12 @@ class DBDocuments: ObservableObject {
                       }
                   }
                   if let ref = reference{
+                      let userObj = User(id: String(ref.documentID), email: data["email"] as! String, name: data["name"] as! String, username: data["username"] as! String, schools: data["schools"] as! [String : String], hometown: data["hometown"] as! String, current_city: data["current_city"] as! String, friends: [], posts_liked: [])
                       print("Document added with ID: \(ref.documentID)")
-                      self.currUser = ref
+                      
+                      
+                      self.setCurrUser(user: userObj)
+                      self.users.append(userObj)
                       completion(nil)
                   }
               }
@@ -124,31 +137,24 @@ class DBDocuments: ObservableObject {
           print("Error updating document: \(error)")
       } else {
           print("Document successfully updated")
-          print(data["photo"])
+          if let index = self.users.firstIndex(where: { $0.id == id }) {
+              let userObj = User(id: String(ref.documentID), email: data["email"] as! String, name: data["name"] as! String, username: data["username"] as! String, schools: data["schools"] as! [String : String], hometown: data["hometown"] as! String, current_city: data["current_city"] as! String, friends: [], posts_liked: [])
+              self.users[index] = userObj
+              self.currUser = userObj
+          }
       }
     }
   }
       
-    func getUserName(user_ref: DocumentReference, completion: @escaping (String?) -> Void) {
-          user_ref.getDocument { (document, error) in
-              if let error = error {
-                  print("Error fetching document: \(error)")
-                  completion(nil)  // Call completion with nil
-              } else if let document = document {
-                  let tmp = try? document.data(as: User.self)
-                  if let user = tmp {
-                      completion(user.name)  // Call completion with user name
-                  } else {
-                      print("Document does not exist \(user_ref), \(document)")
-                      completion(nil) 
-                  }
-              }
-//            else {
-//                  print("Document does not exist \(user_ref), \(document)")
-//                  completion(nil)  // Call completion with nil
-//              }
-          }
+    func getUserName(user_id: String)->String? {
+        if let user = users.first(where: { $0.id == user_id }) {
+            return user.name
+        } else {
+            print("User not found")
+            return nil
+        }
       }
+    
   func getUserByUsername(username: String) -> User? {
       for user in users {
         if user.username == username {
@@ -196,225 +202,119 @@ class DBDocuments: ObservableObject {
         }
     }
   
-    func getAllUsers(completion: @escaping ([User]) -> Void) {
-        let dispatchGroup = DispatchGroup()
-
-        var users: [User] = []
-      
-        store.collection("user").getDocuments() { (querySnapshot, error) in
-            if let error = error {
-                print("Error getting user documents: \(error)")
-            } else {
-                for document in querySnapshot!.documents {
-                    let documentReference = document.reference
-                    dispatchGroup.enter()
-
-                    self.getUserByRef(user_ref: documentReference) { user in
-                        if user != nil {
-                            users.append(user!)
-                        } else {
-                        }
-                      dispatchGroup.leave()
-
-                    }
-                }
-              // Notify the dispatch group when all users are fetched
-              dispatchGroup.notify(queue: .main) {
-              // Call the completion with the users array
-              completion(users)
-              }
+    func setFriends() {
+        for ref in currUser!.friends{
+            if let f = users.first(where: { $0.id == ref.documentID }) {
+                friends.append(f)
             }
         }
-        completion(users)
     }
-  
-    func getFriends(user: User) -> [User] {
-      var friends: [User] = []
-      for f in user.friends {
-          dbDocuments.getUserByRef(user_ref: f) { friend in
-              if let friend = friend {
-                  friends.append(friend)
-              }
-          }
-      }
-      return friends
-    }
-  
-  func getFriendReferencesFromDB(user: User, completion: @escaping ([DocumentReference]?) -> Void) {
-    let user_ref = self.getUserById(id: user.id)
-    if let user_ref = user_ref {
-      user_ref.getDocument { (document, error) in
-        if let error = error {
-          print("Error getting user document: \(error)")
-          completion(nil)
-          return
-        }
-        
-        if let document = document, document.exists {
-          if let references = document.get("friends") as? [DocumentReference] {
-            completion(references)
-          } else {
-            completion(nil) // The field is not an array of document references
-          }
-        } else {
-          print("User document does not exist")
-          completion(nil) // User document doesn't exist
-        }
-      }
-    }
-  }
-  
-  func getFriendsFromDB(user: User, completion: @escaping ([User]?) -> Void) {
-      var friends: [User] = []
-      self.getFriendReferencesFromDB(user: user) { references in
-          if let references = references {
-              let dispatchGroup = DispatchGroup()
-              for ref in references {
-                  dispatchGroup.enter()
-                  self.getUserByRef(user_ref: ref) { u in
-                      if let u = u {
-                          friends.append(u)
-                      }
-                      dispatchGroup.leave()
-                  }
-              }
-              dispatchGroup.notify(queue: .main) {
-                  completion(friends)
-              }
-          } else {
-              completion(nil)
-          }
-      }
-  }
     
     func createPost(data : [String:Any]){
-        store.collection("post").addDocument(data: data){ error in
-            if let error = error {
-                print("Error adding document: \(error)")
-            } else {
-                print("Post created!")
+        var d = data
+        if let user = currUser{
+            d["user_id"] = store.collection("user").document(user.id!)
+            
+            let postRef: DocumentReference? = store.collection("post").addDocument(data: d){ error in
+                if let error = error {
+                    print("Error adding document: \(error)")
+                } else {
+                    print("Post created!")
+                }
+            }
+            
+            if let ref = postRef{
+                let postObj = Post(id: ref.documentID, user_id: d["user_id"] as! DocumentReference, date: data["date"] as! Timestamp, location: data["location"] as! GeoPoint, description: data["description"] as! String, num_likes: 0)
+                
+                self.posts.append(postObj)
             }
         }
     }
     
-    func setCurrUser(user_id : String?){
-        if let id = user_id{
-            currUser = store.collection("user").document(id)
-            print("current user set")
-        }
+    func setCurrUser(user : User?){
+        currUser = user
+        setFriends()
     }
   
-    func getCurrUser(completion: @escaping (User?) -> Void){
-         if let user_ref = currUser{
-             getUserByRef(user_ref: user_ref){ user in
-                 return completion(user)
-             }
-         }
-         completion(nil)
-     }
-  
-  func getUserPosts(user_id: String?, completion: @escaping ([Post]?) -> Void) {
-    if let uid = user_id {
-      let documentPath = "user/\(uid)"
-      let documentReference = store.document(documentPath)
-      let postsRef = store.collection("post").whereField("user_id", isEqualTo: documentReference)
-      
-      postsRef.getDocuments { (querySnapshot, error) in
-        if let error = error {
-          // Handle the error
-          print("Error getting posts: \(error.localizedDescription)")
-          completion(nil)
-        } else {
-          var result: [Post] = []
-          
-          for document in querySnapshot!.documents {
-            if let post = try? document.data(as: Post.self) {
-              result.append(post)
-            }
-          }
-          completion(result)
-        }
+  func getUserPosts(user_id: String?) -> [Post] {
+      if let uid = user_id {
+          return posts.filter{$0.user_id.documentID == uid}
       }
-    } else {
-      completion(nil)
-    }
-  }
-  
-  func getHomepagePosts(completion: @escaping ([Post]?) -> Void) {
-    let postsRef = store.collection("post")
-    postsRef.getDocuments { (querySnapshot, error) in
-      if let error = error {
-        // Handle the error
-        print("Error getting posts: \(error.localizedDescription)")
-        completion(nil)
-      } else {
-        var result: [Post] = []
-        
-        for document in querySnapshot!.documents {
-          if let post = try? document.data(as: Post.self) {
-            result.append(post)
-          }
-        }
-        completion(result)
-      }
-    }
+      return []
   }
 
-    func likePost(post:Post){
-        if let id = post.id{
-            let ref = store.collection("post").document(id)
+    func likePost(post_id:String){
+        if let index = self.posts.firstIndex(where: { $0.id == post_id }) {
+            self.posts[index].num_likes += 1
+            let post = self.posts[index]
             
-            ref.updateData(["num_likes": post.num_likes + 1]) { error in
+            let ref = store.collection("post").document(post_id)
+            
+            ref.updateData(["num_likes": post.num_likes]) { error in
                 if let error = error {
                     print("Error updating document: \(error)")
                 } else {
-                    print("Number of post likes successfully updated: \(post.num_likes + 1)")
+                    print("Number of post likes successfully updated: \(post.num_likes)")
                 }
             }
             
             // add post to the user's liked posts array
             if let user = currUser {
-                
-                user.updateData([
-                    "posts_liked": FieldValue.arrayUnion([id])
+                let userref = store.collection("user").document(user.id!)
+                userref.updateData([
+                    "posts_liked": FieldValue.arrayUnion([post_id])
                 ]) { err in
                     if let err = err {
                         print("Error updating document: \(err)")
                     } else {
                         print("Post successfully added to user's liked posts array")
+                        
+                        if let index = self.users.firstIndex(where: { $0.id == user.id }) {
+                            self.users[index].posts_liked.append(post_id)
+                        }
+                        
+                        self.currUser!.posts_liked.append(post_id)
                     }
                 }
             }
-            
         }
+    
     }
     
-    func unlikePost(post:Post){
-        if let id = post.id{
-            let ref = store.collection("post").document(id)
+    func unlikePost(post_id:String){
+        if let index = self.posts.firstIndex(where: { $0.id == post_id }) {
+            self.posts[index].num_likes -= 1
+            let post = self.posts[index]
             
-            ref.updateData(["num_likes": post.num_likes - 1]) { error in
+            let ref = store.collection("post").document(post_id)
+            
+            ref.updateData(["num_likes": post.num_likes]) { error in
                 if let error = error {
                     print("Error updating document: \(error)")
                 } else {
-                    print("Number of post likes successfully updated: \(post.num_likes - 1)")
+                    print("Number of post likes successfully updated: \(post.num_likes)")
                 }
             }
             
             // remove post from the user's liked posts array
             if let user = currUser {
-                
-                user.updateData([
-                    "posts_liked": FieldValue.arrayRemove([id])
+                let userref = store.collection("user").document(user.id!)
+                userref.updateData([
+                    "posts_liked": FieldValue.arrayRemove([post_id])
                 ]) { err in
                     if let err = err {
                         print("Error updating document: \(err)")
                     } else {
                         print("Post successfully removed from user's liked posts array")
+                        
+                        if let index = self.users.firstIndex(where: { $0.id == user.id }) {
+                            self.users[index].posts_liked = self.users[index].posts_liked.filter{$0 == post_id}
+                        }
+                        
+                        self.currUser!.posts_liked = self.users[index].posts_liked.filter{$0 == post_id}
                     }
                 }
             }
-            
         }
     }
   
@@ -473,31 +373,13 @@ class DBDocuments: ObservableObject {
     }
   }
     
-    func checkUserLikes(id:String, completion: @escaping (Bool?) -> Void){
-        if let usr = currUser {
-            usr.getDocument { (document, error) in
-                if let error = error {
-                    print("Error fetching document: \(error)")
-                    completion(nil)
-                } else if let document = document, document.exists {
-                    let tmp = try? document.data(as: User.self)
-                    if let user = tmp {
-                        completion(user.posts_liked.contains(id))  // Call completion with user name
-                    } else {
-                        completion(nil)
-                    }
-                } else {
-                    print("Document does not exist")
-                    completion(nil)
-                }
-            }
-            
-        }
+    func checkUserLikes(id:String) -> Bool{
+        return currUser!.posts_liked.contains(id)
     }
   
   
-    func addFriend(user: User, friend: User, completion: @escaping (Bool) -> Void) {
-        let user_ref = getUserById(id: user.id)
+    func addFriend(friend: User, completion: @escaping (Bool) -> Void) {
+        let user_ref = getUserById(id: currUser!.id)
         let friend_ref = getUserById(id: friend.id)
         if user_ref != nil && friend_ref != nil {
             user_ref!.updateData([
@@ -506,6 +388,14 @@ class DBDocuments: ObservableObject {
             friend_ref!.updateData([
                 "friends": FieldValue.arrayUnion([user_ref!])
             ])
+            if let index = self.users.firstIndex(where: { $0.id == currUser!.id }) {
+                self.users[index].friends.append(friend_ref!)
+            }
+            if let index = self.users.firstIndex(where: { $0.id == friend.id }) {
+                self.users[index].friends.append(user_ref!)
+            }
+            
+            self.friends.append(friend)
             completion(true)
         } else {
             print("User or friend does not exist")
@@ -513,8 +403,8 @@ class DBDocuments: ObservableObject {
         }
     }
   
-    func removeFriend(user: User, friend: User, completion: @escaping (Bool) -> Void) {
-        let user_ref = getUserById(id: user.id)
+    func removeFriend(friend: User, completion: @escaping (Bool) -> Void) {
+        let user_ref = getUserById(id: currUser!.id)
         let friend_ref = getUserById(id: friend.id)
         if user_ref != nil && friend_ref != nil {
             user_ref!.updateData([
@@ -523,6 +413,16 @@ class DBDocuments: ObservableObject {
             friend_ref!.updateData([
                 "friends": FieldValue.arrayRemove([user_ref!])
             ])
+            
+            if let index = self.users.firstIndex(where: { $0.id == currUser!.id }) {
+                self.users[index].friends = self.users[index].friends.filter{$0 != friend_ref!}
+            }
+            if let index = self.users.firstIndex(where: { $0.id == friend.id }) {
+                self.users[index].friends = self.users[index].friends.filter{$0 != user_ref!}
+            }
+            
+            self.friends = self.friends.filter{$0.id != friend.id}
+            
             completion(true)
         } else {
             print("User or friend does not exist")
@@ -530,17 +430,13 @@ class DBDocuments: ObservableObject {
         }
     }
   
-    func checkFriendStatus(user: User, possibleFriend: User, completion: @escaping (Bool) -> Void) {
+    func checkFriendStatus(user: User, possibleFriend: User) -> Bool {
       for f in user.friends {
-          dbDocuments.getUserByRef(user_ref: f) { friend in
-            if let friend = friend {
-              if friend.id == possibleFriend.id {
-                completion(true)
-              }
-              }
+          if f.documentID == possibleFriend.id {
+            return true
           }
       }
-      completion(false)
+      return false
     }
     
     func uploadImage(_ image: UIImage, completion: @escaping (_ url: URL?) -> Void) {

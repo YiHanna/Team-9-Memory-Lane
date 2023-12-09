@@ -21,10 +21,6 @@ struct CommentRowView: View {
   }
   
   private func getUsername() {
-    dbDocuments.getUserByRef(user_ref: comment.user_id, completion: { user in
-      if let u = user {
-        username = u.username
-      }
-    })
+      username = dbDocuments.getUserName(user_id: comment.user_id.documentID) ?? "username not found"
   }
 }
