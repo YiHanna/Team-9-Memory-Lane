@@ -158,18 +158,17 @@ struct UserProfileView: View {
                                 .padding([.leading, .trailing], 25)
                                 }
                             }
-                        }.padding().background(Color.beige)
-                    }
-                    
                             
-                    VStack{
-                        Text("My Memory Lane")
-                            .font(.system(size: 14))
-                            .foregroundColor(Color.brown)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.top, 15)
-                            .padding([.leading, .trailing], 15)
-                        
+                        }.padding().background(Color.beige)
+                    }.listRowBackground(Color.beige)
+                    
+                    Section(header: Text("My Memory Lane")
+                        .font(.system(size: 14))
+                        .foregroundColor(Color.brown)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color.beige)
+                        .padding(.top, 15)
+                        .padding([.leading, .trailing], 15)){
                         if posts.isEmpty {
                             Text("Nothing to see here.")
                             .font(.system(size: 14))
@@ -177,30 +176,30 @@ struct UserProfileView: View {
                             .padding(.top, 5)
                         } else {
                             ForEach(Array(postsDict.sorted(by: { $0.key > $1.key })), id: \.key) { year, postsInYear in
-                                Section {
                                     Text(String(year))
                                       .font(.system(size: 20))
                                       .bold()
                                       .foregroundColor(Color.brown)
                                       .frame(maxWidth: .infinity, alignment: .leading)
                                       .padding(.top, 5)
+                                      .listRowBackground(Color.beige)
                                     
                                     ForEach(postsInYear, id: \.id) { post in
-                                        PostRowView(post: post)
+                                        PostRowView(post: post).listRowBackground(Color.beige)
                                     }
                                     .onDelete(perform: deletePost)
-                                }
-                                .padding(.horizontal, 15)
                             }
                             
                             Text("End of memory lane. Add memories for more!")
                             .font(.system(size: 14))
                             .foregroundColor(Color.taupe)
-                            .padding(.top, 5)
+                            .padding(.top, 5).listRowBackground(Color.beige)
+                            
                         }
                     }.background(Color.beige)
                     
-                }.listStyle(PlainListStyle())
+                    
+                }.listStyle(PlainListStyle()).listRowBackground(Color.beige)
           
                 
             }.onAppear{
