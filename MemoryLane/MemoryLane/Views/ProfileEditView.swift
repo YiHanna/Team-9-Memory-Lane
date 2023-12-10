@@ -80,14 +80,14 @@ struct ProfileEditView: View {
         }) {
           if let picture = image {
             Image(uiImage: picture).resizable()
-              .aspectRatio(contentMode: .fit)
+              .aspectRatio(contentMode: .fill)
               .frame(width: 100, height: 100)
               .clipShape(Circle())
               .padding()
           } else if let photoUrl = photo {
             AsyncImage(url: URL(string: photoUrl)) { image in
               image.resizable()
-                .aspectRatio(contentMode: .fit)
+                .aspectRatio(contentMode: .fill)
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
                 .padding()

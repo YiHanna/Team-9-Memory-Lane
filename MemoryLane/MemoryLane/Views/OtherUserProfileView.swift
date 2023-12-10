@@ -30,7 +30,7 @@ struct OtherUserProfileView: View {
               } else {
                 AsyncImage(url: URL(string: otherUser.photo!)) { image in
                   image.resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 100, height: 100)
                     .clipShape(Circle())
                 } placeholder: {
