@@ -12,37 +12,51 @@ struct HomeView: View {
     @State private var prompt : String = "What was one of your childhood Halloween costumes?"
     var body: some View {
         NavigationView {
-            VStack{
-                Spacer()
+          ZStack {
+            Color.beige.edgesIgnoringSafeArea(.all)
+            VStack {
+              ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                  .fill(Color.white)
+                  .frame(width: 360, height: 75)
+                  .cornerRadius(10)
+                  .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
+                
                 NavigationLink(destination: AddPostView(showPrompt: true)) {
-                    VStack{
-                        Text("Today's Prompt")
-                        if let p = dbDocuments.currPrompt{
-                            Text(p.text)
-                        }else{
-                            Text(prompt)
-                        }
-                    }.background(Color(red: 0.949, green: 0.941, blue: 0.925, opacity: 1.0))
-                }.environmentObject(dbDocuments)
-                
-                
-                List {
-                    ForEach(dbDocuments.posts) { post in
-                      NavigationLink(destination: PostView(post: post)) {
-                        PostRowView(post: post)
-                      }.environmentObject(dbDocuments)
+                  VStack{
+                    Text("Today's Prompt")
+                      .foregroundColor(.brown)
+                    if let p = dbDocuments.currPrompt{
+                      Text(p.text)
+                        .foregroundColor(.black)
+                    } else {
+                      Text(prompt)
+                        .foregroundColor(.black)
                     }
-                }
-                .navigationBarTitle("Posts")
-                .navigationBarItems(trailing:
-                  NavigationLink(destination: AddPostView(showPrompt: false)) {
-                      Image(systemName: "plus")
+                  }
+                }.environmentObject(dbDocuments)
+              }
+              
+              List {
+                ForEach(dbDocuments.posts) { post in
+                  NavigationLink(destination: PostView(post: post)) {
+                    PostRowView(post: post)
                   }.environmentObject(dbDocuments)
-                )
+                }
+              }
+              .background(Color.beige)
+              .scrollContentBackground(.hidden)
             }
-            
-        }.navigationBarBackButtonHidden(true)
-            .background(Color.red)
+          }
+          .navigationBarBackButtonHidden(true)
+          .navigationBarTitle("Memory Lane", displayMode: .inline)
+          .navigationBarItems(trailing:
+            NavigationLink(destination: AddPostView(showPrompt: false)) {
+              Image(systemName: "plus")
+                .foregroundColor(.brown)
+            }.environmentObject(dbDocuments)
+          )
+        }
     }
 }
 
