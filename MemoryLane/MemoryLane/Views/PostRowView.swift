@@ -19,7 +19,7 @@ struct PostRowView: View {
         ZStack{
             if let photoUrl = post.photo{
                 AsyncImage(url: URL(string: photoUrl)) { image in
-                    image.resizable().aspectRatio(contentMode: .fill)
+                  image.resizable().aspectRatio(0.75, contentMode: .fill)
                 } placeholder: {
                     Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
                 }
@@ -35,6 +35,7 @@ struct PostRowView: View {
                     }
                     Spacer()
                 }
+                .frame(width: 330)
                 Spacer()
                 HStack{
                     VStack (alignment: .leading){
@@ -44,20 +45,40 @@ struct PostRowView: View {
                         }
                         Text(post.description).foregroundColor(Color.white)
                     }
+                  
+                    Spacer()
+                  
+                  VStack {
                     Button(action: {
                       toggleLikePost(post: post)
                       checkUserLikes()
-                     }) {
-                       if let liked = userLiked {
-                           Image(systemName: liked ? "heart.fill" : "heart")
-                               .foregroundColor(.white)
-                       }
-                     }
-                     .buttonStyle(.bordered)
-                     .foregroundColor(Color.clear)
-                     .padding()
-                     .zIndex(1)
-                }
+                    }) {
+                      if let liked = userLiked {
+                        Image(systemName: liked ? "heart.fill" : "heart")
+                          .resizable()
+                          .scaledToFit()
+                          .frame(width: 20, height: 20)
+                          .foregroundColor(.white)
+                          .background(.clear)
+                      }
+                    }
+                    .buttonStyle(.borderless)
+                    
+                    Image("message")
+                      .resizable()
+                      .scaledToFit()
+                      .frame(width: 25, height: 25)
+                      .foregroundColor(.white)
+                      .overlay(
+                        NavigationLink(destination: PostView(post: post)) {
+                          EmptyView()
+                        }
+                        .opacity(0)
+                      )
+                    
+                  } // VStack
+                } // HStack
+                .frame(width: 330)
             }.padding()
             
         }.onAppear {

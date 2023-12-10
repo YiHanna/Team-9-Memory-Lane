@@ -15,37 +15,50 @@ struct HomeView: View {
           ZStack {
             Color.beige.edgesIgnoringSafeArea(.all)
             VStack {
-              ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                  .fill(Color.white)
-                  .frame(width: 360, height: 75)
-                  .cornerRadius(10)
-                  .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
-                
-                NavigationLink(destination: AddPostView(showPrompt: true)) {
+              List {
+                ZStack {
+                  RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.white)
+                    .frame(width: 360, height: 75)
+                    .cornerRadius(10)
+                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
+                  
                   VStack{
                     Text("Today's Prompt")
                       .foregroundColor(.brown)
+                      .font(.system(size: 15))
                     if let p = dbDocuments.currPrompt{
                       Text(p.text)
                         .foregroundColor(.black)
+                        .font(.system(size: 15))
                     } else {
                       Text(prompt)
                         .foregroundColor(.black)
+                        .font(.system(size: 15))
                     }
                   }
-                }.environmentObject(dbDocuments)
-              }
-              
-              List {
-                ForEach(dbDocuments.posts) { post in
-                  NavigationLink(destination: PostView(post: post)) {
-                    PostRowView(post: post)
-                  }.environmentObject(dbDocuments)
+                  
+                  NavigationLink(destination: AddPostView(showPrompt: true)) {
+                    EmptyView()
+                  }
+                  .environmentObject(dbDocuments)
+                  .opacity(0)
+                }
+                .listRowBackground(Color.beige)
+                .listRowSeparator(.hidden)
+                
+                ForEach(Array(dbDocuments.posts)) { post in
+                  PostRowView(post: post)
+                    .frame(width: 360, height: 480)
+                    .cornerRadius(10)
+                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
+                    .listRowBackground(Color.beige)
+                    .listRowSeparator(.hidden)
                 }
               }
               .background(Color.beige)
               .scrollContentBackground(.hidden)
+              .listStyle(PlainListStyle())
             }
           }
           .navigationBarBackButtonHidden(true)
