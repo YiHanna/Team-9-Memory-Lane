@@ -110,11 +110,11 @@ struct ProfileEditView: View {
             Text("*")
               .foregroundColor(Color.red)
           }
-          .font(.system(size: 14))
+          .font(.system(size: 15))
           .frame(maxWidth: .infinity, alignment: .leading)
 
           TextField("Enter your name", text: $name)
-            .font(.system(size: 14))
+            .font(.system(size: 15))
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .autocapitalization(.words)
 
@@ -123,27 +123,27 @@ struct ProfileEditView: View {
             Text("*")
               .foregroundColor(Color.red)
           }
-          .font(.system(size: 14))
+          .font(.system(size: 15))
           .frame(maxWidth: .infinity, alignment: .leading)
 
           TextField("Enter your email", text: $email)
-            .font(.system(size: 14))
+            .font(.system(size: 15))
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .autocapitalization(.none)
 
           Text("Hometown")
-            .font(.system(size: 14))
+            .font(.system(size: 15))
             .frame(maxWidth: .infinity, alignment: .leading)
 
           TextField("Enter your hometown", text: $hometown)
-            .font(.system(size: 14))
+            .font(.system(size: 15))
             .textFieldStyle(RoundedBorderTextFieldStyle())
         }
         
         VStack{
           VStack{
             Text("Elementary School")
-              .font(.system(size: 14))
+              .font(.system(size: 15))
               .frame(maxWidth: .infinity, alignment: .leading)
 
             TextField("Enter your elementary school", text: Binding(
@@ -153,7 +153,7 @@ struct ProfileEditView: View {
                 eViewModel.searchQuery = $0
               }
             ))
-              .font(.system(size: 14))
+              .font(.system(size: 15))
               .frame(maxWidth: .infinity, alignment: .leading)
               .textFieldStyle(RoundedBorderTextFieldStyle())
             
@@ -176,7 +176,7 @@ struct ProfileEditView: View {
           
           VStack{
             Text("Middle School")
-              .font(.system(size: 14))
+              .font(.system(size: 15))
               .frame(maxWidth: .infinity, alignment: .leading)
             TextField("Enter your middle school", text: Binding(
               get: { m_school },
@@ -184,7 +184,7 @@ struct ProfileEditView: View {
                 m_school = $0
                 mViewModel.searchQuery = $0
               }
-            )).font(.system(size: 14))
+            )).font(.system(size: 15))
               .textFieldStyle(RoundedBorderTextFieldStyle())
             if (mViewModel.showLocationResults && !mViewModel.searchResults.isEmpty) {
               List(mViewModel.searchResults, id: \.title) { result in
@@ -205,7 +205,7 @@ struct ProfileEditView: View {
           
           VStack{
             Text("High School")
-              .font(.system(size: 14))
+              .font(.system(size: 15))
               .frame(maxWidth: .infinity, alignment: .leading)
             TextField("Enter your high school", text: Binding(
               get: { h_school },
@@ -214,7 +214,7 @@ struct ProfileEditView: View {
                 hViewModel.searchQuery = $0
               }
             ))
-            .font(.system(size: 14))
+            .font(.system(size: 15))
             .textFieldStyle(RoundedBorderTextFieldStyle())
             if (hViewModel.showLocationResults && !hViewModel.searchResults.isEmpty) {
               List(hViewModel.searchResults, id: \.title) { result in
@@ -235,7 +235,7 @@ struct ProfileEditView: View {
           
           VStack{
           Text("University")
-              .font(.system(size: 14))
+              .font(.system(size: 15))
               .frame(maxWidth: .infinity, alignment: .leading)
           TextField("Enter your university", text: Binding(
                           get: { university },
@@ -244,7 +244,7 @@ struct ProfileEditView: View {
                             uViewModel.searchQuery = $0
                           }
                       ))
-            .font(.system(size: 14))
+            .font(.system(size: 15))
             .textFieldStyle(RoundedBorderTextFieldStyle())
           
             if (uViewModel.showLocationResults && !uViewModel.searchResults.isEmpty) {
@@ -265,10 +265,10 @@ struct ProfileEditView: View {
           }
           
           Text("Current City")
-            .font(.system(size: 14))
+            .font(.system(size: 15))
             .frame(maxWidth: .infinity, alignment: .leading)
           TextField("Enter your current city", text: $current_city)
-            .font(.system(size: 14))
+            .font(.system(size: 15))
             .textFieldStyle(RoundedBorderTextFieldStyle())
         }
         

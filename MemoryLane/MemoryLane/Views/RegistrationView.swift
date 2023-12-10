@@ -59,7 +59,7 @@ struct RegistrationViewInit: View {
             .frame(width: 300, height: 25, alignment: .top)
           
           Text("Create an account and travel down memory lane with friends from yesterday, today, and tomorrow.")
-            .font(.system(size: 14))
+            .font(.system(size: 15))
             .italic()
             .multilineTextAlignment(.center)
             .foregroundColor(.white)
@@ -175,7 +175,7 @@ struct RegistrationViewUserInfo: View {
               .frame(width: 300, height: 25, alignment: .top)
             
             Text("Help us help you find your old connections.")
-              .font(.system(size: 14))
+              .font(.system(size: 15))
               .italic()
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
@@ -226,7 +226,7 @@ struct RegistrationViewUserInfo: View {
           
           Group {
             Text("The following fields are optional but recommended for the best experience.")
-              .font(.system(size: 14))
+              .font(.system(size: 15))
               .multilineTextAlignment(.center)
               .foregroundColor(.white)
               .frame(width: 330, alignment: .top)

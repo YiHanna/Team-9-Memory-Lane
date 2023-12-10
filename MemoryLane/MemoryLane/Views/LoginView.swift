@@ -80,7 +80,7 @@ struct LoginView: View {
                         
                         NavigationLink(destination: RegistrationView()) {
                             Text("Don't have an account? Create one here")
-                                .font(.system(size: 14))
+                                .font(.system(size: 15))
                                 .foregroundColor(.white)
                                 .padding(.top)
                         }
