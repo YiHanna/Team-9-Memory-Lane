@@ -12,107 +12,205 @@ struct OtherUserProfileView: View {
     @State var otherUser: User
     @State var currUser: User
     @State private var posts: [Post] = []
+    @State var postsDict: [Int:[Post]] = [:]
     @State private var isFriend: Bool = false
   
     var body: some View {
-      VStack {
-        Group {
-          Text(otherUser.name)
-            .font(.title)
+      NavigationView {
+        ZStack {
+          Color.beige.edgesIgnoringSafeArea(.all)
           
-          Text(otherUser.username)
-            .font(.subheadline)
-            .foregroundColor(.gray)
-          
-          if isFriend {
-            Button(action: {
-              removeFriend()
-            }) {
-              Text("Friends")
-                .padding()
-                .background(Color.gray)
-                .foregroundColor(Color.white)
-                .cornerRadius(10)
-            }
-          } else {
-            Button(action: {
-              addFriend()
-            }) {
-              Text("Add Friend")
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(Color.white)
-                .cornerRadius(10)
-            }
-          }
-        }
-        
-        Group {
-          HStack {
-            Text("Hometown: ")
-            Spacer()
-            Text(otherUser.hometown)
-          }
-          
-          HStack {
-            Text("Elementary School: ")
-            Spacer()
-            if let eleschool = otherUser.schools["elementary_school"] {
-              Text(eleschool)
-            }
-          }
-          
-          HStack {
-            Text("Middle School: ")
-            Spacer()
-            if let mschool = otherUser.schools["middle_school"] {
-              Text(mschool)
-            }
-          }
-          
-          HStack {
-            Text("High School: ")
-            Spacer()
-            if let hschool = otherUser.schools["high_school"] {
-              Text(hschool)
-            }
-          }
-          
-          HStack {
-            Text("University School: ")
-            Spacer()
-            if let uni = otherUser.schools["university"] {
-              Text(uni)
-            }
-          }
-          
-          HStack {
-            Text("Current City: ")
-            Spacer()
-            Text(otherUser.current_city)
-          }
-          .padding(.bottom)
-        }
-        
-        Group {
-          Text("Timeline")
-          Spacer()
-          List {
-            ForEach(posts) { post in
-              PostRowView(post: post)
-            }
-          }
-        }
+          ScrollView {
+            VStack {
+              if otherUser.photo == nil {
+                Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
+                    .edgesIgnoringSafeArea(.all)
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+              } else {
+                AsyncImage(url: URL(string: otherUser.photo!)) { image in
+                  image.resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 100)
+                    .clipShape(Circle())
+                } placeholder: {
+                  Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
+                }
+              }
+              
+              Text(otherUser.name)
+                .font(.system(size: 17))
+                .bold()
+                .multilineTextAlignment(.center)
+                .foregroundColor(Color.brown)
+                .padding(.bottom, 2)
+              
+              Text(otherUser.username)
+                .font(.system(size: 15))
+                .foregroundColor(Color.taupe)
+              
+              if isFriend {
+                Button(action: {
+                  removeFriend()
+                }) {
+                  Text("Friends")
+                    .font(.system(size: 15))
+                    .padding(15)
+                    .background(Color.darkBeige)
+                    .foregroundColor(Color.black)
+                    .cornerRadius(10)
+                    .padding(.bottom, 10)
+                }
+              } else {
+                Button(action: {
+                  addFriend()
+                }) {
+                  Text("Add Friend")
+                    .font(.system(size: 15))
+                    .padding(15)
+                    .background(Color.taupe)
+                    .foregroundColor(Color.white)
+                    .cornerRadius(10)
+                    .padding(.bottom, 10)
+                }
+              }
+              
+              ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                  .fill(Color.white)
+                  .frame(width: 360, height: 220)
+                  .cornerRadius(10)
+                  .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
+                  
+                VStack {
+                  Text("Info")
+                    .font(.system(size: 15))
+                    .foregroundColor(Color.brown)
+                    .frame(width: 330, alignment: .leading)
+                    .padding(.bottom, 3)
+                  
+                  HStack {
+                    Text("Hometown")
+                      .font(.system(size: 15))
+                      .bold()
+                    Spacer()
+                    Text(otherUser.hometown)
+                      .font(.system(size: 15))
+                  }
+                  .padding([.leading, .trailing], 30)
+                  .padding(.bottom, 3)
+                  
+                  HStack {
+                    Text("Elementary School")
+                      .font(.system(size: 15))
+                      .bold()
+                    Spacer()
+                    if let eleschool = otherUser.schools["elementary_school"] {
+                      Text(eleschool)
+                        .font(.system(size: 15))
+                    }
+                  }
+                  .padding([.leading, .trailing], 30)
+                  .padding(.bottom, 3)
+                  
+                  HStack {
+                    Text("Middle School")
+                      .font(.system(size: 15))
+                      .bold()
+                    Spacer()
+                    if let mschool = otherUser.schools["middle_school"] {
+                      Text(mschool)
+                        .font(.system(size: 15))
+                    }
+                  }
+                  .padding([.leading, .trailing], 30)
+                  .padding(.bottom, 3)
+                  
+                  HStack {
+                    Text("High School")
+                      .font(.system(size: 15))
+                      .bold()
+                    Spacer()
+                    if let hschool = otherUser.schools["high_school"] {
+                      Text(hschool)
+                        .font(.system(size: 15))
+                    }
+                  }
+                  .padding([.leading, .trailing], 30)
+                  .padding(.bottom, 3)
+                  
+                  HStack {
+                    Text("University")
+                      .font(.system(size: 15))
+                      .bold()
+                    Spacer()
+                    if let uni = otherUser.schools["university"] {
+                      Text(uni)
+                        .font(.system(size: 15))
+                    }
+                  }
+                  .padding([.leading, .trailing], 30)
+                  .padding(.bottom, 3)
+                  
+                  HStack {
+                    Text("Current City")
+                      .font(.system(size: 15))
+                      .bold()
+                    Spacer()
+                    Text(otherUser.current_city)
+                      .font(.system(size: 15))
+                  }
+                  .padding([.leading, .trailing], 30)
+                } // VStack
+              } // ZStack
+              
+              Group {
+                Text("Memory Lane")
+                  .font(.system(size: 15))
+                  .foregroundColor(Color.brown)
+                  .frame(width: 360, alignment: .leading)
+                  .background(Color.beige)
+                  .padding(.top, 15)
+
+                if posts.isEmpty {
+                  Text("Nothing to see here.")
+                    .font(.system(size: 15))
+                    .foregroundColor(Color.taupe)
+                    .padding(.top, 5)
+                } else {
+                    ForEach(Array(postsDict.sorted(by: { $0.key > $1.key })), id: \.key) { year, postsInYear in
+                            Text(String(year))
+                              .font(.system(size: 20))
+                              .bold()
+                              .foregroundColor(Color.brown)
+                              .frame(width: 360, alignment: .leading)
+                              .padding(.top, 5)
+                            
+                            ForEach(postsInYear, id: \.id) { post in
+                                PostRowView(post: post)
+                                .frame(width: 360)
+                            }
+                    }
+                    
+                    Text("End of memory lane.")
+                    .font(.system(size: 15))
+                    .foregroundColor(Color.taupe)
+                    .padding(.top, 5)
+                }
+              } // Group
+            } // VStack
+          } // ScrollView
+        } // ZStack
+      } // NavigationView
+      .onAppear{
+        // Must fetch from DB again as a work-around to complex list object binding
+        getBothUsersFromDB() { _ in
+          getPosts()
+          checkFriendStatus()
       }
-     .padding()
-     .onAppear{
-       // Must fetch from DB again as a work-around to complex list object binding
-       getBothUsersFromDB() { _ in
-         getPosts()
-         checkFriendStatus()
-       }
-     }
     }
+  }
+      
   
   private func getBothUsersFromDB(completion: @escaping (Bool) -> Void) {
     getUserFromDB(id: currUser.id!) { user in
@@ -143,6 +241,13 @@ struct OtherUserProfileView: View {
   
   private func getPosts() {
       posts = dbDocuments.getUserPosts(user_id: otherUser.id)
+      posts.sort()
+      print("user posts fetched")
+      print(posts.count)
+      postsDict = Dictionary(grouping: posts, by: {$0.getYear()})
+      for (year, postsByYear) in postsDict {
+          postsDict[year] = postsByYear.sorted(by: { $0.date.dateValue() > $1.date.dateValue() })
+      }
   }
   
   private func addFriend() {

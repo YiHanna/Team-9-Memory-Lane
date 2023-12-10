@@ -35,7 +35,6 @@ struct UserProfileView: View {
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 100, height: 100)
                                     .clipShape(Circle())
-                                    .padding()
                                 } placeholder: {
                                     Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
                                 }
@@ -45,7 +44,6 @@ struct UserProfileView: View {
                                     .edgesIgnoringSafeArea(.all)
                                     .frame(width: 100, height: 100)
                                     .clipShape(Circle())
-                                    .padding()
                             }
                             
                             Text(dbDocuments.currUser!.name)
@@ -53,7 +51,7 @@ struct UserProfileView: View {
                                 .bold()
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color.brown)
-                                .padding(.bottom, 5)
+                                .padding(.bottom, 2)
                             
                             Text(dbDocuments.currUser!.username)
                                 .font(.system(size: 15))

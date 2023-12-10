@@ -15,6 +15,10 @@ extension Color {
     Color(red: 0.96078, green: 0.95294, blue: 0.92941)
   }
   
+  static var darkBeige: Color {
+    Color(red: 0.89804, green: 0.88627, blue: 0.86275)
+  }
+  
   static var brown: Color {
     Color(red: 0.44314, green: 0.23922, blue: 0)
   }
