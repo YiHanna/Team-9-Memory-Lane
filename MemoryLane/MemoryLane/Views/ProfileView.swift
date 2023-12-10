@@ -49,113 +49,114 @@ struct UserProfileView: View {
                             }
                             
                             Text(dbDocuments.currUser!.name)
-                                .font(.system(size: 20))
+                                .font(.system(size: 17))
                                 .bold()
                                 .multilineTextAlignment(.center)
                                 .foregroundColor(Color.brown)
-                                .frame(width: 184, height: 25, alignment: .top)
+                                .padding(.bottom, 5)
                             
                             Text(dbDocuments.currUser!.username)
-                                .font(.system(size: 14))
+                                .font(.system(size: 15))
                                 .foregroundColor(Color.taupe)
                             
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
                                 .fill(Color.white)
-                                .frame(width: 360, height: 210)
+                                .frame(width: 360, height: 220)
                                 .cornerRadius(10)
                                 .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
                                 
                                 VStack {
                                 HStack {
-                                    Text("My Info")
-                                    .font(.system(size: 14))
-                                    .foregroundColor(Color.brown)
+                                  Text("My Info")
+                                  .font(.system(size: 15))
+                                  .foregroundColor(Color.brown)
+                                  
+                                  Spacer()
                                     
-                                    Spacer()
-                                    
-                                    NavigationLink(destination: ProfileEditView(user: dbDocuments.currUser!)) {
-                                    Text("Edit Profile")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(Color.taupe)
-                                    }
-                                    .environmentObject(dbDocuments)
+                                  NavigationLink(destination: ProfileEditView(user: dbDocuments.currUser!)) {
+                                    Text("Edit")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(Color.taupe)
+                                  }
+                                  .environmentObject(dbDocuments)
+                                  .aspectRatio(contentMode: .fit)
                                 }
-                                .padding([.leading, .trailing], 20)
+                                .padding([.leading, .trailing], 15)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
                                     Text("Hometown")
+                                    .font(.system(size: 15))
                                     .bold()
-                                    .font(.system(size: 14))
                                     Spacer()
                                     Text(dbDocuments.currUser!.hometown)
-                                    .font(.system(size: 14))
+                                    .font(.system(size: 15))
                                 }
-                                .padding([.leading, .trailing], 20)
+                                .padding([.leading, .trailing], 15)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
                                     Text("Elementary School")
+                                    .font(.system(size: 15))
                                     .bold()
-                                    .font(.system(size: 14))
                                     Spacer()
                                     if let eleschool = dbDocuments.currUser!.schools["elementary_school"] {
-                                    Text(eleschool)
-                                        .font(.system(size: 14))
+                                      Text(eleschool)
+                                      .font(.system(size: 15))
                                     }
                                 }
-                                .padding([.leading, .trailing], 20)
+                                .padding([.leading, .trailing], 15)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
                                     Text("Middle School")
+                                    .font(.system(size: 15))
                                     .bold()
-                                    .font(.system(size: 14))
                                     Spacer()
                                     if let mschool = dbDocuments.currUser!.schools["middle_school"] {
-                                    Text(mschool)
-                                        .font(.system(size: 14))
+                                      Text(mschool)
+                                      .font(.system(size: 15))
                                     }
                                 }
-                                .padding([.leading, .trailing], 20)
+                                .padding([.leading, .trailing], 15)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
                                     Text("High School")
+                                    .font(.system(size: 15))
                                     .bold()
-                                    .font(.system(size: 14))
                                     Spacer()
                                     if let hschool = dbDocuments.currUser!.schools["high_school"] {
                                     Text(hschool)
-                                        .font(.system(size: 14))
+                                    .font(.system(size: 15))
                                     }
                                 }
-                                .padding([.leading, .trailing], 20)
+                                .padding([.leading, .trailing], 15)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
                                     Text("University")
+                                    .font(.system(size: 15))
                                     .bold()
-                                    .font(.system(size: 14))
                                     Spacer()
                                     if let uni = dbDocuments.currUser!.schools["university"] {
-                                    Text(uni)
-                                        .font(.system(size: 14))
+                                      Text(uni)
+                                      .font(.system(size: 15))
                                     }
                                 }
-                                .padding([.leading, .trailing], 20)
+                                .padding([.leading, .trailing], 15)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
                                     Text("Current City")
+                                    .font(.system(size: 15))
                                     .bold()
-                                    .font(.system(size: 14))
                                     Spacer()
                                     Text(dbDocuments.currUser!.current_city)
-                                    .font(.system(size: 14))
+                                    .font(.system(size: 15))
                                 }
-                                .padding([.leading, .trailing], 20)
+                                .padding([.leading, .trailing], 15)
                                 }
                             }
                             
@@ -164,14 +165,14 @@ struct UserProfileView: View {
                      .listRowSeparator(.hidden)
                     
                     Section(header: Text("My Memory Lane")
-                        .font(.system(size: 14))
+                        .font(.system(size: 15))
                         .foregroundColor(Color.brown)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(Color.beige)
                         .padding(.trailing, 15)){
                         if posts.isEmpty {
                             Text("Nothing to see here.")
-                            .font(.system(size: 14))
+                            .font(.system(size: 15))
                             .foregroundColor(Color.taupe)
                             .padding(.top, 5)
                         } else {
@@ -193,10 +194,11 @@ struct UserProfileView: View {
                             }
                             
                             Text("End of memory lane. Add memories for more!")
-                            .font(.system(size: 14))
+                            .font(.system(size: 15))
                             .foregroundColor(Color.taupe)
-                            .padding(.top, 5).listRowBackground(Color.beige)
-                                  .listRowSeparator(.hidden)
+                            .padding(.top, 5)
+                            .listRowBackground(Color.beige)
+                            .listRowSeparator(.hidden)
                             
                         }
                     }.background(Color.beige)
