@@ -81,7 +81,7 @@ struct UserProfileView: View {
                                     }
                                     .environmentObject(dbDocuments)
                                 }
-                                .padding([.leading, .trailing], 25)
+                                .padding([.leading, .trailing], 20)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
@@ -92,7 +92,7 @@ struct UserProfileView: View {
                                     Text(dbDocuments.currUser!.hometown)
                                     .font(.system(size: 14))
                                 }
-                                .padding([.leading, .trailing], 25)
+                                .padding([.leading, .trailing], 20)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
@@ -105,7 +105,7 @@ struct UserProfileView: View {
                                         .font(.system(size: 14))
                                     }
                                 }
-                                .padding([.leading, .trailing], 25)
+                                .padding([.leading, .trailing], 20)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
@@ -118,7 +118,7 @@ struct UserProfileView: View {
                                         .font(.system(size: 14))
                                     }
                                 }
-                                .padding([.leading, .trailing], 25)
+                                .padding([.leading, .trailing], 20)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
@@ -131,7 +131,7 @@ struct UserProfileView: View {
                                         .font(.system(size: 14))
                                     }
                                 }
-                                .padding([.leading, .trailing], 25)
+                                .padding([.leading, .trailing], 20)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
@@ -144,7 +144,7 @@ struct UserProfileView: View {
                                         .font(.system(size: 14))
                                     }
                                 }
-                                .padding([.leading, .trailing], 25)
+                                .padding([.leading, .trailing], 20)
                                 .padding(.bottom, 3)
                                 
                                 HStack {
@@ -155,20 +155,20 @@ struct UserProfileView: View {
                                     Text(dbDocuments.currUser!.current_city)
                                     .font(.system(size: 14))
                                 }
-                                .padding([.leading, .trailing], 25)
+                                .padding([.leading, .trailing], 20)
                                 }
                             }
                             
-                        }.padding().background(Color.beige)
+                        }.background(Color.beige)
                     }.listRowBackground(Color.beige)
+                     .listRowSeparator(.hidden)
                     
                     Section(header: Text("My Memory Lane")
                         .font(.system(size: 14))
                         .foregroundColor(Color.brown)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(Color.beige)
-                        .padding(.top, 15)
-                        .padding([.leading, .trailing], 15)){
+                        .padding(.trailing, 15)){
                         if posts.isEmpty {
                             Text("Nothing to see here.")
                             .font(.system(size: 14))
@@ -183,9 +183,11 @@ struct UserProfileView: View {
                                       .frame(maxWidth: .infinity, alignment: .leading)
                                       .padding(.top, 5)
                                       .listRowBackground(Color.beige)
+                                      .listRowSeparator(.hidden)
                                     
                                     ForEach(postsInYear, id: \.id) { post in
                                         PostRowView(post: post).listRowBackground(Color.beige)
+                                        .listRowSeparator(.hidden)
                                     }
                                     .onDelete(perform: deletePost)
                             }
@@ -194,12 +196,14 @@ struct UserProfileView: View {
                             .font(.system(size: 14))
                             .foregroundColor(Color.taupe)
                             .padding(.top, 5).listRowBackground(Color.beige)
+                                  .listRowSeparator(.hidden)
                             
                         }
                     }.background(Color.beige)
                     
                     
                 }.listStyle(PlainListStyle()).listRowBackground(Color.beige)
+                    .listRowSeparator(.hidden)
           
                 
             }.onAppear{
