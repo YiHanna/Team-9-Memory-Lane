@@ -153,15 +153,7 @@ struct PostView: View {
     }
   
     private func getComments() {
-      dbDocuments.getPostComments(post_id: post.id){ (fetchedComments) in
-        if let c = fetchedComments {
-          comments = c
-          comments.sort()
-          print("user posts fetched")
-          print(comments.count)
-        } else {
-          print("failed to fetch user posts")
-        }
-      }
+        comments = dbDocuments.getPostComments(post_id: post.id)
+        comments.sort()
     }
 }

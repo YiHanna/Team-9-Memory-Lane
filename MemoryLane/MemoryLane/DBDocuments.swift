@@ -22,6 +22,7 @@ class DBDocuments: ObservableObject {
     @Published var users : [User] = []
     @Published var posts : [Post] = []
     @Published var prompts : [Prompt] = []
+    @Published var comments : [Comment] = []
     @Published var currUser : User?
     @Published var currPrompt : Prompt?
     @Published var friends: [User] = []
@@ -53,6 +54,20 @@ class DBDocuments: ObservableObject {
 
             self.posts = querySnapshot?.documents.compactMap { document in
               try? document.data(as: Post.self)
+            } ?? []
+            
+            self.posts.sort{$0 > $1}
+        }
+        
+        // Get comments from DB
+        store.collection("comment").addSnapshotListener { querySnapshot, error in
+            if let error = error {
+              print("Error getting comment: \(error.localizedDescription)")
+              return
+            }
+
+            self.comments = querySnapshot?.documents.compactMap { document in
+              try? document.data(as: Comment.self)
             } ?? []
             
             self.posts.sort{$0 > $1}
@@ -318,59 +333,31 @@ class DBDocuments: ObservableObject {
         }
     }
   
-  func commentPost(post:Post, comment:String){
-      if let id = post.id{
-          let ref = store.collection("post").document(id)
-          // remove post from the user's liked posts array
-          if let user = currUser {
-            let postPath = "post/\(id)"
-            let postReference = store.document(postPath)
-              var data = [
-                "post_id": postReference,
-                "user_id": user.id,
-                "time": Date.now,
-                "text": comment
-              ] as [String : Any]
-              store.collection("comment").addDocument(data: data){ error in
-                  if let error = error {
-                      print("Error adding document: \(error)")
-                  } else {
-                      print("Comment created!")
-                  }
-              }
-            }else {
-              print("1")
+    func commentPost(post:Post, comment:String){
+        if let id = post.id{
+            if let user = currUser {
+                let data = [
+                    "post_id": store.collection("post").document(id),
+                    "user_id": user.id!,
+                    "time": Timestamp(date: Date.now),
+                    "text": comment
+                ] as [String : Any]
+                store.collection("comment").addDocument(data: data){ error in
+                    if let error = error {
+                        print("Error adding document: \(error)")
+                    } else {
+                        print("Comment created!")
+                    }
+                }
             }
-          }else{
-            print("2")
-          }
-      }
-  
-  func getPostComments(post_id: String?, completion: @escaping ([Comment]?) -> Void) {
-    if let uid = post_id {
-      let documentPath = "post/\(uid)"
-      let documentReference = store.document(documentPath)
-      let commentRef = store.collection("comment").whereField("post_id", isEqualTo: documentReference)
-      
-      commentRef.getDocuments { (querySnapshot, error) in
-        if let error = error {
-          // Handle the error
-          print("Error getting comments: \(error.localizedDescription)")
-          completion(nil)
-        } else {
-          var result: [Comment] = []
-          
-          for document in querySnapshot!.documents {
-            if let comment = try? document.data(as: Comment.self) {
-              result.append(comment)
-            }
-          }
-          completion(result)
         }
-      }
-    } else {
-      completion(nil)
     }
+  
+  func getPostComments(post_id: String?) -> [Comment] {
+    if let pid = post_id {
+        return self.comments.filter{$0.post_id.documentID == pid}
+    }
+      return []
   }
     
     func checkUserLikes(id:String) -> Bool{
