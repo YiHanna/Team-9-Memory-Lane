@@ -327,7 +327,7 @@ class DBDocuments: ObservableObject {
             let postReference = store.document(postPath)
               var data = [
                 "post_id": postReference,
-                "user_id": user,
+                "user_id": user.id,
                 "time": Date.now,
                 "text": comment
               ] as [String : Any]
