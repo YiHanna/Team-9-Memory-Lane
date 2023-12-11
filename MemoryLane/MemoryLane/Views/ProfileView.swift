@@ -185,7 +185,11 @@ struct UserProfileView: View {
                                       .listRowSeparator(.hidden)
                                     
                                     ForEach(postsInYear, id: \.id) { post in
-                                        PostRowView(post: post).listRowBackground(Color.beige)
+                                        PostRowView(post: post)
+                                        .frame(width: 360, height: 480)
+                                        .cornerRadius(10)
+                                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
+                                        .listRowBackground(Color.beige)
                                         .listRowSeparator(.hidden)
                                     }
                                     .onDelete(perform: deletePost)
