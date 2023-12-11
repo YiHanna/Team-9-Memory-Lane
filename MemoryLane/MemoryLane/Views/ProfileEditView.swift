@@ -37,6 +37,8 @@ struct ProfileEditView: View {
   @ObservedObject var hViewModel = HSchoolViewModel()
   @ObservedObject var uViewModel = UniViewModel()
   
+  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+  
   init(user: User) {
     _user = State(initialValue: user)
     _isEmailPasswordComplete = State(initialValue: false)
@@ -287,6 +289,15 @@ struct ProfileEditView: View {
           PhotoCaptureView(showImagePicker: self.$showImagePicker, image: self.$image)
         }
     }
+    .navigationBarBackButtonHidden(true)
+    .navigationBarItems(
+      leading: Button(action: {
+        presentationMode.wrappedValue.dismiss()
+      }) {
+        Image(systemName: "chevron.backward")
+          .foregroundColor(Color.brown)
+      }
+    )
   }
     
   private func updateUser() {

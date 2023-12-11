@@ -14,6 +14,7 @@ struct OtherUserProfileView: View {
     @State private var posts: [Post] = []
     @State var postsDict: [Int:[Post]] = [:]
     @State private var isFriend: Bool = false
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   
     var body: some View {
       NavigationView {
@@ -202,6 +203,15 @@ struct OtherUserProfileView: View {
           } // ScrollView
         } // ZStack
       } // NavigationView
+      .navigationBarBackButtonHidden(true)
+      .navigationBarItems(
+        leading: Button(action: {
+          presentationMode.wrappedValue.dismiss()
+        }) {
+          Image(systemName: "chevron.backward")
+            .foregroundColor(Color.brown)
+        }
+      )
       .onAppear{
         // Must fetch from DB again as a work-around to complex list object binding
         getBothUsersFromDB() { _ in
