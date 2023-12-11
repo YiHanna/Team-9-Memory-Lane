@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 struct Comment: Codable, Comparable, Identifiable {
     @DocumentID var id: String?
     var post_id: DocumentReference
-    var user_id: DocumentReference
+    var user_id: String
     var time: Timestamp
     var text: String
     
