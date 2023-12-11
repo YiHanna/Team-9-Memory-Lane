@@ -149,7 +149,7 @@ struct AddPostView: View {
           "num_likes": 0,
       ]
        
-      viewModel.getGeoPoint(){ geoPoint in
+      viewModel.getGeoPoint(searchQuery: viewModel.searchQuery){ geoPoint in
           data["location"] = geoPoint
           
           if let img = image {

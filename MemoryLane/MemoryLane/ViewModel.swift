@@ -52,17 +52,18 @@ class LocationViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDeleg
     
     private func getCoordinates(from address: String, completion: @escaping (CLLocationCoordinate2D?, Error?) -> Void) {
         let geocoder = CLGeocoder()
+        print("address: \(address)")
         geocoder.geocodeAddressString(address) { (placemarks, error) in
             guard let placemarks = placemarks, let location = placemarks.first?.location else {
+                print("Geocoding error: \(error?.localizedDescription)")
                 completion(nil, error)
                 return
             }
-            
             completion(location.coordinate, nil)
         }
     }
     
-    func getGeoPoint(completion: @escaping (GeoPoint) -> Void) {
+    func getGeoPoint(searchQuery: String, completion: @escaping (GeoPoint) -> Void) {
         getCoordinates(from: searchQuery) { (coordinates, error) in
             if let error = error {
                 print("Error getting coordinates: \(error.localizedDescription)")
@@ -74,7 +75,6 @@ class LocationViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDeleg
     }
     
     // Function to populate friend recommendations for the user
-    // TODO: Currently, this is a basic level of recommendation (any user on the app which is not me or my friend). In the next iteration, the recommendation algorithm should be more advanced (i.e. users who went to the same school as me)
     func fetchRecs(friends: [User], user: User, recs: [User], completion: @escaping ([User]) -> Void) {
         var scores: [(User, Double)] = []
         for u in dbDocuments.users {
@@ -84,7 +84,6 @@ class LocationViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDeleg
             }) {
                 if u.id != user.id {
                     let score = self.getSimilarityScore(u, user)
-                    print("score: \(score)")
                     scores.append((u, score))
                 }
             }
@@ -97,46 +96,36 @@ class LocationViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDeleg
     func getSimilarityScore(_ u: User, _ user: User) -> Double {
         let schoolSimilarity = self.calculateSchoolSimilarity(u, user)
         let hometownSimilarity = self.calculateHometownSimilarity(u, user)
-        print("ht similarity: \(hometownSimilarity)")
         let currentCitySimilarity = self.calculateCurrentCitySimilarity(u, user)
         
         return (schoolSimilarity + hometownSimilarity + currentCitySimilarity) / 3
     }
     
     func calculateSchoolSimilarity(_ user1: User, _ user2: User) -> Double {
-        let commonSchools = Set(user1.schools.values).intersection(Set(user2.schools.values))
+        var commonSchools = Set(user1.schools.values).intersection(Set(user2.schools.values))
+        commonSchools.remove("")
         return Double(commonSchools.count) / Double(max(user1.schools.count, user2.schools.count))
     }
     
-    func locationSimilarity(_ loc1: String, _ loc2: String, completion: @escaping (Double) -> Void){
+    func calculateHometownSimilarity(_ user1: User, _ user2: User) -> Double{
         let maxDistance = 5000000.0 // 5,000km
         
-        getCoordinates(from: loc1){(coord1, error) in
-            if let c1 = coord1{
-                let location1 = CLLocation(latitude: c1.latitude, longitude: c1.longitude)
-                self.getCoordinates(from: loc2){(coord2, error) in
-                    if let c2 = coord2{
-                        let location2 = CLLocation(latitude: c2.latitude, longitude: c2.longitude)
-                        
-                        let distance = location1.distance(from: location2)
-                        print("distance: \(distance)")
-                        
-                        if distance > maxDistance{
-                            completion(0)
-                        }else{
-                            completion(1 - (distance / maxDistance))
-                        }
-                    }
-                }
-            }
+        let location1 = CLLocation(latitude: user1.hometown_geo.latitude, longitude: user1.hometown_geo.longitude)
+        let location2 = CLLocation(latitude: user2.hometown_geo.latitude, longitude: user2.hometown_geo.longitude)
+        
+        let distance = location1.distance(from: location2)
+        if distance > maxDistance{
+            return 0
+        }else{
+            return 1 - (distance / maxDistance)
         }
-    }
-
-    func calculateHometownSimilarity(_ user1: User, _ user2: User) -> Double {
-        return user1.hometown == user2.hometown ? 1.0 : 0.0
+        
     }
     
     func calculateCurrentCitySimilarity(_ user1: User, _ user2: User) -> Double {
+        if user1.current_city == "" || user1.current_city == ""{
+            return 0
+        }
         return user1.current_city == user2.current_city ? 1.0 : 0.0
     }
 }

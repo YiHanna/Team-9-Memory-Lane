@@ -18,6 +18,7 @@ struct User: Identifiable, Codable {
     var username: String
     var schools: [String: String]
     var hometown: String
+    var hometown_geo: GeoPoint
     var current_city: String
     var friends: [DocumentReference]
     var posts_liked: [String]
@@ -31,6 +32,7 @@ struct User: Identifiable, Codable {
         case username
         case schools
         case hometown
+        case hometown_geo
         case current_city
         case friends
         case posts_liked

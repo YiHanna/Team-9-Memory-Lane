@@ -141,7 +141,7 @@ struct RecommendationsView: View {
 //                          .cornerRadius(10)
 //                      }
                       
-                      // Text("similarity score: " + String((viewModel.getSimilarityScore(user, rec) * 100).rounded() / 100)).font(.caption)
+                       Text(String(format: "%.2f",viewModel.getSimilarityScore(user, rec) * 100) + "% similar").font(.caption)
                     }
                     .padding(.vertical, 3)
                   }

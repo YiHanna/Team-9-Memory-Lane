@@ -132,7 +132,7 @@ class DBDocuments: ObservableObject {
                       }
                   }
                   if let ref = reference{
-                      let userObj = User(id: String(ref.documentID), email: data["email"] as! String, name: data["name"] as! String, username: data["username"] as! String, schools: data["schools"] as! [String : String], hometown: data["hometown"] as! String, current_city: data["current_city"] as! String, friends: [], posts_liked: [])
+                      let userObj = User(id: String(ref.documentID), email: data["email"] as! String, name: data["name"] as! String, username: data["username"] as! String, schools: data["schools"] as! [String : String], hometown: data["hometown"] as! String, hometown_geo: data["hometown_geo"] as! GeoPoint, current_city: data["current_city"] as! String, friends: [], posts_liked: [])
                       print("Document added with ID: \(ref.documentID)")
                       
                       
@@ -153,7 +153,7 @@ class DBDocuments: ObservableObject {
       } else {
           print("Document successfully updated")
           if let index = self.users.firstIndex(where: { $0.id == id }) {
-              let userObj = User(id: String(ref.documentID), email: data["email"] as! String, name: data["name"] as! String, username: data["username"] as! String, schools: data["schools"] as! [String : String], hometown: data["hometown"] as! String, current_city: data["current_city"] as! String, friends: [], posts_liked: [])
+              let userObj = User(id: String(ref.documentID), email: data["email"] as! String, name: data["name"] as! String, username: data["username"] as! String, schools: data["schools"] as! [String : String], hometown: data["hometown"] as! String, hometown_geo: data["hometown_geo"] as! GeoPoint, current_city: data["current_city"] as! String, friends: [], posts_liked: [])
               self.users[index] = userObj
               self.currUser = userObj
           }
@@ -361,7 +361,11 @@ class DBDocuments: ObservableObject {
   }
     
     func checkUserLikes(id:String) -> Bool{
-        return currUser!.posts_liked.contains(id)
+        do{
+            return try currUser!.posts_liked.contains(id)
+        }catch{
+            return false
+        }
     }
   
   
