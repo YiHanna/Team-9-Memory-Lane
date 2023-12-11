@@ -32,6 +32,7 @@ struct PostRowView: View {
                 HStack {
                     if let name = userName {
                         Text(name).foregroundColor(Color.white)
+                          .font(.system(size: 15))
                     }
                     Spacer()
                 }
@@ -40,10 +41,12 @@ struct PostRowView: View {
                 HStack{
                     VStack (alignment: .leading){
                         Text(post.getDate()).foregroundColor(Color.white)
+                        .font(.system(size: 15))
                         if let loc = location {
                           Text(loc).foregroundColor(Color.white)
                         }
                         Text(post.description).foregroundColor(Color.white)
+                        .font(.system(size: 15))
                     }
                   
                     Spacer()
