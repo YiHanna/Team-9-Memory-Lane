@@ -333,24 +333,32 @@ struct RegistrationViewUserInfo: View {
   }
     
   private func registerUser() {
-    dbDocuments.createUser(data: [
-      "username": username,
-      "current_city": current_city,
-      "email": email,
-      "hometown": hometown,
-      "name": name,
-      "friends": [],
-      "schools": [
-        "elementary_school": e_school,
-        "middle_school": m_school,
-        "high_school": h_school,
-        "university": university
-      ],
-      "posts_liked": []
-    ], password: password){result in
-        user = dbDocuments.currUser
-        isUserCreated = true
-    }
+      let viewModel = LocationViewModel()
+      
+      var data = [
+        "username": username,
+        "current_city": current_city,
+        "email": email,
+        "hometown": hometown,
+        "name": name,
+        "friends": [],
+        "schools": [
+          "elementary_school": e_school,
+          "middle_school": m_school,
+          "high_school": h_school,
+          "university": university
+        ],
+        "posts_liked": []
+      ] as [String : Any]
+      
+      viewModel.getGeoPoint(searchQuery: hometown){geoPoint  in
+          data["hometown_geo"] = geoPoint
+          
+          dbDocuments.createUser(data: data, password: password){result in
+              user = dbDocuments.currUser
+              isUserCreated = true
+          }
+      }
   }
   
   private func isEmail(_ string: String) -> Bool {
