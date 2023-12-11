@@ -27,6 +27,7 @@ struct AppView: View {
             Text("Profile")
         }
       }
+      .accentColor(.brown)
       .environmentObject(dbDocuments)
       .navigationBarBackButtonHidden(true)
     } else {
