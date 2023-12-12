@@ -38,6 +38,34 @@ final class ViewModelTests: XCTestCase {
                      hometown_geo: GeoPoint(latitude: 37.773972, longitude: -122.431297),
                      current_city: "Pittsburgh, PA",
                      friends: [], posts_liked: [])
+    
+    let user3 = User(email: "user3@gmail.com",
+                     name: "Bob",
+                     username: "bobb",
+                     schools: [
+                        "elementary_school": "",
+                        "middle_school": "",
+                        "high_school": "",
+                        "university": "Carnegie Mellon University"
+                      ],
+                     hometown: "San Francisco, CA",
+                     hometown_geo: GeoPoint(latitude: 37.773972, longitude: -122.431297),
+                     current_city: "Pittsburgh, PA",
+                     friends: [], posts_liked: [])
+    
+    let user4 = User(email: "user4@gmail.com",
+                     name: "User 4",
+                     username: "user4",
+                     schools: [
+                        "elementary_school": "",
+                        "middle_school": "",
+                        "high_school": "",
+                        "university": ""
+                      ],
+                     hometown: "",
+                     hometown_geo: GeoPoint(latitude: 0, longitude: 0),
+                     current_city: "New York City, NY",
+                     friends: [], posts_liked: [])
 
     func testLocation() throws{
         let expectation = XCTestExpectation(description: "getGeoPoint completion")
@@ -53,9 +81,28 @@ final class ViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
     }
     
+    func testBadLocation() throws{
+        let expectation = XCTestExpectation(description: "getGeoPoint completion")
+
+        let searchQuery = ""
+        viewModel.getGeoPoint(searchQuery: searchQuery){ result in
+            XCTAssert(result.latitude == 0)
+            XCTAssert(result.longitude == 0)
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
+    
     func testCalculateSchoolSimilarity() throws{
         let result = viewModel.calculateSchoolSimilarity(user1, user2)
         XCTAssert(result == 0.5)
+    }
+    
+    func testBadCalculateSchoolSimilarity() throws{
+        let result = viewModel.calculateSchoolSimilarity(user3, user4)
+        XCTAssert(result == 0)
     }
     
     func testCalculateHometownSimilarity() throws{
@@ -63,9 +110,19 @@ final class ViewModelTests: XCTestCase {
         XCTAssert((result * 100).rounded()/100 == 0.27)
     }
     
+    func testBadCalculateHometownSimilarity() throws{
+        let result = viewModel.calculateHometownSimilarity(user3, user4)
+        XCTAssert(result == 0)
+    }
+    
     func testCalculateCurrentCitySimilarity() throws{
         let result = viewModel.calculateCurrentCitySimilarity(user1, user2)
         XCTAssert(result == 1)
+    }
+    
+    func testBadCalculateCurrentCitySimilarity() throws{
+        let result = viewModel.calculateCurrentCitySimilarity(user1, user4)
+        XCTAssert(result == 0)
     }
     
     func testGetSimilarityScore() throws{
