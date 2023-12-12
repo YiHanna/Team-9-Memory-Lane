@@ -7,30 +7,30 @@
 
 import XCTest
 @testable import MemoryLane
+import FirebaseFirestore
 
 final class MemoryLaneTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testIsEmail() throws {
+        XCTAssert(Helpers.isEmail("cindy@gmail.com"))
+        
+        let str = "als@jdhkfjsahlfkdjhkahsldkjhfaskldhfkahsdlfhasdfhasljdkhflajsdhflasjdfhlashdflaksjhdflahsdfljdakshfjkhalsdj"
+        XCTAssert(str.count > 100)
+        XCTAssertFalse(Helpers.isEmail(str))
+        XCTAssertFalse(Helpers.isEmail("asdkfhskljdf"))
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testFormattedTime() throws{
+        var components = DateComponents()
+        components.year = 2023
+        components.month = 12
+        components.day = 11
+        components.hour = 7
+        components.minute = 45
+        let calendar = Calendar.current
+        let date = calendar.date(from: components)!
+        let res = Helpers.formattedTime(time: Timestamp(date: date))
+        
+        XCTAssert(res == "Dec 11, 2023 07:45")
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }
