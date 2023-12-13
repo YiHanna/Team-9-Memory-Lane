@@ -160,9 +160,6 @@ struct AddPostView: View {
                   } else {
                       print("Failed to upload the image.")
                   }
-//                        print("data dict before creating post:")
-//                        print(data)
-                  
                   dbDocuments.createPost(data: data)
               }
           }else{
@@ -172,9 +169,3 @@ struct AddPostView: View {
       }
   }
 }
-
-//struct AddPostView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddPostView(showPrompt: false)
-//    }
-//}

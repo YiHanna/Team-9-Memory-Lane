@@ -17,7 +17,7 @@ struct CommentRowView: View {
     VStack(alignment: .leading) {
       Text(username)
         .font(.system(size: 15))
-      Text("\(formattedTime(comment: comment))")
+        Text("\(Helpers.formattedTime(time: comment.time))")
         .font(.system(size: 15))
         .foregroundColor(.taupe)
       Text(comment.text)
@@ -30,12 +30,5 @@ struct CommentRowView: View {
   
   private func getUsername() {
       username = dbDocuments.getUserName(user_id: comment.user_id) ?? "username not found"
-  }
-  
-  func formattedTime(comment: Comment) -> String {
-      let date = comment.time.dateValue()
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "MMM d, yyyy hh:mm a"
-      return dateFormatter.string(from: date)
   }
 }

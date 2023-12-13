@@ -283,7 +283,7 @@ struct ProfileEditView: View {
         }
         .padding(.top)
         .background(NavigationLink("", destination: ProfileView()))
-        .disabled(name.isEmpty || email.isEmpty || !isEmail(email))
+        .disabled(name.isEmpty || email.isEmpty || !Helpers.isEmail(email))
       }.padding(.horizontal, 15)
         .fullScreenCover(isPresented: $showImagePicker) {
           PhotoCaptureView(showImagePicker: self.$showImagePicker, image: self.$image)
@@ -301,6 +301,7 @@ struct ProfileEditView: View {
   }
     
   private func updateUser() {
+      let viewModel = LocationViewModel()
     var newData:[String : Any] = [
       "username": username,
       "current_city": current_city,
@@ -315,40 +316,27 @@ struct ProfileEditView: View {
         "university": university
       ],
     ]
-    if let img = image {
-        dbDocuments.uploadImage(img) { (url) in
-            if let imageURL = url {
-                newData["photo"] = imageURL.absoluteString
-                print("Image URL: \(newData["photo"])")
-                dbDocuments.updateUser(id: user.id!, data: newData)
-            } else {
-                dbDocuments.updateUser(id: user.id!, data: newData)
-                print("Failed to upload the image.")
-            }
-        }
-    } else {
-        print("no profile image")
-        dbDocuments.updateUser(id: user.id!, data: newData)
-    }
-  }
-  
-  private func isEmail(_ string: String) -> Bool {
-      if string.count > 100 {
-          return false
+      
+      viewModel.getGeoPoint(searchQuery: hometown){geoPoint  in
+          newData["hometown_geo"] = geoPoint
+          
+          if let img = image {
+              dbDocuments.uploadImage(img) { (url) in
+                  if let imageURL = url {
+                      newData["photo"] = imageURL.absoluteString
+                      print("Image URL: \(newData["photo"])")
+                      dbDocuments.updateUser(id: user.id!, data: newData)
+                  } else {
+                      dbDocuments.updateUser(id: user.id!, data: newData)
+                      print("Failed to upload the image.")
+                  }
+              }
+          } else {
+              print("no profile image")
+              dbDocuments.updateUser(id: user.id!, data: newData)
+          }
       }
-      let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-      let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
-      return emailPredicate.evaluate(with: string)
+      
+    
   }
 }
-
-
-//struct ProfileEditView_Preview: PreviewProvider {
-//    static var previews: some View {
-//      if let user1 = dbDocuments.getUserByUsername(username: "user1") {
-//        ProfileEditView(user: user1)
-//      } else {
-//        RegistrationView()
-//      }
-//    }
-//}

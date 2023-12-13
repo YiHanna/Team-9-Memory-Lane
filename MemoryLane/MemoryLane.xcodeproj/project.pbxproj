@@ -20,6 +20,8 @@
 		DF075F602AFF3F0800AF521D /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = DF075F5F2AFF3F0800AF521D /* FirebaseDatabase */; };
 		DF075F622AFF3F0C00AF521D /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DF075F612AFF3F0C00AF521D /* FirebaseDatabaseSwift */; };
 		DF347E142B1D720F00DD80BF /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF347E132B1D720F00DD80BF /* ProfileEditView.swift */; };
+		DF4A4D7D2B28038100208DE5 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4A4D7C2B28038100208DE5 /* Helpers.swift */; };
+		DF4A4D7F2B28135200208DE5 /* ViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF4A4D7E2B28135200208DE5 /* ViewModelTests.swift */; };
 		DF50ECBB2AF295A700614805 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF50ECBA2AF295A700614805 /* RegistrationView.swift */; };
 		DF50ECBD2AF2B4AF00614805 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF50ECBC2AF2B4AE00614805 /* HomeView.swift */; };
 		DF8CDAB72AF4242E003CEDB2 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF8CDAB62AF4242E003CEDB2 /* ProfileView.swift */; };
@@ -73,6 +75,8 @@
 		D63084002B211E6300BE7AB4 /* CommentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRowView.swift; sourceTree = "<group>"; };
 		D6BE9F7A2AF773DD0036A191 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		DF347E132B1D720F00DD80BF /* ProfileEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		DF4A4D7C2B28038100208DE5 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		DF4A4D7E2B28135200208DE5 /* ViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTests.swift; sourceTree = "<group>"; };
 		DF50ECBA2AF295A700614805 /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
 		DF50ECBC2AF2B4AE00614805 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		DF8CDAB62AF4242E003CEDB2 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -190,6 +194,7 @@
 			children = (
 				DFC2F9DE2AF1C42500BE7707 /* DBDocuments.swift */,
 				DF9CC3162AF49DBB0013EA95 /* ViewModel.swift */,
+				DF4A4D7C2B28038100208DE5 /* Helpers.swift */,
 				DF8CDAB52AF42382003CEDB2 /* Views */,
 				DFC2F9E32AF1E0B900BE7707 /* GoogleService-Info.plist */,
 				DFC2F9DB2AF1C3D300BE7707 /* Models */,
@@ -214,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				DFC2F9B52AF1AAE700BE7707 /* MemoryLaneTests.swift */,
+				DF4A4D7E2B28135200208DE5 /* ViewModelTests.swift */,
 			);
 			path = MemoryLaneTests;
 			sourceTree = "<group>";
@@ -402,6 +408,7 @@
 				DF8CDAC12AF44E58003CEDB2 /* ImagePicker.swift in Sources */,
 				D63084012B211E6300BE7AB4 /* CommentRowView.swift in Sources */,
 				D63083FF2B20F75500BE7AB4 /* Comment.swift in Sources */,
+				DF4A4D7D2B28038100208DE5 /* Helpers.swift in Sources */,
 				7A9621B72AFADD9900DCE835 /* FriendsView.swift in Sources */,
 				DF9CC3192AF4A0E40013EA95 /* AddPostView.swift in Sources */,
 				DFC2F9DF2AF1C42500BE7707 /* DBDocuments.swift in Sources */,
@@ -413,6 +420,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF4A4D7F2B28135200208DE5 /* ViewModelTests.swift in Sources */,
 				DFC2F9B62AF1AAE700BE7707 /* MemoryLaneTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
