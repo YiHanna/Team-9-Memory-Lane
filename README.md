@@ -57,7 +57,8 @@ _Below is an example of how you can instruct your audience on installing and set
    git clone https://github.com/YiHanna/Team-9-Memory-Lane.git
    ```
 2. Make sure firebase is setup
-3. Run the project
+3. Go into MemoryLane folder in xcode
+4. Run the project
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
