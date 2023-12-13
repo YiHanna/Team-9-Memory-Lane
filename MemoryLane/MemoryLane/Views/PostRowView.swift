@@ -19,7 +19,7 @@ struct PostRowView: View {
         ZStack{
             if let photoUrl = post.photo{
                 AsyncImage(url: URL(string: photoUrl)) { image in
-                  image.resizable().aspectRatio(0.75, contentMode: .fill)
+                  image.resizable().aspectRatio(contentMode: .fill)
                 } placeholder: {
                     Color(red: 0.811, green: 0.847, blue: 0.863, opacity: 1.0)
                 }

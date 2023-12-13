@@ -28,7 +28,7 @@ struct PostView: View {
               AsyncImage(url: URL(string: photoUrl)) { image in
                 image
                   .resizable()
-                  .aspectRatio(0.75, contentMode: .fill)
+                  .aspectRatio(contentMode: .fill)
                   .cornerRadius(10)
                   .padding()
               } placeholder: {
