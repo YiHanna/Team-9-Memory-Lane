@@ -34,6 +34,9 @@ struct RegistrationViewInit: View {
   @Binding var password: String
   @Binding var passwordConfirmation: String
   @Binding var isComplete: Bool
+    
+    @State private var errorMessage: String? = nil
+    @State private var showErrorAlert: Bool = false
   
   var body: some View {
     NavigationView {
@@ -110,7 +113,12 @@ struct RegistrationViewInit: View {
           }
           
           Button(action: {
-            isComplete = true
+              if let error = Helpers.validateRegistration(username, password, passwordConfirmation) {
+                  self.errorMessage = error
+                  self.showErrorAlert = true
+              } else {
+                  isComplete = true
+              }
           }) {
             Text("Next")
           }
@@ -119,7 +127,15 @@ struct RegistrationViewInit: View {
           .background(.white)
           .cornerRadius(10)
           .padding(.top)
-          .disabled(username.isEmpty || password.isEmpty || passwordConfirmation.isEmpty || (password != passwordConfirmation) || password.count < 6)
+          .alert(isPresented: $showErrorAlert) {
+              Alert(
+                  title: Text("Error"),
+                  message: Text(errorMessage ?? "Unknown error"),
+                  dismissButton: .default(Text("OK")) {
+                      self.errorMessage = nil
+                  }
+              )
+          }
         }
       }
     }

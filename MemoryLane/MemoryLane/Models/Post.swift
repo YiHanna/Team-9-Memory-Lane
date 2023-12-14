@@ -9,6 +9,7 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 import CoreLocation
+import SwiftUI
 
 
 struct Post: Identifiable, Codable, Comparable {
@@ -20,6 +21,7 @@ struct Post: Identifiable, Codable, Comparable {
     var description: String
     var photo: String?
     var num_likes: Int
+    var post_time: Timestamp
     
     // MARK: Codable
     enum CodingKeys: String, CodingKey {
@@ -30,7 +32,8 @@ struct Post: Identifiable, Codable, Comparable {
         case description
         case photo
         case num_likes
-    }
+        case post_time
+    }    
   
   func getDate() -> String{
     let date2 = date.dateValue()

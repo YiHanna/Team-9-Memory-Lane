@@ -147,6 +147,7 @@ struct AddPostView: View {
           "date": Timestamp(date: selectedDate),
           "description": description,
           "num_likes": 0,
+          "post_time": Timestamp(date: Date.now)
       ]
        
       viewModel.getGeoPoint(searchQuery: viewModel.searchQuery){ geoPoint in

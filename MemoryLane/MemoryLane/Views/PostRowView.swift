@@ -113,9 +113,3 @@ struct PostRowView: View {
         }
     }
 }
-
-//struct PostRowView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PostRowView()
-//    }
-//}

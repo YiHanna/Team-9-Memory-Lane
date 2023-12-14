@@ -47,7 +47,7 @@ struct HomeView: View {
                 .listRowBackground(Color.beige)
                 .listRowSeparator(.hidden)
                 
-                ForEach(Array(dbDocuments.posts)) { post in
+                ForEach(Array(dbDocuments.sortedByPostTimePosts())) { post in
                   PostRowView(post: post)
                     .cornerRadius(10)
                     .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 4)
@@ -71,9 +71,3 @@ struct HomeView: View {
         }
     }
 }
-
-//struct HomeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HomeView()
-//    }
-//}

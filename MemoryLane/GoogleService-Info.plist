@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDnAXTQhuzy4ExWHjkelOUimCozrDlxfCs</string>
+	<string>AIzaSyBtZ1RKlYDv2zthPYOlbVIswp-ScnxMTCk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>165822949403</string>
+	<string>598308573927</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>is67443.MemoryLane</string>
 	<key>PROJECT_ID</key>
-	<string>project-2605837374015181060</string>
+	<string>memorylane-649f7</string>
 	<key>STORAGE_BUCKET</key>
-	<string>project-2605837374015181060.appspot.com</string>
+	<string>memorylane-649f7.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:165822949403:ios:172765f57aeb20a9d6f0be</string>
+	<string>1:598308573927:ios:48d6e959e075b0e56cc842</string>
 </dict>
 </plist>

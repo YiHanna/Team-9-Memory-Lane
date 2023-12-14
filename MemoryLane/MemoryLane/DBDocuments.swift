@@ -239,7 +239,7 @@ class DBDocuments: ObservableObject {
             }
             
             if let ref = postRef{
-                let postObj = Post(id: ref.documentID, user_id: d["user_id"] as! DocumentReference, date: data["date"] as! Timestamp, location: data["location"] as! GeoPoint, description: data["description"] as! String, num_likes: 0)
+                let postObj = Post(id: ref.documentID, user_id: d["user_id"] as! DocumentReference, date: data["date"] as! Timestamp, location: data["location"] as! GeoPoint, description: data["description"] as! String, num_likes: 0, post_time: Timestamp(date: Date.now))
                 
                 self.posts.append(postObj)
             }
@@ -419,6 +419,10 @@ class DBDocuments: ObservableObject {
             print("User or friend does not exist")
             completion(false)
         }
+    }
+    
+    func sortedByPostTimePosts() -> [Post]{
+        return self.posts.sorted {$0.post_time.dateValue() > $1.post_time.dateValue()}
     }
   
     func checkFriendStatus(user: User, possibleFriend: User) -> Bool {

@@ -25,6 +25,30 @@ class Helpers{
         dateFormatter.dateFormat = "MMM d, yyyy hh:mm"
         return dateFormatter.string(from: date)
     }
+    
+    static func validateRegistration(_ username: String, _ password: String, _ passwordConfirmation: String) -> String?{
+        if username.isEmpty{
+            return "Username can not be blank"
+        }
+            
+        if password.isEmpty{
+            return "Password can not be blank"
+        }
+        
+        if passwordConfirmation.isEmpty {
+            return "Password Confirmation can not be blank"
+        }
+        
+        if (password != passwordConfirmation) {
+            return "Passwords don't match"
+        }
+        
+        if (password.count < 6){
+            return "Password must be > 6 characters"
+        }
+
+        return nil
+    }
 }
 
 
