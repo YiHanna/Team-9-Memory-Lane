@@ -74,6 +74,24 @@ class LocationViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDeleg
         }
     }
     
+    func getLocation(location: GeoPoint, completion: @escaping (String) -> Void) {
+        let geocoder = CLGeocoder()
+        let location = CLLocation(latitude: location.latitude, longitude: location.longitude)
+
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let error = error {
+                print("Error reverse geocoding: \(error.localizedDescription)")
+                completion("")
+            } else if let placemark = placemarks?.first {
+                let city = placemark.locality ?? "Unknown"
+                let state = placemark.administrativeArea ?? "Unknown"
+                completion("\(city), \(state)")
+            } else {
+                completion("")
+            }
+        }
+    }
+    
     // Function to populate friend recommendations for the user
     func fetchRecs(friends: [User], user: User, recs: [User], completion: @escaping ([User]) -> Void) {
         var scores: [(User, Double)] = []

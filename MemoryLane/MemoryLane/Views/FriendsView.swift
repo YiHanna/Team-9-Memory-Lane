@@ -71,19 +71,6 @@ struct FriendsListView: View {
                       }
                       Text(friend.name)
                         .font(.system(size: 15))
-                      
-//                      Spacer()
-//
-//                      Button(action: {
-//                        dbDocuments.addFriend(friend: friend, completion: () -> Void )
-//                      }) {
-//                        Text("Friends")
-//                          .font(.system(size: 15))
-//                          .padding(10)
-//                          .background(Color.gray)
-//                          .foregroundColor(Color.white)
-//                          .cornerRadius(10)
-//                      }
                     }
                     .padding(.vertical, 3)
                   }
@@ -128,19 +115,6 @@ struct RecommendationsView: View {
                       }
                       Text(rec.name)
                         .font(.system(size: 15))
-                      
-//                      Spacer()
-//                      
-//                      Button(action: {
-//                      }) {
-//                        Text("Add Friend")
-//                          .font(.system(size: 15))
-//                          .padding(10)
-//                          .background(Color.gray)
-//                          .foregroundColor(Color.white)
-//                          .cornerRadius(10)
-//                      }
-                      
                        Text(String(format: "%.2f",viewModel.getSimilarityScore(user, rec) * 100) + "% similar").font(.caption)
                     }
                     .padding(.vertical, 3)

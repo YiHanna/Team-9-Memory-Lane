@@ -51,7 +51,7 @@ struct PostView: View {
               Spacer()
               HStack{
                 VStack (alignment: .leading){
-                  Text(post.getDate()).foregroundColor(Color.white)
+                    Text(Helpers.getDate(post.date)).foregroundColor(Color.white)
                     .font(.system(size: 15))
                   if let loc = location {
                     Text(loc).foregroundColor(Color.white)
@@ -127,7 +127,7 @@ struct PostView: View {
         fetchUserName()
         checkUserLikes()
         getComments()
-        post.getLocation { locationString in
+          viewModel.getLocation(location: post.location) { locationString in
           location = locationString
         }
       }

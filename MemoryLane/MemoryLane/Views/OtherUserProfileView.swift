@@ -266,7 +266,7 @@ struct OtherUserProfileView: View {
       posts.sort()
       print("user posts fetched")
       print(posts.count)
-      postsDict = Dictionary(grouping: posts, by: {$0.getYear()})
+      postsDict = Dictionary(grouping: posts, by: {Helpers.getYear($0.date)})
       for (year, postsByYear) in postsDict {
           postsDict[year] = postsByYear.sorted(by: { $0.date.dateValue() > $1.date.dateValue() })
       }

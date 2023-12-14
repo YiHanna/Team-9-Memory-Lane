@@ -50,7 +50,7 @@ final class ViewModelTests: XCTestCase {
                       ],
                      hometown: "San Francisco, CA",
                      hometown_geo: GeoPoint(latitude: 37.773972, longitude: -122.431297),
-                     current_city: "Pittsburgh, PA",
+                     current_city: "",
                      friends: [], posts_liked: [])
     
     let user4 = User(email: "user4@gmail.com",
@@ -67,7 +67,7 @@ final class ViewModelTests: XCTestCase {
                      current_city: "New York City, NY",
                      friends: [], posts_liked: [])
 
-    func testLocation() throws{
+    func testGetGeoPoint() throws{
         let expectation = XCTestExpectation(description: "getGeoPoint completion")
 
         let searchQuery = "Pittsburgh, PA"
@@ -81,7 +81,7 @@ final class ViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
     }
     
-    func testBadLocation() throws{
+    func testBadGetGeoPoint() throws{
         let expectation = XCTestExpectation(description: "getGeoPoint completion")
 
         let searchQuery = ""
@@ -94,6 +94,21 @@ final class ViewModelTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5.0)
     }
+    
+    func testGetLocation() throws{
+        let expectation = XCTestExpectation(description: "getLocation completion")
+
+        let location = GeoPoint(latitude: 40.4378596, longitude: -79.996257)
+        viewModel.getLocation(location: location){ result in
+            XCTAssert(result == "Pittsburgh, PA")
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
+    
+//    NOTE: testBadGetLocation was omitted because the GeoPoint type automatically checks for latitude & longitude in correct ranges.
     
     func testCalculateSchoolSimilarity() throws{
         let result = viewModel.calculateSchoolSimilarity(user1, user2)
@@ -122,6 +137,11 @@ final class ViewModelTests: XCTestCase {
     
     func testBadCalculateCurrentCitySimilarity() throws{
         let result = viewModel.calculateCurrentCitySimilarity(user1, user4)
+        XCTAssert(result == 0)
+    }
+    
+    func testBadCalculateCurrentCitySimilarity2() throws{
+        let result = viewModel.calculateCurrentCitySimilarity(user1, user3)
         XCTAssert(result == 0)
     }
     

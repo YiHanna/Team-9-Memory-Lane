@@ -40,7 +40,7 @@ struct PostRowView: View {
                 Spacer()
                 HStack{
                     VStack (alignment: .leading){
-                        Text(post.getDate()).foregroundColor(Color.white)
+                        Text(Helpers.getDate(post.date)).foregroundColor(Color.white)
                         .font(.system(size: 15))
                         if let loc = location {
                           Text(loc).foregroundColor(Color.white)
@@ -54,7 +54,6 @@ struct PostRowView: View {
                   VStack {
                     Button(action: {
                       toggleLikePost(post: post)
-                      checkUserLikes()
                     }) {
                       if let liked = userLiked {
                         Image(systemName: liked ? "heart.fill" : "heart")
@@ -87,7 +86,7 @@ struct PostRowView: View {
         }.onAppear {
             fetchUserName()
             checkUserLikes()
-            post.getLocation { locationString in
+            viewModel.getLocation(location: post.location) { locationString in
               location = locationString
             }
         }
@@ -97,8 +96,10 @@ struct PostRowView: View {
     if let liked = userLiked {
       if liked {
           dbDocuments.unlikePost(post_id: post.id!)
+          userLiked = false
       } else {
           dbDocuments.likePost(post_id: post.id!)
+          userLiked = true
       }
     }
   }

@@ -26,6 +26,20 @@ class Helpers{
         return dateFormatter.string(from: date)
     }
     
+    static func getDate(_ date: Timestamp) -> String{
+      let date2 = date.dateValue()
+      let dateFormatter = DateFormatter()
+      dateFormatter.dateStyle = .medium
+      dateFormatter.timeStyle = .medium
+      return dateFormatter.string(from: date2)
+    }
+    
+    static func getYear(_ date: Timestamp) -> Int {
+      let calendar = Calendar.current
+      let year = calendar.component(.year, from: date.dateValue())
+      return year
+    }
+    
     static func validateRegistration(_ username: String, _ password: String, _ passwordConfirmation: String) -> String?{
         if username.isEmpty{
             return "Username can not be blank"

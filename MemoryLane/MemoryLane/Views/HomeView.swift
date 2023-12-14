@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+let viewModel = LocationViewModel()
+
 struct HomeView: View {
     @ObservedObject var dbDocuments: DBDocuments
     @State private var prompt : String = "What was one of your childhood Halloween costumes?"

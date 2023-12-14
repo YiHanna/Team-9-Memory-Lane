@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     var body: some View {
-        if let u = dbDocuments.currUser {
+        if let _ = dbDocuments.currUser {
           UserProfileView(dbDocuments: dbDocuments).environmentObject(dbDocuments)
         } else {
           LoginView().environmentObject(dbDocuments)
@@ -233,7 +233,7 @@ struct UserProfileView: View {
         posts.sort()
         print("user posts fetched")
         print(posts.count)
-        postsDict = Dictionary(grouping: posts, by: {$0.getYear()})
+        postsDict = Dictionary(grouping: posts, by: {Helpers.getYear($0.date)})
         for (year, postsByYear) in postsDict {
             postsDict[year] = postsByYear.sorted(by: { $0.date.dateValue() > $1.date.dateValue() })
         }
